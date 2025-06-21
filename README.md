@@ -10,19 +10,19 @@ Projeto desenvolvido por:
 
 ## Features
 Abaixo estão as funcionalidades escolhidas, baseadas nas issues abertas (e não bônus) que estavam presentes no repositório original, seguidas das pontuações definidas pela equipe:
-1. Importar dados do SIGAA:
-1. Responder formulário:
-1. Cadastrar usuários do sistema:
-1. Gerar relatório do administrador:
-1. Criar template de formulário:
-1. Criar formulário de avaliação:
-1. Sistema de Login:
-1. Sistema de definição de senha:
-1. Atualizar base de dados com os dados do SIGAA:
-1. Visualização de formulários para responder:
-1. Visualização de resultados dos formulários:
-1. Visualização dos templates criados:
-1. Edição e deleção de templates:
+1. Importar dados do SIGAA: 2
+1. Responder formulário: 2
+1. Cadastrar usuários do sistema: 3
+1. Gerar relatório do administrador: 2
+1. Criar template de formulário: 5
+1. Criar formulário de avaliação: 2
+1. Sistema de Login: 2
+1. Sistema de definição de senha: 1
+1. Atualizar base de dados com os dados do SIGAA: 2
+1. Visualização de formulários para responder: 1
+1. Visualização de resultados dos formulários: 1
+1. Visualização dos templates criados: 1
+1. Edição e deleção de templates: 3
 
 <h2>Autores</h2>
 <table>
