@@ -9,7 +9,7 @@ Projeto desenvolvido por:
 - Luca Heringer Megiorin - 231003390
 
 ## Features
-Abaixo estão as funcionalidades escolhidas, baseadas nas issues abertas (e não bônus) que estavam presentes no repositório original, seguidas das pontuações definidas pela equipe:
+Abaixo estão as funcionalidades escolhidas, baseadas nas issues abertas (e não bônus) que estavam presentes no repositório original, seguidas das pontuações definidas pela equipe. Foi feito um [pdf para planejar o bdd](https://github.com/Luke0133/CAMAAR/blob/sprint1/BDD-Miro.pdf), contendo também as features (amarelo), happy e sad paths (verde), perguntas (rosa escuro) e respostas (azul) que surgiram durante o planejamento e os votos de cada membro para a pontuação (laranja) e seus resultados (rosa claro).
 1. Importar dados do SIGAA: 2
 1. Responder formulário: 2
 1. Cadastrar usuários do sistema: 3
