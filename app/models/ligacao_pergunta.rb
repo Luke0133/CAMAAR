@@ -1,0 +1,2 @@
+class LigacaoPergunta < ApplicationRecord
+end
