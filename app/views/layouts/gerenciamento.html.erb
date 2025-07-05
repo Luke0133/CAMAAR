@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Gerenciamento - CAMAAR</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "gerenciamento", media: "all" %>
+</head>
+<body>
+    
+  <header class="topbar">
+    <div class="topbar-left">
+      <span class="menu-toggle">☰</span>
+      <span class="logo">Gerenciamento</span>
+    </div>
+    <div class="topbar-right">
+      <input type="text" class="search-bar" placeholder="Buscar...">
+      <div class="user-icon">U</div>
+    </div>
+  </header>
+
+  <div class="main-container">
+    <aside class="sidebar">
+      <nav>
+        <ul>
+          <li class="menu-item">Avaliações</li>
+          <li class="menu-item active">Gerenciamento</li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="content">
+      <%= yield %>
+    </main>
+  </div>
+</body>
+</html>
