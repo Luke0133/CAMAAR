@@ -98,6 +98,7 @@ GEM
     concurrent-ruby (1.3.5)
     connection_pool (2.5.3)
     crass (1.0.6)
+    csv (3.3.5)
     cucumber (9.2.1)
       builder (~> 3.2)
       cucumber-ci-environment (> 9, < 11)
@@ -403,6 +404,7 @@ DEPENDENCIES
   brakeman
   byebug
   capybara
+  csv
   cucumber-rails
   debug
   importmap-rails
