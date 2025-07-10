@@ -15,4 +15,7 @@ Rails.application.routes.draw do
 
   # remove sign up
   devise_for :pessoas, skip: [:registrations]
+  devise_for :pessoas, controllers: {
+    sessions: 'pessoas/sessions'
+  }
 end
