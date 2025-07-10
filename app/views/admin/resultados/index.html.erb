@@ -1,2 +1,25 @@
 <section class="main-area">
+  <% if @show_incompatibility_message %>
+    <div class="alert alert-warning">
+      Um ou mais formulários estão incompatíveis e não podem ser visualizados.
+    </div>
+  <% end %>
+
+  <% if @answered_forms.any? %>
+    <div class="formularios-list">
+      <% @answered_forms.each do |formulario| %>
+        <% turma = formulario.turma %>
+        <% materia = turma&.id_materia && Materia.find_by(id: turma.id_materia) %>
+        <div class="formulario-card">
+          <strong><%= formulario.nome %></strong><br>
+          <span><%= materia&.nome || '-' %></span><br>
+          <span><%= turma&.semestre || '-' %></span><br>
+          <span>Turma: <%= turma&.numero_turma || '-' %></span><br>
+          <span><%= turma&.professor || '-' %></span>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>Nenhum formulário respondido encontrado.</p>
+  <% end %>
 </section>

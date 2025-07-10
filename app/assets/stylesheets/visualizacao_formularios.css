@@ -1,0 +1,39 @@
+@media (max-width: 768px) {
+    .alert {
+        left: 0;
+    }
+    .formularios-list {
+        justify-content: center;
+    }
+}
+
+.alert {
+    position: relative;
+    margin-bottom: 1rem;
+    background: #ffeeba;
+    color: #856404;
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    z-index: 1000;
+}
+
+.main-area {
+    display: block;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.formularios-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.formulario-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    min-width: 220px;
+    background: #f9f9f9;
+}
