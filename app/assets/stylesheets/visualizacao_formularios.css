@@ -37,3 +37,21 @@
     min-width: 220px;
     background: #f9f9f9;
 }
+
+.download-btn {
+     display: inline-block;
+     padding: 0.25rem 0.5rem;
+     background-color: #651b5a;
+     color: #fff;
+     text-decoration: none;
+     border-radius: 6px;
+     font-weight: bold;
+     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+     transition: background-color 0.3s ease;
+     float: right;
+     margin-left: auto;
+ }
+
+.download-btn:hover {
+    background-color: #500645;
+}

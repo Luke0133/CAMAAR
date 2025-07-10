@@ -9,13 +9,16 @@
     <div class="formularios-list">
       <% @answered_forms.each do |formulario| %>
         <% turma = formulario.turma %>
-        <% materia = turma&.id_materia && Materia.find_by(id: turma.id_materia) %>
+        <% materia = turma&.materia %>
         <div class="formulario-card">
           <strong><%= formulario.nome %></strong><br>
           <span><%= materia&.nome || '-' %></span><br>
           <span><%= turma&.semestre || '-' %></span><br>
           <span>Turma: <%= turma&.numero_turma || '-' %></span><br>
-          <span><%= turma&.professor || '-' %></span>
+          <span><%= turma&.professor || '-' %></span><br>
+          <%= link_to admin_download_resultado_path(formulario), class: "download-btn", title: "Download CSV" do %>
+            Download
+          <% end %>
         </div>
       <% end %>
     </div>
