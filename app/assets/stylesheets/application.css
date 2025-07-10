@@ -95,25 +95,6 @@ nav ul {
 
 .content {
     flex: 1;
-    padding: 2rem;
+    padding: 1rem;
     background-color: #ddd;
-}
-
-.main-area {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.button-container {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 0 10px #ccc;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 250px;
-    align-items: center;
 }
