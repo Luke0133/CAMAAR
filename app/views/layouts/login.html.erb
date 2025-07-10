@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - CAMAAR</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag 'login', media: 'all' %>
+</head>
+<body>
+<div class="login-container">
+  <div class="login-form">
+    <h2>LOGIN</h2>
+
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="form-group">
+        <%= f.label :login, "Email ou Matrícula" %><br>
+        <%= f.text_field :login, autofocus: true, autocomplete: "login", class: "input" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, "Senha" %><br>
+        <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Entrar", class: "btn" %>
+      </div>
+    <% end %>
+
+    <% if devise_mapping.recoverable? %>
+      <%= link_to "Esqueci minha senha", new_password_path(resource_name) %>
+    <% end %>
+  </div>
+
+  <div class="login-banner">
+    <h1>Bem vindo<br>ao<br>Camaar</h1>
+  </div>
+</div>
+</body>
+</html>
