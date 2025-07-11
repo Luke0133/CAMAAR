@@ -16,12 +16,12 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="form-group">
         <%= f.label :email, "Email ou Matrícula" %><br>
-        <%= f.text_field :email, autofocus: true, autocomplete: "login", class: "input", value: "aluno@aluno.unb.br"%>
+        <%= f.text_field :email, autofocus: true, class: "input", value: "aluno@aluno.unb.br"%>
       </div>
 
       <div class="form-group">
         <%= f.label :password, "Senha" %><br>
-        <%= f.password_field :password, autocomplete: "current-password", class: "input", value: "Password" %>
+        <%= f.password_field :password, class: "input", value: "Password" %>
       </div>
 
       <div class="form-actions">
