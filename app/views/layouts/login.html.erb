@@ -9,6 +9,18 @@
   <%= stylesheet_link_tag 'login', media: 'all' %>
 </head>
 <body>
+<% if flash[:alert] %>
+  <div class="alert-message">
+    <%= flash[:alert] %>
+  </div>
+<% end %>
+
+<% if flash[:notice] %>
+  <div class="notice-message">
+    <%= flash[:notice] %>
+  </div>
+<% end %>
+
 <div class="login-container">
   <div class="login-form">
     <h2>LOGIN</h2>

@@ -38,6 +38,6 @@ RSpec.feature "Login", type: :feature do
     fill_in "Senha", with: "senhaerrada"
     click_button "Entrar"
 
-    expect(page).to have_content("Email ou senha inválidos")
+    expect(page).to have_content("Login ou senha inválidos")
   end
 end
