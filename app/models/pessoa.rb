@@ -13,8 +13,6 @@ class Pessoa < ApplicationRecord
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
-    where(conditions).where(
-      ["lower(matricula) = :value OR lower(email) = :value", { value: login.downcase }]
-    ).first
+    where(conditions).find_by("lower(email) = ? OR lower(matricula) = ?", login.downcase, login.downcase)
   end
 end

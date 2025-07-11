@@ -16,21 +16,17 @@
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="form-group">
         <%= f.label :login, "Email ou Matrícula" %><br>
-        <%= f.text_field :login, autofocus: true, autocomplete: "login", class: "input" %>
+        <%= f.text_field :login, autofocus: true, autocomplete: "login", class: "input", value: "aluno@aluno.unb.br"%>
       </div>
 
       <div class="form-group">
         <%= f.label :password, "Senha" %><br>
-        <%= f.password_field :password, autocomplete: "current-password", class: "input" %>
+        <%= f.password_field :password, autocomplete: "current-password", class: "input", value: "Password" %>
       </div>
 
       <div class="form-actions">
         <%= f.submit "Entrar", class: "btn" %>
       </div>
-    <% end %>
-
-    <% if devise_mapping.recoverable? %>
-      <%= link_to "Esqueci minha senha", new_password_path(resource_name) %>
     <% end %>
   </div>
 
