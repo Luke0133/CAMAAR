@@ -313,4 +313,13 @@ Devise.setup do |config|
 
   # Use :login em vez de :email para fazer login
   config.authentication_keys = [:login]
+
+  config.warden do |manager|
+    manager.intercept_401 = false
+
+    manager.failure_app = lambda do |env|
+      I18n.locale = :pt
+      Devise::FailureApp.call(env)
+    end
+  end
 end
