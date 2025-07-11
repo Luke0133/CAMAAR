@@ -15,8 +15,8 @@
 
     <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="form-group">
-        <%= f.label :login, "Email ou Matrícula" %><br>
-        <%= f.text_field :login, autofocus: true, autocomplete: "login", class: "input", value: "aluno@aluno.unb.br"%>
+        <%= f.label :email, "Email ou Matrícula" %><br>
+        <%= f.text_field :email, autofocus: true, autocomplete: "login", class: "input", value: "aluno@aluno.unb.br"%>
       </div>
 
       <div class="form-group">
