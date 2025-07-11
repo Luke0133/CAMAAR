@@ -16,4 +16,6 @@ Rails.application.routes.draw do
   devise_for :pessoas, controllers: {
     sessions: 'pessoas/sessions'
   }
+
+  root to: 'pessoas/sessions#new'
 end

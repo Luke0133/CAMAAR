@@ -2,8 +2,8 @@
 class Pessoas::SessionsController < Devise::SessionsController
   layout 'login'  # Usa um layout diferente só na tela de login
 
-  # Se quiser customizar o comportamento, você pode sobrescrever os métodos aqui:
-  # def create
-  #   super
-  # end
+  def after_sign_in_path_for(resource)
+    flash[:notice] = "Login efetuado com sucesso"
+    root_path
+  end
 end
