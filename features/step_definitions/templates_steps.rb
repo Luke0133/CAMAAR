@@ -1,11 +1,11 @@
 Dado('que eu estou logado como admin') do
-  # Simulação simples de login/admin
+
   @admin = Pessoa.find_or_create_by!(email: "admin@exemplo.com") do |p|
     p.nome = "Admin"
     p.senha = "123456"
     p.matricula = "123456789"
   end
-  # Se seu sistema usa autenticação, aqui você pode adaptar para login real
+
 end
 
 Dado('que eu estou na página inicial de gerenciamento do CAMAAR') do
@@ -16,7 +16,7 @@ end
 Dado('que existem {int} templates') do |quantidade|
   quantidade.times do |i|
     ligacao = LigacaoPergunta.create!
-    # Cria uma pergunta associada para garantir que seja válido
+
     Pergunta.create!(pergunta: "Pergunta #{i+1}", ligacao_pergunta_id: ligacao.id, tipo: 1)
     Template.create!(ligacao_pergunta_id: ligacao.id, nome: "Template #{i+1}")
 
