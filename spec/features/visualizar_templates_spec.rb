@@ -7,14 +7,12 @@ RSpec.feature "Gerenciamento de Templates", type: :feature do
       email: "admin@exemplo.com",
       nome: "Admin",
       matricula: "123456789",
-      senha: "123456"  # só isso, sem password_confirmation
+      senha: "123456"  
     )
   end
 
   def login_as_admin
-    # Aqui você pode simular login direto se precisar,
-    # ou ignorar se seu sistema permitir acesso direto no teste.
-    # Por exemplo, setar sessão ou só garantir que @admin existe
+    
   end
 
   scenario "Visualizar templates válidos" do
