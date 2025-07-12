@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   namespace :admin do
-    get "gerenciamento" => "gerenciamento#index"
+    get "/gerenciamento" => "gerenciamento#index"
+
+    post '/gerenciamento/importar', to: 'gerenciamento#importar', as: 'importar_dados'
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

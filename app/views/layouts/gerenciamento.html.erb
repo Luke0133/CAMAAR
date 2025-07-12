@@ -32,6 +32,14 @@
     </aside>
 
     <main class="content">
+      <% if flash[:notice] %>
+        <div class="flash flash-notice"><%= flash[:notice] %></div>
+      <% end %>
+
+      <% if flash[:alert] %>
+        <div class="flash flash-alert"><%= flash[:alert] %></div>
+      <% end %>
+
       <%= yield %>
     </main>
   </div>

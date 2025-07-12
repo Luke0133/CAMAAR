@@ -132,3 +132,19 @@ nav ul {
   color: #fff;
   background-color: rgb(134, 239, 172);
 }
+
+.flash {
+  margin: 1em;
+  padding: 0.5em 1em;
+  border-radius: 4px;
+}
+
+.flash-notice {
+  background-color: #e6ffed;
+  color: #2c662d;
+}
+
+.flash-alert {
+  background-color: #ffe6e6;
+  color: #991b1b;
+}
