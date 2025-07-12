@@ -26,7 +26,7 @@ class ImportadorSigaa
     docente = info["docente"]
     pessoa = Pessoa.find_or_create_by!(email: docente["email"]) do |p|
       p.nome = docente["nome"]
-      p.matricula = docente["matricula"]
+      p.matricula = docente["usuario"]
       p.senha = "testeProfessor"
     end
 
