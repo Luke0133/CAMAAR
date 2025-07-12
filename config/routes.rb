@@ -1,3 +1,4 @@
+Rails.logger.info "ABACAXI DE NOVO"
 Rails.application.routes.draw do
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -17,7 +18,8 @@ Rails.application.routes.draw do
 
   # remove sign up
   devise_for :pessoas, controllers: {
-    sessions: 'pessoas/sessions'
+    sessions: 'pessoas/sessions',
+    passwords: 'pessoas/passwords'
   }#, as: :pessoa
 
   devise_scope :pessoa do
