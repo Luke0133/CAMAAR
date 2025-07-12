@@ -13,6 +13,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  get "/dashboard", to: "home#index", as: :dashboard
+
   # remove sign up
   devise_for :pessoas, controllers: {
     sessions: 'pessoas/sessions'

@@ -16,8 +16,8 @@
 
     <%= form_for(@resource, as: @resource_name, url: pessoa_session_path, html: { method: :post }) do |f| %>
       <div class="form-group">
-        <%= f.label :email, "Email ou Matrícula" %><br>
-        <%= f.text_field :email, autofocus: true, class: "input"%>
+        <%= f.label :login, "Email ou Matrícula" %><br>
+        <%= f.text_field :login, autofocus: true, class: "input"%>
       </div>
 
       <div class="form-group">
