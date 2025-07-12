@@ -48,7 +48,6 @@ nomes.each do |nome|
   Resposta.create!(formulario_id: formulario.id, pergunta_id: pergunta.id, conteudo: "Resposta")
 end
 
-
 2.times do |i|
   Formulario.create!(nome: "Aluno Não Respondido #{i+1}", turma_id: turma2.id, ligacao_pergunta_id: ligacao.id)
 end
