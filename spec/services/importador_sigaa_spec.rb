@@ -5,6 +5,7 @@ RSpec.describe ImportadorSigaa, type: :service do
     let(:json_data) do
       [
         {
+          "id" => 1,
           "code" => "CIC0001",
           "classCode" => "1",
           "name" => "OAC",
@@ -50,7 +51,7 @@ RSpec.describe ImportadorSigaa, type: :service do
       aluno = Pessoa.find_by(email: "jose@email.com")
       expect(aluno.nome).to eq("José")
 
-      turma = Turma.find_by(id_materia: "CIC0001", numero_turma: 1)
+      turma = Turma.find(1)
       expect(turma.semestre).to eq("2025.1")
       expect(turma.professor).to eq("lamar@email.com")
 

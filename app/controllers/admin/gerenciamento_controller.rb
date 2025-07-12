@@ -15,8 +15,13 @@ class Admin::GerenciamentoController < ApplicationController
 
         begin
             json_data = JSON.parse(file.read)
-            ImportadorSigaa.new(json_data).processar
+            houve_atualizacao = ImportadorSigaa.new(json_data).processar
+
+            if houve_atualizacao
+            redirect_to admin_gerenciamento_path, notice: "Dados importados com sucesso: alguns dados foram atualizados"
+            else
             redirect_to admin_gerenciamento_path, notice: "Dados importados com sucesso"
+            end
         rescue JSON::ParserError
             redirect_to admin_gerenciamento_path, alert: "Erro ao importar dados: dados do arquivo em formato inválido"
         rescue => e

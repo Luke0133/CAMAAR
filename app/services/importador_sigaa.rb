@@ -1,6 +1,7 @@
 class ImportadorSigaa
   def initialize(json_data)
     @json_data = json_data
+    @atualizado = false
   end
 
   def processar
@@ -10,47 +11,89 @@ class ImportadorSigaa
       turma = importar_turma(turma_info)
       importar_alunos(turma_info, turma)
     end
+    @atualizado
   end
 
   private
 
   def importar_materia(info)
-    Materia.find_or_create_by!(
-      id: info["code"]
-    ) do |m|
-      m.nome = info["name"]
+    materia = Materia.find_by(id: info["code"])
+    if materia
+      if materia.nome != info["name"]
+        materia.update!(nome: info["name"])
+        @atualizado = true
+      end
+    else
+      Materia.create!(id: info["code"], nome: info["name"])
     end
   end
 
   def importar_professor(info)
     docente = info["docente"]
-    pessoa = Pessoa.find_or_create_by!(email: docente["email"]) do |p|
-      p.nome = docente["nome"]
-      p.matricula = docente["usuario"]
-      p.senha = "testeProfessor"
+    pessoa = Pessoa.find_by(email: docente["email"])
+
+    if pessoa
+      updated = false
+      updated |= pessoa.update!(nome: docente["nome"]) if pessoa.nome != docente["nome"]
+      updated |= pessoa.update!(matricula: docente["matricula"]) if pessoa.matricula != docente["matricula"]
+      @atualizado ||= updated
+    else
+      pessoa = Pessoa.create!(
+        nome: docente["nome"],
+        matricula: docente["matricula"],
+        email: docente["email"],
+        senha: "testeProfessor"
+      )
     end
 
     Cargo.find_or_create_by!(email: pessoa.email) do |c|
-      c.funcao = 1 # 1 = professor
+      c.funcao = 1
     end
   end
 
   def importar_turma(info)
-    Turma.find_or_create_by!(
-      id_materia: info["code"],
-      numero_turma: info["classCode"],
-      semestre: info["semester"]
-    ) do |t|
-      t.professor = info["docente"]["usuario"]
+    turma = Turma.find_by(id: info["id"])
+    if turma
+      atualizado = false
+      atualizado |= turma.id_materia != info["code"]
+      atualizado |= turma.numero_turma != info["classCode"].to_i
+      atualizado |= turma.semestre != info["semester"]
+      atualizado |= turma.professor != info["docente"]["email"]
+
+      turma.id_materia = info["code"]
+      turma.numero_turma = info["classCode"].to_i
+      turma.semestre = info["semester"]
+      turma.professor = info["docente"]["email"]
+      turma.save!
+
+      @atualizado ||= atualizado
+      turma
+    else
+      Turma.create!(
+        id: info["id"],
+        id_materia: info["code"],
+        numero_turma: info["classCode"].to_i,
+        semestre: info["semester"],
+        professor: info["docente"]["email"]
+      )
     end
   end
 
   def importar_alunos(info, turma)
     info["dicente"].each do |aluno|
-      pessoa = Pessoa.find_or_create_by!(email: aluno["usuario"]) do |p|
-        p.nome = aluno["nome"]
-        p.matricula = aluno["matricula"]
-        p.senha = "testeAluno"
+      pessoa = Pessoa.find_by(email: aluno["usuario"])
+      if pessoa
+        if pessoa.nome != aluno["nome"]
+          pessoa.update!(nome: aluno["nome"])
+          @atualizado = true
+        end
+      else
+        pessoa = Pessoa.create!(
+          nome: aluno["nome"],
+          matricula: aluno["matricula"],
+          email: aluno["usuario"],
+          senha: "testeAluno"
+        )
       end
 
       Cargo.find_or_create_by!(email: pessoa.email) do |c|
