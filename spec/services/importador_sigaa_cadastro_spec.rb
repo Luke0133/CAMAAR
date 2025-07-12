@@ -35,6 +35,7 @@ RSpec.describe ImportadorSigaa, type: :service do
 
     before do
       ActionMailer::Base.deliveries.clear
+      Devise.mappings[:pessoa] ||= Devise::Mapping.new(:pessoa, {})
     end
 
     it 'cria novo aluno e envia email de redefinição de senha' do
