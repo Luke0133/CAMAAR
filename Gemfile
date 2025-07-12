@@ -59,6 +59,7 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing
+  gem 'database_cleaner-active_record'
   gem 'byebug'
   gem 'rspec-rails'
   gem 'cucumber-rails', require: false
