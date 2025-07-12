@@ -1,0 +1,2 @@
+class FormularioRespondido < ApplicationRecord
+end
