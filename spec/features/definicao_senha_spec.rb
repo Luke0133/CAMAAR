@@ -43,6 +43,9 @@ RSpec.feature "Definição de senha via e-mail (mockada)", type: :feature do
     click_button "Definir Senha"
 
     expect(page).to have_content("Login efetuado com sucesso")
+
+    pessoa.reload
+    expect(pessoa.valid_password?("senhanova123")).to be true
   end
 
   scenario "Usuária tenta redefinir senha com token inválido" do
