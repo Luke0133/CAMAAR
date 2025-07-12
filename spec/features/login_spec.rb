@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.feature "Login", type: :feature do
+
   let!(:pessoa) do
+    Pessoa.where(email: "aluna@example.com").destroy_all
     Pessoa.create!(
       email: "aluna@example.com",
       nome: "Fulana de Tal",

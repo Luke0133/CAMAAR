@@ -16,10 +16,12 @@ Rails.application.routes.draw do
   # remove sign up
   devise_for :pessoas, controllers: {
     sessions: 'pessoas/sessions'
-  }
+  }#, as: :pessoa
 
-  get '/homepage', to: 'home#index', as: :homepage
-  root to: 'pessoas/sessions#new'
+  devise_scope :pessoa do
+    get '/login', to: 'pessoas/sessions#new', as: :login
+  end
+  root to: redirect('/login')
 
 
 end
