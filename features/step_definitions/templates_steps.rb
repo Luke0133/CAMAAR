@@ -1,0 +1,51 @@
+Dado('que eu estou logado como admin') do
+  # Simulação simples de login/admin
+  @admin = Pessoa.find_or_create_by!(email: "admin@exemplo.com") do |p|
+    p.nome = "Admin"
+    p.senha = "123456"
+    p.matricula = "123456789"
+  end
+  # Se seu sistema usa autenticação, aqui você pode adaptar para login real
+end
+
+Dado('que eu estou na página inicial de gerenciamento do CAMAAR') do
+  visit root_path
+end
+
+
+Dado('que existem {int} templates') do |quantidade|
+  quantidade.times do |i|
+    ligacao = LigacaoPergunta.create!
+    # Cria uma pergunta associada para garantir que seja válido
+    Pergunta.create!(pergunta: "Pergunta #{i+1}", ligacao_pergunta_id: ligacao.id, tipo: 1)
+    Template.create!(ligacao_pergunta_id: ligacao.id, nome: "Template #{i+1}")
+
+  end
+end
+
+Dado('que existem {int} templates inválido') do |quantidade|
+  quantidade.times do |i|
+    ligacao = LigacaoPergunta.create!
+
+    Template.create!(ligacao_pergunta_id: ligacao.id, nome: "Template inválido #{i + 1}")
+  end
+end
+
+
+Quando('eu clicar no botão {string}') do |botao|
+  click_on botao
+end
+
+Então('eu devo estar na página de gerenciamento de templates do CAMAAR') do
+  expect(page).to have_current_path(templates_path)
+end
+
+Então('eu devo ver {int} templates') do |quantidade|
+  expect(page).to have_selector('.template-card', count: quantidade)
+end
+Então('nenhum template deve ser exibido na lista') do
+  expect(page).not_to have_selector('.template-card')
+end
+Então('eu devo ver {string}') do |mensagem|
+  expect(page).to have_content(mensagem)
+end
