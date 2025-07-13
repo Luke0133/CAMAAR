@@ -1,4 +1,4 @@
-@media (max-width: 768px) {
+/*@media (max-width: 768px) {
 
 
 /*
@@ -166,6 +166,11 @@
   border-radius: 6px;
   text-decoration: none;
   font-size: 0.9rem;
+  transition: transform 0.2s ease; /* smooth transition */
+}
+
+.btn-responder:hover {
+  transform: scale(1.05); /* grow slightly */
 }
 
 .sidebar {

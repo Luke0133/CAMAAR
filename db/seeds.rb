@@ -32,6 +32,36 @@ aluno = Pessoa.create!(
   encrypted_password: Devise::Encryptor.digest(Pessoa, "123456")
 )
 
+Cargo.create!(
+  email: aluno.email,
+  funcao: "usuario"
+)
+
+admin = Pessoa.create!(
+  email: "admin@teste.com",
+  nome: "Admin",
+  matricula: "1234",
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
+)
+Cargo.create!(
+  email: admin.email,
+  funcao: "admin"
+)
+
+both = Pessoa.create!(
+  email: "both@teste.com",
+  nome: "Both",
+  matricula: "1234",
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
+)
+Cargo.create!(
+  email: both.email,
+  funcao: "admin"
+)
+Cargo.create!(
+  email: both.email,
+  funcao: "usuario"
+)
 Pessoa.create!(
   email: "sem_senha@teste.com",
   nome: "Sem Senha",
@@ -305,24 +335,6 @@ end
 
 # Seed de respostas
 
-Resposta.joins(:pergunta)
-        .where(perguntas: { ligacao_pergunta_id: LigacaoPergunta.select(:id) })
-        .delete_all
-
-# Remove perguntas
-Pergunta.where(ligacao_pergunta_id: LigacaoPergunta.select(:id)).delete_all
-
-# Remove formularios tied to turmas 1 and 2
-Formulario.where(turma_id: Turma.where(numero_turma: [1, 2], semestre: "2024.1").select(:id)).delete_all
-
-# Remove ligacoes
-LigacaoPergunta.delete_all
-
-# Remove turmas tied to MAT1
-Turma.where(numero_turma: [1, 2], semestre: "2024.1", id_materia: "MAT1").delete_all
-
-# Finally, remove the materia
-Materia.where(id: "MAT1").delete_all
 
 # Re-seed
 

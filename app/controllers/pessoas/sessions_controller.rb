@@ -9,6 +9,8 @@ class Pessoas::SessionsController < Devise::SessionsController
     if self.resource
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)
+      session[:email] = resource.email
+      
       respond_with resource, location: after_sign_in_path_for(resource)
     else
       flash.now[:alert] = "Login ou senha inválidos"

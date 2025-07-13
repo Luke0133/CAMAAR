@@ -103,3 +103,20 @@ a:hover {
     font-weight: bold;
     line-height: 1.2;
 }
+
+
+.error {
+  position: fixed;             
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+  background: #960f1f;
+  color: #ecdbdb;
+  padding: 1rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
