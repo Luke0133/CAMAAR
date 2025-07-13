@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User::AvaliacoesController, type: :controller do
+  # Teste para página inicial de avaliacoes
   describe "GET #index" do
     # Usando factories, cria alunos, turmas e formulários para o teste
     let(:aluno) { create(:pessoa, email: "aluno@example.com") }
@@ -67,6 +68,99 @@ RSpec.describe User::AvaliacoesController, type: :controller do
     it "renders the index template" do
       get :index
       expect(response).to render_template(:index)
+    end
+  end
+
+  # Testa página de resposta do formulário
+  describe "GET #responder" do
+    # Usando factories, cria alunos, turmas e formulários para o teste
+    let(:formulario) { create(:formulario) }
+    let(:ligacao_pergunta) { formulario.ligacao_pergunta }
+    let!(:perguntas) { create_list(:pergunta, 3, ligacao_pergunta: ligacao_pergunta) }
+
+    it "loads the formulario and perguntas" do
+      get :responder, params: { id: formulario.id }
+
+      expect(assigns(:formulario)).to eq(formulario)
+      expect(assigns(:perguntas)).to match_array(perguntas)
+    end
+
+    it "renders the responder_formulario template" do
+      get :responder, params: { id: formulario.id }
+      expect(response).to render_template("responder_formulario")
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
+  # Testa método de enviar respostas
+  describe "POST #enviar_respostas" do
+    let(:formulario) { create(:formulario) }
+    let(:ligacao_pergunta) { formulario.ligacao_pergunta }
+    let!(:perguntas) { create_list(:pergunta, 3, ligacao_pergunta: ligacao_pergunta) }
+    let(:aluno) { create(:pessoa, email: "aluno@example.com") }
+    let(:turmas) { create_list(:turma, 2) }
+    
+    before do
+      aluno.turmas << turmas
+      session[:email] = aluno.email # 'loga' forçado o aluno teste
+    end
+    
+    let(:valid_respostas) do
+      perguntas.each_with_object({}) do |pergunta, hash|
+        hash[pergunta.id.to_s] = "Resposta para pergunta #{pergunta.id}"
+      end
+    end
+
+    context "when all perguntas are answered" do
+      it "creates Resposta records for each pergunta" do
+        expect {
+          post :enviar_respostas, params: { id: formulario.id, respostas: valid_respostas }
+        }.to change(Resposta, :count).by(perguntas.size)
+      end
+
+      it "creates a FormularioRespondido record" do
+        expect {
+          post :enviar_respostas, params: { id: formulario.id, respostas: valid_respostas }
+        }.to change(FormularioRespondido, :count).by(1)
+      end
+
+      it "redirects to user_avaliacoes_path with success notice" do
+        post :enviar_respostas, params: { id: formulario.id, respostas: valid_respostas }
+        expect(response).to redirect_to(user_avaliacoes_path)
+        expect(flash[:notice]).to eq("Resposta enviada com sucesso")
+      end
+    end
+
+    context "when one or more perguntas are missing respostas" do
+      let(:invalid_respostas) do
+        # Retira alguma resposta pra simular incompleto
+        hash = valid_respostas.dup
+        hash.delete(perguntas.first.id.to_s)
+        hash
+      end
+
+      it "does NOT create any Resposta records" do
+        expect {
+          post :enviar_respostas, params: { id: formulario.id, respostas: invalid_respostas }
+        }.not_to change(Resposta, :count)
+      end
+
+      it "does NOT create FormularioRespondido record" do
+        expect {
+          post :enviar_respostas, params: { id: formulario.id, respostas: invalid_respostas }
+        }.not_to change(FormularioRespondido, :count)
+      end
+
+      it "sets flash.now[:alert]" do
+        post :enviar_respostas, params: { id: formulario.id, respostas: invalid_respostas }
+        expect(flash.now[:alert]).to eq("Todos os campos precisam ser preenchidos")
+      end
+
+      it "renders the responder_formulario template with status 422" do
+        post :enviar_respostas, params: { id: formulario.id, respostas: invalid_respostas }
+        expect(response).to render_template("responder_formulario")
+        expect(response).to have_http_status(:unprocessable_entity)
+      end
     end
   end
 end

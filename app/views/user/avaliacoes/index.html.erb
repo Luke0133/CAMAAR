@@ -5,18 +5,24 @@
     </div>
     <% end %>
 
+  <% if flash[:notice] %>
+    <div class="success">
+      <%= flash[:notice] %>
+    </div>
+  <% end %>  
+
   <% if @formularios.any? %>
     <div class="formularios-list">
       <% @formularios.each do |formulario| %>
         <% turma = formulario.turma %>
-        <% materia = turma&.materia %> <!-- Assumindo que `belongs_to :materia, foreign_key: :id_materia` está no model Turma -->
+        <% materia = turma&.materia %>
         <div class="formulario-card">
           <strong><%= formulario.nome || '-' %></strong><br>
           <span><%= formulario.turma&.materia&.nome || '-' %></span><br>
           <span><%= formulario.turma&.semestre || '-' %></span><br>
           <span>Turma: <%= formulario.turma&.numero_turma || '-' %></span><br>
           <span>Professor: <%= formulario.turma&.professor || '-' %></span><br>
-          <%= link_to 'Responder', user_formulario_path(formulario), class: 'btn-responder' %>
+          <%= link_to 'Responder', responder_user_avaliacao_path(formulario), class: "btn-responder" %>
         </div>
       <% end %>
     </div>
@@ -24,3 +30,16 @@
     <p>Nenhum formulário disponível.</p>
   <% end %>
 </section>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".success");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
+</script>
