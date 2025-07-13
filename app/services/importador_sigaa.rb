@@ -115,6 +115,13 @@ class ImportadorSigaa
           reset_password_sent_at: Time.current
         )
         Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
+
+        url = Rails.application.routes.url_helpers.edit_pessoa_password_url(reset_password_token: raw_token, host: "localhost:3000")
+
+        Rails.logger.info("[Cadastro de usuarios] Email enviado para #{pessoa.email} com token #{raw_token}")
+        File.open(Rails.root.join("log", "emails_enviados.log"), "a") do |f|
+          f.puts "[#{Time.current}] Enviado para #{pessoa.email} - Token: #{raw_token} - URL: #{url}"
+        end
       end
     end
   end

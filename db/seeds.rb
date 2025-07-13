@@ -97,6 +97,12 @@ Participante.create!(email: aluno.email, id_turma: turma2.id)
 # Cria ligação de perguntas (dummy)
 lig = LigacaoPergunta.create!
 lig1 = LigacaoPergunta.create!
+
+form1 = Template.create!(
+  nome: "Template",
+  ligacao_pergunta: lig
+)
+
 # Cria formulários
 form1 = Formulario.create!(
   nome: "Formulario 1",
