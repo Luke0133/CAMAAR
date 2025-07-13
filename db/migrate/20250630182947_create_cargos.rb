@@ -2,7 +2,7 @@ class CreateCargos < ActiveRecord::Migration[8.0]
   def change
     create_table :cargos do |t|
       t.string :email, null: false
-      t.string :funcao, null: false
+      t.integer :funcao, null: false
       t.timestamps
     end
 

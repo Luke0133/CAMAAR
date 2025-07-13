@@ -107,8 +107,7 @@ nav ul {
   max-width: 500px;
   margin: 0 auto;    
   align-items: stretch; 
-  padding-top: 5rem;
-  padding-bottom: 5rem;
+  overflow-y: auto;
 }
 
 
@@ -193,4 +192,70 @@ nav ul {
   height: 100%;
   margin-left: -250px;
   transition: margin-left 0.3s ease;
+}
+
+
+
+
+/*
+.main-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+}*/
+
+.form-group {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.dropdown-select {
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  min-width: 240px;
+}
+
+.materias-table {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto 2rem;
+  border-collapse: collapse;
+}
+
+.materias-table th,
+.materias-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.materias-table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.checkbox {
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.submit-container {
+  text-align: center;
+}
+
+.btn-enviar {
+  background-color: #22c55e;
+  color: white;
+  border: none;
+  padding: 10px 32px;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.btn-enviar:hover {
+  background-color: #16a34a;
 }

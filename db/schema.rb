@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_12_114220) do
-  create_table "cargos", primary_key: ["email", "funcao"], force: :cascade do |t|
-    t.text "email", null: false
-    t.text "funcao", null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
+ActiveRecord::Schema[8.0].define(version: 2025_07_13_204544) do
+  create_table "cargos", id: false, force: :cascade do |t|
+    t.string "email", null: false
+    t.integer "funcao", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email", "funcao"], name: "index_cargos_on_email_and_funcao", unique: true
   end
 
   create_table "formulario_respondidos", id: false, force: :cascade do |t|

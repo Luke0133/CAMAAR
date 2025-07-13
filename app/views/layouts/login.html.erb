@@ -30,7 +30,7 @@
       </div>
 
       <% if flash[:alert] %>
-        <div class="alert-message">
+        <div class="error">
           <%= flash[:alert] %>
         </div>
       <% end %>
@@ -49,3 +49,15 @@
 </div>
 </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".error");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
+</script>

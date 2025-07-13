@@ -15,6 +15,7 @@ class Pessoas::PasswordsController < Devise::PasswordsController
       resource.unlock_access! if unlockable?(resource)
       flash[:notice] = "Senha redefinida com sucesso!"
       sign_in(resource_name, resource)
+      session[:email] = resource.email
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
       if resource.errors.details[:reset_password_token].present?

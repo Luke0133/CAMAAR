@@ -2,7 +2,7 @@ class User::AvaliacoesController < ApplicationController
   layout "avaliacoes"
 
   def index
-    aluno = Pessoa.find_by(email: session[:email])
+    aluno = current_pessoa
 
     turmas_ids = aluno.turmas.pluck(:id)
 

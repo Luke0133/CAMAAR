@@ -1,6 +1,6 @@
 class Pessoa < ApplicationRecord
   # validates :email, presence: true
-  devise :database_authenticatable, :registerable,
+  devise :database_authenticatable, :registerable, :timeoutable,
          :recoverable, :rememberable, authentication_keys: [:login]
 
   attr_writer :login

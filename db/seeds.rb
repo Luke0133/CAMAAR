@@ -11,18 +11,18 @@
 # Limpa os dados antigos (opcional em ambiente de desenvolvimento)
 require 'devise'
 
-Resposta.delete_all
-FormularioRespondido.delete_all
 Opcao.delete_all
+Resposta.delete_all
 Pergunta.delete_all
+FormularioRespondido.delete_all
 Formulario.delete_all
-Participante.delete_all
+Template.delete_all
+LigacaoPergunta.delete_all
 Cargo.delete_all
+Participante.delete_all
 Turma.delete_all
 Pessoa.delete_all
 Materia.delete_all
-LigacaoPergunta.delete_all
-Template.delete_all
 
 # Cria pessoa
 aluno = Pessoa.create!(
@@ -32,6 +32,36 @@ aluno = Pessoa.create!(
   encrypted_password: Devise::Encryptor.digest(Pessoa, "123456")
 )
 
+Cargo.create!(
+  email: aluno.email,
+  funcao: 2
+)
+
+admin = Pessoa.create!(
+  email: "admin@teste.com",
+  nome: "Admin",
+  matricula: "1234",
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
+)
+Cargo.create!(
+  email: admin.email,
+  funcao: 0
+)
+
+both = Pessoa.create!(
+  email: "both@teste.com",
+  nome: "Both",
+  matricula: "1234",
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
+)
+Cargo.create!(
+  email: both.email,
+  funcao: 0
+)
+Cargo.create!(
+  email: both.email,
+  funcao: 1
+)
 Pessoa.create!(
   email: "sem_senha@teste.com",
   nome: "Sem Senha",
@@ -67,6 +97,12 @@ Participante.create!(email: aluno.email, id_turma: turma2.id)
 # Cria ligação de perguntas (dummy)
 lig = LigacaoPergunta.create!
 lig1 = LigacaoPergunta.create!
+
+form1 = Template.create!(
+  nome: "Template",
+  ligacao_pergunta: lig
+)
+
 # Cria formulários
 form1 = Formulario.create!(
   nome: "Formulario 1",
@@ -304,3 +340,4 @@ Opcoes3.each_with_index do |op, i|
 end
 
 puts "Seeding complete"
+
