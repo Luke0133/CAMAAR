@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddDeviseToPessoas < ActiveRecord::Migration[8.0]
   def self.up
     change_table :pessoas do |t|

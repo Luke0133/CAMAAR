@@ -3,6 +3,9 @@ class Admin::GerenciamentoController < ApplicationController
 
     # GET /admin/gerenciamento
     def index
+        @can_edit_templates = Pessoa.joins(:cargos).where(cargos: { funcao: 'usuario' }).exists?
+        @can_send_formularios = Template.exists?
+        @can_view_resultados = Formulario.exists?
     end
 
     def importar

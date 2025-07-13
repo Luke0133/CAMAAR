@@ -30,6 +30,10 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+# Para login e definição de senha
+gem 'devise'
+gem 'letter_opener'
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
@@ -68,4 +72,13 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'webdrivers'
+  gem 'factory_bot_rails', '~> 6.0'
+  gem "rails-controller-testing"
 end
+#
+#group :development, :test do
+#  gem 'rspec-rails'
+#  gem 'capybara'
+#  gem 'cucumber-rails', require: false
+#  gem 'factory_bot_rails'
+#end

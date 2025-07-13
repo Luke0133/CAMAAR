@@ -188,7 +188,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  # config.timeout_in = 30.minutes
+  config.timeout_in = 30.minutes
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.
@@ -310,4 +310,15 @@ Devise.setup do |config|
   # When set to false, does not sign a user in automatically after their password is
   # changed. Defaults to true, so a user is signed in automatically after changing a password.
   # config.sign_in_after_change_password = true
+  # Use :login em vez de :email para fazer login
+  config.authentication_keys = [:login]
+
+  config.warden do |manager|
+    manager.intercept_401 = false
+
+    manager.failure_app = lambda do |env|
+      I18n.locale = :pt
+      Devise::FailureApp.call(env)
+    end
+  end
 end
