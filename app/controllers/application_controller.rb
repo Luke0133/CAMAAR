@@ -6,5 +6,10 @@ class ApplicationController < ActionController::Base
   private
   def set_locale
     I18n.locale = :pt
+
+#  before_action :fake_login
+# private
+#  def fake_login
+#    session[:email] ||= "aluno@teste.com"
   end
 end
