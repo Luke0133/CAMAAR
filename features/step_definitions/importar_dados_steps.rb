@@ -1,13 +1,5 @@
 Dado('que eu estou logado como admin') do
-  #admin = User.find_or_create_by!(email: 'admin@gmail.com') do |u|
-  #  u.password = 'senhaTeste'
-  #  u.role = 'admin'
-  #end
-
-  #visit new_user_session_path
-  #fill_in 'Email', with: admin.email
-  #fill_in 'Senha', with: 'senhaTeste'
-  #click_button 'Log in'
+  # verificar se usuário logado é admin
 end
 
 Dado('que eu estou na página de gerenciamento do CAMAAR') do
