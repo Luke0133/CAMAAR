@@ -16,4 +16,13 @@ Rails.application.routes.draw do
     get 'avaliacoes', to: 'avaliacoes#index'
     resources :formularios, only: [:show]
   end
+
+  namespace :user do
+    resources :avaliacoes, only: [:index] do
+      member do
+        get :responder
+        post :enviar_respostas
+      end
+    end
+  end
 end

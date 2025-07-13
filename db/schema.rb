@@ -11,20 +11,18 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.0].define(version: 2025_07_12_114220) do
-  create_table "cargos", force: :cascade do |t|
-    t.string "email", null: false
-    t.string "funcao", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email", "funcao"], name: "index_cargos_on_email_and_funcao", unique: true
+  create_table "cargos", primary_key: ["email", "funcao"], force: :cascade do |t|
+    t.text "email", null: false
+    t.text "funcao", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "formulario_respondidos", force: :cascade do |t|
+  create_table "formulario_respondidos", id: false, force: :cascade do |t|
     t.string "email", null: false
     t.integer "formulario_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email", "formulario_id"], name: "index_formulario_respondidos_on_email_and_formulario_id", unique: true
     t.index ["formulario_id"], name: "index_formulario_respondidos_on_formulario_id"
   end
 
@@ -57,12 +55,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_12_114220) do
     t.datetime "updated_at", precision: nil, null: false
   end
 
-  create_table "participantes", force: :cascade do |t|
-    t.string "email", null: false
+  create_table "participantes", primary_key: ["email", "id_turma"], force: :cascade do |t|
+    t.text "email", null: false
     t.integer "id_turma", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["email", "id_turma"], name: "index_participantes_on_email_and_id_turma", unique: true
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
   end
 
   create_table "perguntas", force: :cascade do |t|

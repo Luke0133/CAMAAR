@@ -8,13 +8,18 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 # Limpa os dados antigos (opcional em ambiente de desenvolvimento)
+Resposta.delete_all
 FormularioRespondido.delete_all
+Opcao.delete_all
+Pergunta.delete_all
 Formulario.delete_all
 Participante.delete_all
-Pessoa.delete_all
+Cargo.delete_all
 Turma.delete_all
+Pessoa.delete_all
 Materia.delete_all
 LigacaoPergunta.delete_all
+Template.delete_all
 
 # Cria pessoa
 aluno = Pessoa.create!(
@@ -51,7 +56,7 @@ Participante.create!(email: aluno.email, id_turma: turma2.id)
 
 # Cria ligação de perguntas (dummy)
 lig = LigacaoPergunta.create!
-
+lig1 = LigacaoPergunta.create!
 # Cria formulários
 form1 = Formulario.create!(
   nome: "Formulario 1",
@@ -179,8 +184,8 @@ formq15 = Formulario.create!(
 
 
 formq1e5 = Formulario.create!(
-  nome: "jf",
-  ligacao_pergunta: lig,
+  nome: "Diferente",
+  ligacao_pergunta: lig1,
   turma: turma1
 )
 # Marca form1 como respondido
@@ -189,4 +194,102 @@ FormularioRespondido.create!(
   formulario: form1
 )
 
+pergunta1 = Pergunta.create!(
+  ligacao_pergunta: lig,
+  tipo: 0, # suponha que 0 = múltipla escolha, 1 = texto, etc
+  pergunta: "Como você avalia a didática do professor?"
+)
+
+pergunta2 = Pergunta.create!(
+  ligacao_pergunta: lig,
+  tipo: 1, # resposta textual
+  pergunta: "O que pode ser melhorado na disciplina?"
+)
+
+pergunta3 = Pergunta.create!(
+  ligacao_pergunta: lig,
+  tipo: 1, # resposta textual
+  pergunta: "Fale sobre o que gostou"
+)
+
+pergunta4 = Pergunta.create!(
+  ligacao_pergunta: lig,
+  tipo: 0, # suponha que 0 = múltipla escolha, 1 = texto, etc
+  pergunta: "Professor deu o suficiente?"
+)
+
+pergunta5 = Pergunta.create!(
+  ligacao_pergunta: lig1,
+  tipo: 0, # suponha que 0 = múltipla escolha, 1 = texto, etc
+  pergunta: "Sim?"
+)
+
+pergunta6 = Pergunta.create!(
+  ligacao_pergunta: lig1,
+  tipo: 1, # resposta textual
+  pergunta: "HIHIHIH"
+)
+
+pergunta7 = Pergunta.create!(
+  ligacao_pergunta: lig1,
+  tipo: 1, # resposta textual
+  pergunta: "Hmmm, o que vc quer?"
+)
+
+pergunta8 = Pergunta.create!(
+  ligacao_pergunta: lig1,
+  tipo: 0, # suponha que 0 = múltipla escolha, 1 = texto, etc
+  pergunta: "RAAAAAAAAAAAAAAAAA"
+)
+
+# Cria opções para a pergunta múltipla escolha (pergunta1)
+Opcoes1 = [
+  "Excelente",
+  "Boa",
+  "Regular",
+  "Ruim"
+]
+Opcoes3 = [
+  "Sim",
+  "Não"
+]
+Opcoes2 = [
+  "Concord demais",
+  "Concordo medio",
+  "Concordo pouco",
+  "Neutro",
+  "Discordo pouco",
+  "Discordo medio",
+  "Discordo demais"
+]
+
+Opcoes1.each_with_index do |op, i|
+  Opcao.create!(
+    pergunta_id: pergunta1.id,
+    item: i,
+    opcao: op
+  )
+  
+  Opcao.create!(
+    pergunta_id: pergunta8.id,
+    item: i,
+    opcao: op
+  )
+end
+
+Opcoes2.each_with_index do |op, i|
+  Opcao.create!(
+    pergunta_id: pergunta4.id,
+    item: i,
+    opcao: op
+  )
+end
+
+Opcoes3.each_with_index do |op, i|
+  Opcao.create!(
+    pergunta_id: pergunta5.id,
+    item: i,
+    opcao: op
+  )
+end
 puts "Seeding complete"
