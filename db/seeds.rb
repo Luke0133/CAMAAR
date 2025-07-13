@@ -11,18 +11,18 @@
 # Limpa os dados antigos (opcional em ambiente de desenvolvimento)
 require 'devise'
 
-Resposta.delete_all
-FormularioRespondido.delete_all
 Opcao.delete_all
+Resposta.delete_all
 Pergunta.delete_all
+FormularioRespondido.delete_all
 Formulario.delete_all
-Participante.delete_all
+Template.delete_all
+LigacaoPergunta.delete_all
 Cargo.delete_all
+Participante.delete_all
 Turma.delete_all
 Pessoa.delete_all
 Materia.delete_all
-LigacaoPergunta.delete_all
-Template.delete_all
 
 # Cria pessoa
 aluno = Pessoa.create!(
@@ -34,7 +34,7 @@ aluno = Pessoa.create!(
 
 Cargo.create!(
   email: aluno.email,
-  funcao: "usuario"
+  funcao: 2
 )
 
 admin = Pessoa.create!(
@@ -45,7 +45,7 @@ admin = Pessoa.create!(
 )
 Cargo.create!(
   email: admin.email,
-  funcao: "admin"
+  funcao: 0
 )
 
 both = Pessoa.create!(
@@ -56,11 +56,11 @@ both = Pessoa.create!(
 )
 Cargo.create!(
   email: both.email,
-  funcao: "admin"
+  funcao: 0
 )
 Cargo.create!(
   email: both.email,
-  funcao: "usuario"
+  funcao: 1
 )
 Pessoa.create!(
   email: "sem_senha@teste.com",

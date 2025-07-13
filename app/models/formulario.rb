@@ -1,3 +1,5 @@
+require 'csv'
+
 class Formulario < ApplicationRecord
   belongs_to :ligacao_pergunta
   belongs_to :turma

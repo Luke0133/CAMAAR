@@ -36,10 +36,14 @@
           <span><%= turma&.semestre || '-' %></span><br>
           <span>Turma: <%= turma&.numero_turma || '-' %></span><br>
           <span><%= turma&.professor || '-' %></span><br>
-          <%= link_to admin_preparar_download_path(formulario),
-                      class: "download-btn#{' disabled' unless formulario.respostas.any?}",
-                      title: "Download CSV" do %>
-            Download
+          <% if formulario.respostas.any? %>
+            <%= link_to admin_preparar_download_path(formulario),
+                        class: "download-btn",
+                        title: "Download CSV" do %>
+                Download
+          <% end %>
+          <% else %>
+            <button class="download-btn disabled" disabled title="Sem respostas">Download</button>
           <% end %>
         </div>
       <% end %>

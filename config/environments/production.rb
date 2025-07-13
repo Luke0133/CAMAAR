@@ -86,6 +86,7 @@ Rails.application.configure do
 
   # Para sistema de login e definição de senha
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :file
+  config.action_mailer.settings = {location: Rails.root.jopin('log','mails')}
   config.action_mailer.perform_deliveries = true
 end

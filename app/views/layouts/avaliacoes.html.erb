@@ -48,13 +48,13 @@
   <aside class="sidebar hidden">
     <nav>
       <ul>
-        <% if current_pessoa&.cargos&.any? { |cargo| cargo.funcao == "usuario" } %>
+        <% if current_pessoa&.cargos&.any? {|cargo| cargo.funcao == 1 or cargo.funcao == 2} %>
           <li class="menu-item <%= 'active' if controller_path.start_with?('user/') %>">
             <%= link_to 'Avaliações', user_avaliacoes_path %>
           </li>
         <% end %>
 
-        <% if current_pessoa&.cargos&.any? { |cargo| cargo.funcao == "admin" } %>
+        <% if current_pessoa&.cargos&.any? { |cargo| cargo.funcao == 0 } %>
           <li class="menu-item <%= 'active' if controller_path.start_with?('admin/') %>">
             <%= link_to 'Gerenciamento', admin_gerenciamento_path %>
           </li>

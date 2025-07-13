@@ -3,13 +3,11 @@
     <div class="alert alert-warning">
         <%= flash[:alert] %>
     </div>
-    <% end %>
-
+  <% end %>
   <% if flash[:notice] %>
-    <div class="success">
-      <%= flash[:notice] %>
-    </div>
-  <% end %>  
+    <div class="success"><%= flash[:notice] %></div>
+  <% end %>
+
 
   <% if @formularios.any? %>
     <div class="formularios-list">
@@ -29,12 +27,27 @@
   <% else %>
     <p>Nenhum formulário disponível.</p>
   <% end %>
+
+  
 </section>
 
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     const alertBox = document.querySelector(".success");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".error");
     if (alertBox) {
       setTimeout(() => {
         alertBox.style.opacity = "0";
