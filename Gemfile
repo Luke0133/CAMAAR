@@ -28,6 +28,9 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+gem 'csv'
+gem 'cocoon'
+
 # Para login e definição de senha
 gem 'devise'
 gem 'letter_opener'

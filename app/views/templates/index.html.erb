@@ -26,14 +26,18 @@
         </div>
       <% end %>
 
-      <%= link_to "Editar templates", templates_path, class: "btn btn-primary" %>
+      <%= button_to "Novo template", new_template_path, method: :get, class: "btn btn-primary" %>
 
       <% if @valid_templates.any? %>
         <div class="templates-list">
           <% @valid_templates.each do |template| %>
-            <div class="template-card template">
-              <strong><%= template.nome %></strong>
-            </div>
+            <tr>
+              <td><%= template.nome %></td>
+              <td>
+                <%= button_to "Edit", edit_template_path(template), method: :get, class: "btn btn-secondary" %>
+                <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
+              </td>
+            </tr>
           <% end %>
         </div>
       <% else %>
