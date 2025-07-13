@@ -12,18 +12,18 @@ Funcionalidade: Importar dados do SIGAA
 
   Cenário: Upload de dados bem-sucedido (HAPPY)
     Quando eu clicar no botão "Importar dados"
-    E eu selecionar um arquivo "valido.json" para importar
+    E eu selecionar o arquivo "valido.json" para importar
     Então eu devo estar na página de gerenciamento do CAMAAR
     E eu devo ver "Dados importados com sucesso"
 
   Cenário: Tentativa de upload de arquivo de tipo inválido (SAD)
-    Quando eu clicar no botão “Importar dados”
+    Quando eu clicar no botão "Importar dados"
     E eu selecionar o arquivo "invalido.txt" para importar
     Então eu devo estar na página de gerenciamento do CAMAAR
     E eu devo ver "Falha ao importar dados: arquivo com extensão incorreta"
 
   Cenário: Tentativa de upload de arquivo com dados inválidos (SAD)
-    Quando eu clicar no botão “Importar dados”
+    Quando eu clicar no botão "Importar dados"
     E eu selecionar o arquivo "invalido.json" para importar
     Então eu devo estar na página de gerenciamento do CAMAAR
     E eu devo ver "Falha ao importar dados: dados do arquivo em formato inválido"
