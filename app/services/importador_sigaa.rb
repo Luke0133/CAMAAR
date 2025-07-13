@@ -82,6 +82,8 @@ class ImportadorSigaa
   def importar_alunos(info, turma)
     info["dicente"].each do |aluno|
       pessoa = Pessoa.find_by(email: aluno["usuario"])
+      novo_usuario = false
+
       if pessoa
         if pessoa.nome != aluno["nome"]
           pessoa.update!(nome: aluno["nome"])
@@ -92,8 +94,9 @@ class ImportadorSigaa
           nome: aluno["nome"],
           matricula: aluno["matricula"],
           email: aluno["usuario"],
-          senha: "testeAluno"
+          senha: nil
         )
+        novo_usuario = true
       end
 
       Cargo.find_or_create_by!(email: pessoa.email) do |c|
@@ -104,6 +107,15 @@ class ImportadorSigaa
         email: pessoa.email,
         id_turma: turma.id
       )
+
+      if novo_usuario
+        raw_token, enc_token = Devise.token_generator.generate(Pessoa, :reset_password_token)
+        pessoa.update!(
+          reset_password_token: enc_token,
+          reset_password_sent_at: Time.current
+        )
+        Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
+      end
     end
   end
 end
