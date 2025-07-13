@@ -8,8 +8,25 @@
       <%= form.file_field :file, id: "upload-input", accept: ".json", onchange: "document.getElementById('upload-form').submit()" %>
     <% end %>
 
-    <%= button_to "Editar Templates", "#", method: :get, class: "btn-locked", disabled: true %>
-    <%= button_to "Enviar Formularios", "#", method: :get, class: "btn-locked", disabled: true %>
-    <%= button_to "Resultados", "#", method: :get, class: "btn-locked", disabled: true %>
+    <!-- Editar Templates -->
+    <% if @can_edit_templates %>
+      <%= link_to "Editar Templates", templates_path, class: "btn" %>
+    <% else %>
+      <%= button_to "Editar Templates", "#", method: :get, class: "btn-locked", disabled: true %>
+    <% end %>
+
+    <!-- Enviar Formulários -->
+    <% if @can_send_formularios %>
+      <%= link_to "Enviar Formulários", formularios_path, class: "btn" %>
+    <% else %>
+      <%= button_to "Enviar Formulários", "#", method: :get, class: "btn-locked", disabled: true %>
+    <% end %>
+
+    <!-- Resultados -->
+    <% if @can_view_resultados %>
+      <%= link_to "Resultados", admin_resultados_path, class: "btn" %>
+    <% else %>
+      <%= button_to "Resultados", "#", method: :get, class: "btn-locked", disabled: true %>
+    <% end %>
   </div>
 </section>

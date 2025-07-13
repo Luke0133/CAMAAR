@@ -140,6 +140,7 @@ nav ul {
   z-index: 1000;
   width: 220px;
   border-radius: 6px;
+  cursor: pointer;
 }
 
 .user-popup.hidden {
