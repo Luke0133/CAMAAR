@@ -1,7 +1,20 @@
 <section class="main-area">
-  <% if @show_incompatibility_message %>
+
+  <% if flash[:error] %>
+    <div class="alert alert-error">
+      <%= flash[:error] %>
+    </div>
+  <% end %>
+
+  <% if flash[:success] %>
+    <div class="alert alert-success">
+      <%= flash[:success] %>
+    </div>
+  <% end %>
+
+  <% if flash[:alert] %>
     <div class="alert alert-warning">
-      Um ou mais formulários estão incompatíveis e não podem ser visualizados.
+      <%= flash[:alert] %>
     </div>
   <% end %>
 

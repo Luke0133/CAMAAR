@@ -13,9 +13,28 @@
     background: #ffeeba;
     color: #856404;
     padding: 1rem;
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid;
     z-index: 1000;
 }
+
+.alert-warning {
+     background: #ffeeba;
+     color: #5a4303;
+     border-bottom-color: #d6b600;
+ }
+
+.alert-error {
+    background: #f8d7da;
+    color: #5f121b;
+    border-bottom-color: #f5c6cb;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #0e3e23;
+    border-bottom-color: #c3e6cb;
+}
+
 
 .main-area {
     display: block;

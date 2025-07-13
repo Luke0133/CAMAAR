@@ -3,9 +3,10 @@ class Admin::ResultadosController < ApplicationController
 
   # GET /admin/resultados
   def index
-    @answered_forms = Formulario.respondidos
-    @invalid_forms = Formulario.invalidos
+    @forms = Formulario.validos
 
-    @show_incompatibility_message = @invalid_forms.any?
+    if Formulario.invalidos.any?
+      flash.now[:error] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados."
+    end
   end
 end
