@@ -30,7 +30,13 @@ Rails.application.routes.draw do
     get '/login', to: 'pessoas/sessions#new', as: :login
   end
   root to: redirect('/login')
-
+  
+  namespace :admin do
+    get "resultados", to: "resultados#index", as: :resultados
+    get "resultados/:id/preparar_download", to: "resultados#preparar_download", as: :preparar_download
+    get "resultados/:id/download", to: "resultados#download", as: :download_resultado
+  end
+  
   namespace :admin do
     get "/gerenciamento" => "gerenciamento#index"
 

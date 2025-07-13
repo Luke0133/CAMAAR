@@ -1,4 +1,58 @@
 @media (max-width: 768px) {
+
+
+/*
+.main-area {
+    display: block;
+    padding-top: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.formularios-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.formulario-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 1rem;
+    min-width: 0;
+    overflow: hidden;
+    background: #f9f9f9;
+    transition: background-color 0.3s ease;
+}
+
+.formulario-card.nao-respondido {
+    background: linear-gradient(rgba(255, 0, 0, 0.05), rgba(255, 0, 0, 0.05)), #f9f9f9;
+}
+
+.download-btn {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    background-color: #651b5a;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: background-color 0.3s ease;
+    float: right;
+    margin-left: auto;
+}
+
+.download-btn:hover {
+    background-color: #500645;
+}
+
+.download-btn.disabled {
+    background-color: #bbb !important;
+    color: #eee;
+    cursor: default;
+}
+=======
   .alert {
     left: 0;
   }
@@ -7,6 +61,33 @@
   }
 }
 
+.alert {
+    position: relative;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border-bottom: 1px solid;
+    z-index: 1000;
+}
+
+.alert-warning {
+     background: #ffeeba;
+     color: #5a4303;
+     border-bottom-color: #d6b600;
+ }
+
+.alert-error {
+    background: #f8d7da;
+    color: #5f121b;
+    border-bottom-color: #f5c6cb;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #0e3e23;
+    border-bottom-color: #c3e6cb;
+}
+
+/*
 .alert {
   position: relative;
   margin-bottom: 1rem;
@@ -17,6 +98,7 @@
   z-index: 1000;
   border-radius: 5px;
 }
+*/
 
 .error {
   position: fixed;             
@@ -90,25 +172,20 @@
   transition: transform 0.3s ease;
 }
 
-
 .sidebar.hidden {
   transform: translateX(-100%);
 }
-
 
 .main-container.sidebar-hidden .content {
   margin-left: 0px;
   height: 100%;
 }
 
-
 .main-container .content {
   height: 100%;
   margin-left: -250px;
   transition: margin-left 0.3s ease;
 }
-
-
 
 .formulario-modal-container {
   max-width: 800px;
