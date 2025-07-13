@@ -73,4 +73,12 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails', '~> 6.0'
   gem "rails-controller-testing"
+  gem 'database_cleaner-active_record'
 end
+#
+#group :development, :test do
+#  gem 'rspec-rails'
+#  gem 'capybara'
+#  gem 'cucumber-rails', require: false
+#  gem 'factory_bot_rails'
+#end

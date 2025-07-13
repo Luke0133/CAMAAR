@@ -1,0 +1,44 @@
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">Camaar</div>
+  </div>
+  <div class="topbar-right">
+    <input class="search-bar" type="text" placeholder="Buscar templates...">
+    <div class="user-icon">A</div>
+  </div>
+</div>
+
+<div class="main-container">
+  <div class="sidebar">
+    <nav>
+      <ul>
+        <li class="menu-item active">Templates</li>
+        <li class="menu-item">Outro Menu</li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="content">
+    <section class="main-area">
+      <% if @show_incompatibility_message %>
+        <div class="alert alert-warning">
+          Um ou mais templates estão incompatíveis e não podem ser visualizados.
+        </div>
+      <% end %>
+
+      <%= link_to "Editar templates", templates_path, class: "btn btn-primary" %>
+
+      <% if @valid_templates.any? %>
+        <div class="templates-list">
+          <% @valid_templates.each do |template| %>
+            <div class="template-card template">
+              <strong><%= template.nome %></strong>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p>Nenhum template encontrado.</p>
+      <% end %>
+    </section>
+  </div>
+</div>

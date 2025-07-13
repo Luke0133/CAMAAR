@@ -41,3 +41,9 @@ app/.DS_Store
 config/.DS_Store
 config/locales/devise.en.yml
 test/.DS_Store
+
+.DS_Store
+app/.DS_Store
+config/.DS_Store
+config/locales/devise.en.yml
+test/.DS_Store
