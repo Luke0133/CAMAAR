@@ -1,0 +1,16 @@
+<section class="main-area">
+  <div class="button-container">
+    <!-- botão visual que ativa o input de arquivo -->
+    <button class="btn" type="button" onclick="document.getElementById('upload-input').click()">Importar dados</button>
+
+    <!-- Formulário oculto mas que realiza o upload do arquivo -->
+    <%= form_with url: admin_importar_dados_path, method: :post, local: true, multipart: true, html: { id: "upload-form", style: "display: none;" } do |form| %>
+      <%= form.file_field :file, id: "upload-input", accept: ".json", onchange: "document.getElementById('upload-form').submit()" %>
+    <% end %>
+
+    <%= button_to "Editar Templates", "#", method: :get, class: "btn-locked", disabled: true %>
+    <%= button_to "Enviar Formularios", "#", method: :get, class: "btn-locked", disabled: true %>
+    <%= button_to "Resultados", "#", method: :get, class: "btn-locked", disabled: true %>
+  </div>
+
+</section>

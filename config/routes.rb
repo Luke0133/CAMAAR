@@ -2,7 +2,7 @@ Rails.logger.info "ABACAXI DE NOVO"
 Rails.application.routes.draw do
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-  
+
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
@@ -27,7 +27,12 @@ Rails.application.routes.draw do
   end
   root to: redirect('/login')
 
+  namespace :admin do
+    get "/gerenciamento" => "gerenciamento#index"
 
+    post '/gerenciamento/importar', to: 'gerenciamento#importar', as: 'importar_dados'
+  end
+  
   namespace :user do
     get 'avaliacoes', to: 'avaliacoes#index'
     resources :formularios, only: [:show]
