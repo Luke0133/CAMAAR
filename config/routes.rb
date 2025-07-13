@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   namespace :admin do
-    get "resultados" => "resultados#index"
+    get "resultados", to: "resultados#index", as: :resultados
+    get "resultados/:id/preparar_download", to: "resultados#preparar_download", as: :preparar_download
     get "resultados/:id/download", to: "resultados#download", as: :download_resultado
   end
 

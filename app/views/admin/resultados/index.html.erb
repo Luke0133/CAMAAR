@@ -5,7 +5,14 @@
     </div>
   <% end %>
 
-  <% if @answered_forms.any? %>
+  <% if flash[:download_form_id] %>
+    <iframe
+        src="<%= admin_download_resultado_path(flash[:download_form_id]) %>"
+        style="display:none;"
+    ></iframe>
+  <% end %>
+
+  <% if @forms.any? %>
     <div class="formularios-list">
       <% @answered_forms.each do |formulario| %>
         <% turma = formulario.turma %>
@@ -16,7 +23,7 @@
           <span><%= turma&.semestre || '-' %></span><br>
           <span>Turma: <%= turma&.numero_turma || '-' %></span><br>
           <span><%= turma&.professor || '-' %></span><br>
-          <%= link_to admin_download_resultado_path(formulario), class: "download-btn", title: "Download CSV" do %>
+          <%= link_to admin_preparar_download_path(formulario), class: "download-btn", title: "Download CSV" do %>
             Download
           <% end %>
         </div>
