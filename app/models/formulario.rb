@@ -1,12 +1,19 @@
 class Formulario < ApplicationRecord
-  belongs_to :turma
   belongs_to :ligacao_pergunta
-  has_many :respostas
+  belongs_to :turma
 
-  # TODO: considerar situações adicionais em que um formulário seria inválido
-  scope :validos, -> { where.not(nome: nil) }
-  scope :invalidos, -> { where(nome: nil) }
+  has_many :respostas, dependent: :destroy
+  has_many :formulario_respondidos, dependent: :destroy
 
+
+  scope :respondidos, -> { joins(:respostas).distinct }
+
+  scope :validos, -> { where.not(id: invalidos.select(:id)) }
+  scope :invalidos, -> { where(nome: "") }
+  
+  #scope :validos, -> { where.not(nome: nil) }
+  #scope :invalidos, -> { where(nome: nil) }
+  
   def generate_csv
     CSV.generate(headers: true) do |csv|
       csv << %w[Pergunta Tipo Resposta]
@@ -19,4 +26,5 @@ class Formulario < ApplicationRecord
       end
     end
   end
+
 end

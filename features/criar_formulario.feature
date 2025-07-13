@@ -6,6 +6,8 @@ Funcionalidade: Criar formulário de avaliação
 
   Contexto:
     Dado que eu estou logado como admin
+    E que existe um template chamado "template_teste"
+    E que existe uma matéria chamada "materia_teste"
     E que eu estou na página de envio do CAMAAR
 
   Cenário: Criação de um formulário de avaliação bem-sucedida (HAPPY)
@@ -13,7 +15,7 @@ Funcionalidade: Criar formulário de avaliação
     E eu selecionar a matéria "materia_teste"
     E eu clicar no botão “Enviar”
     Então eu devo estar na página de gerenciamento do CAMAAR
-    E eu devo ver "Formulário enviado com sucesso"
+    E eu devo ver a mensagem "Formulário enviado com sucesso"
 
   Cenário: Tentativa de criar um formulário sem selecionar um template (SAD)
     Quando eu selecionar a matéria "materia_teste"
