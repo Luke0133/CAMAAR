@@ -12,18 +12,18 @@ Funcionalidade: Atualizar base de dados com os dados do SIGAA
 
 
   Cenário: Sucesso na importação (HAPPY)
-    E eu selecionar o arquivo "valido2.json"
+    E eu selecionar o arquivo "valido2.json" para importar
     Então eu devo estar na página de gerenciamento do CAMAAR
     E eu devo ver "Dados importados com sucesso: alguns dados foram atualizados"
 
 
   Cenário: JSON inválido (caminho triste),
-    E eu selecionar o arquivo "invalido.json"
+    E eu selecionar o arquivo "invalido.json" para importar
     Então eu devo estar na página de gerenciamento do CAMAAR
     E eu devo ver "Falha ao importar dados: dados do arquivo em formato inválido"
 
 
   Cenário: Arquivo não é um JSON (caminho triste),
-    E eu selecionar o arquivo "invalido.txt"
+    E eu selecionar o arquivo "invalido.txt" para importar
     Então eu devo estar na página de gerenciamento do CAMAAR
     E eu devo ver "Falha ao importar dados: arquivo com extensão incorreta"
