@@ -1,66 +1,58 @@
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="logo">Camaar</div>
+<section class="main-area">
+  <div class="button-container">
+  <!-- Mensagens de erro/aviso -->
+  <% if @template_error %>
+    <div class="alert alert-warning"><%= @template_error %></div>
+  <% end %>
+  <% if @materia_error %>
+    <div class="alert alert-warning"><%= @materia_error %></div>
+  <% end %>
+  <% if flash[:notice] %>
+    <div class="alert alert-success"><%= flash[:notice] %></div>
+  <% end %>
+
+  <%= form_with scope: @formulario, url: formularios_path, local: true, html: { class: "formulario-form" } do |form| %>
+
+    <!-- Dropdown de Templates -->
+    <div class="form-group">
+      <%= form.label :template_id, "Selecione o Template:" %><br>
+      <%= form.select :template_id,
+                      options_from_collection_for_select(@templates, :id, :nome),
+                      prompt: "Template",
+                      class: "dropdown-select" %>
+    </div>
+
+    <!-- Tabela de Matérias + Turmas -->
+    <table class="materias-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Matéria</th>
+          <th>Semestre</th>
+          <th>Código</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @materias.each do |materia| %>
+          <% turma = @turmas_por_materia[materia] %>
+          <tr>
+            <td>
+              <%= check_box_tag "formulario[materia_ids][]", materia.id, false, class: "checkbox" %>
+            </td>
+            <td><%= materia.nome %></td>
+            <td><%= turma&.semestre || '-' %></td>
+            <td><%= materia.id || '-' %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <!-- Botão Enviar -->
+    <div class="submit-container">
+      <%= form.submit "Enviar", class: "btn-enviar" %>
+    </div>
+
+  <% end %>
+  
   </div>
-  <div class="topbar-right">
-    <input class="search-bar" type="text" placeholder="Buscar...">
-    <div class="user-icon">A</div>
-  </div>
-</div>
-
-<div class="main-container">
-  <div class="sidebar">
-    <nav>
-      <ul>
-        <li class="menu-item active">Formulários</li>
-        <li class="menu-item">Outro Menu</li>
-      </ul>
-    </nav>
-  </div>
-
-  <div class="content">
-    <section class="main-area">
-
-      <% if @template_error %>
-        <div class="alert alert-warning">
-          <%= @template_error %>
-        </div>
-      <% end %>
-
-      <% if @materia_error %>
-        <div class="alert alert-warning">
-          <%= @materia_error %>
-        </div>
-      <% end %>
-
-      <% if flash[:notice] %>
-        <div class="alert alert-success">
-          <%= flash[:notice] %>
-        </div>
-      <% end %>
-
-      <h1>Criar Formulário de Avaliação</h1>
-
-      <%= form_with model: @formulario, url: formularios_path, local: true do |form| %>
-        <div class="form-group">
-          <%= form.label :template_id, "Template" %><br>
-          <%= form.select :template_id,
-                          options_from_collection_for_select(@templates, :id, :nome),
-                          prompt: "Selecione um template",
-                          class: "form-control" %>
-        </div>
-
-        <div class="form-group">
-          <%= form.label :materia_id, "Matéria" %><br>
-          <%= form.select :materia_id,
-                          options_from_collection_for_select(@materias, :id, :nome),
-                          prompt: "Selecione uma matéria",
-                          class: "form-control" %>
-        </div>
-
-        <%= form.submit "Enviar", class: "btn btn-primary" %>
-      <% end %>
-
-    </section>
-  </div>
-</div>
+</section>

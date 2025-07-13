@@ -17,7 +17,7 @@
 
     <!-- Enviar Formulários -->
     <% if @can_send_formularios %>
-      <%= link_to "Enviar Formulários", formularios_path, class: "btn" %>
+      <%= link_to "Enviar Formulários", new_formulario_path, class: "btn" %>
     <% else %>
       <%= button_to "Enviar Formulários", "#", method: :get, class: "btn-locked", disabled: true %>
     <% end %>

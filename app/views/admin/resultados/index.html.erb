@@ -7,7 +7,7 @@
   <% end %>
 
   <% if flash[:success] %>
-    <div class="alert alert-success">
+    <div class="flash flash-notice">
       <%= flash[:success] %>
     </div>
   <% end %>
@@ -52,3 +52,27 @@
     <p>Nenhum formulário encontrado.</p>
   <% end %>
 </section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".flash-notice");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".flash-alert");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
+</script>

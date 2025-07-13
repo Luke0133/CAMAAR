@@ -11,6 +11,30 @@
 
 =======
 */
+.flash {
+  position: fixed;             
+  top: 4rem;
+  right: 2rem;
+  left: auto;
+  padding: 1rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+
+.flash-notice {
+  background-color: #e6ffed;
+  color: #2c662d;
+}
+
+.flash-alert {
+  background-color: #ffe6e6;
+  color: #991b1b;
+}
+
 .formularios-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -238,34 +262,3 @@
 }
 
 
-.error {
-  position: fixed;             
-  top: 4rem;
-  right: 2rem;
-  left: auto;
-  background: #960f1f;
-  color: #ecdbdb;
-  padding: 1rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-
-.success {
-  position: fixed;             
-  top: 4rem;
-  right: 2rem;
-  left: auto;
-  background: #0f961c;
-  color: #ecdbdb;
-  padding: 1rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}

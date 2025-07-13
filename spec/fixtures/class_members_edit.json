@@ -1,0 +1,323 @@
+[
+    {
+        "code": "CIC0097",
+        "classCode": "TA",
+        "name": "BANCOS DE DADOS",
+        "time": "35T45",
+        "semester": "2021.2",
+        "dicente": [
+            {
+                "nome": "Ana Clara Jordao Perna",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190084006",
+                "usuario": "190084006",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "acjpjvjp@email.com"
+            },
+            {
+                "nome": "Andre Carvalho de Roure",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "200033522",
+                "usuario": "200033522",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "andreCarvalhoroure@email.com"
+            },
+            {
+                "nome": "André Carvalho Marques",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "150005491",
+                "usuario": "150005491",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "andre.acm97@email.com"
+            },
+            {
+                "nome": "Antonio Vinicius de Moura Rodrigues",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190084502",
+                "usuario": "190084502",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "antoniovmoura.r@email.com"
+            },
+            {
+                "nome": "Arthur Barreiros de Oliveira Mota",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190102829",
+                "usuario": "190102829",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "arthurbarreirosmota@email.com"
+            },
+            {
+                "nome": "ARTHUR RODRIGUES NEVES",
+                "curso": "ENGENHARIA DE COMPUTAÇÃO/CIC",
+                "matricula": "202014403",
+                "usuario": "202014403",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "arthurcontroleambiental@email.com"
+            },
+            {
+                "nome": "Bianca Glycia Boueri",
+                "curso": "ENGENHARIA MECATRÔNICA - CONTROLE E AUTOMAÇÃO/FTD",
+                "matricula": "170161561",
+                "usuario": "170161561",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "biancaglyciaboueri@email.com"
+            },
+            {
+                "nome": "Caio Otávio Peluti Alencar",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190085312",
+                "usuario": "190085312",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "peluticaio@email.com"
+            },
+            {
+                "nome": "Camila Frealdo Fraga",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "170007561",
+                "usuario": "170007561",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "camilizx2021@email.com"
+            },
+            {
+                "nome": "Claudio Roberto Oliveira Peres de Barros",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190097591",
+                "usuario": "190097591",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "dinhobarros15@email.com"
+            }
+        ],
+        "docente": {
+            "nome": "MARISTELA TERTO DE HOLANDA",
+            "departamento": "DEPTO CIÊNCIAS DA COMPUTAÇÃO",
+            "formacao": "DOUTORADO",
+            "usuario": "83807519491",
+            "email": "mholanda@unb.com.br",
+            "ocupacao": "docente"
+        }
+    },
+    {
+        "code": "CIC0105",
+        "classCode": "TA",
+        "name": "ENGENHARIA DE SOFTWARE",
+        "time": "35M12",
+        "semester": "2021.2",
+        "dicente": [
+            {
+                "nome": "Daltro Oliveira Vinuto",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "160025966",
+                "usuario": "160025966",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "daltroov777@email.com"
+            },
+            {
+                "nome": "Davi de Moura Amaral",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "200016750",
+                "usuario": "200016750",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "davimouraamaral@email.com"
+            },
+            {
+                "nome": "Eduardo Xavier Dantas",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190086530",
+                "usuario": "190086530",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "eduardoxdantas@email.com"
+            },
+            {
+                "nome": "Enzo Nunes Leal Sampaio",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190062789",
+                "usuario": "190062789",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "enzonleal2016@email.com"
+            },
+            {
+                "nome": "Enzo Yoshio Niho",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190027304",
+                "usuario": "190027304",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "enzoyn@email.com"
+            },
+            {
+                "nome": "Gabriel Faustino Lima da Rocha",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190013249",
+                "usuario": "190013249",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "gabrielfaustino99@email.com"
+            },
+            {
+                "nome": "Gabriel Ligoski",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190087498",
+                "usuario": "190087498",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "gabriel.ligoski@email.com"
+            },
+            {
+                "nome": "GABRIEL MENDES CIRIATICO GUIMARÃES",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "202033202",
+                "usuario": "202033202",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "gabrielciriatico@email.com"
+            },
+            {
+                "nome": "Gustavo Rodrigues dos Santos",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190014121",
+                "usuario": "190014121",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "190014121@email.com"
+            },
+            {
+                "nome": "Gustavo Rodrigues Gualberto",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190108266",
+                "usuario": "190108266",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "gustavorgualberto@email.com"
+            }
+        ],
+        "docente": {
+            "nome": "GENAÍNA NUNES RODRIGUES",
+            "departamento": "DEPTO CIÊNCIAS DA COMPUTAÇÃO",
+            "formacao": "DOUTORADO",
+            "usuario": "78334926120",
+            "email": "genaina@unb.com.br",
+            "ocupacao": "docente"
+        }
+    },
+    {
+        "code": "CIC0202",
+        "classCode": "TA",
+        "name": "PROGRAMAÇÃO CONCORRENTE",
+        "time": "35M34",
+        "semester": "2021.2",
+        "dicente": [
+            {
+                "nome": "Igor David Morais",
+                "curso": "ENGENHARIA MECATRÔNICA - CONTROLE E AUTOMAÇÃO/FTD",
+                "matricula": "180102141",
+                "usuario": "180102141",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "igordavid13@email.com"
+            },
+            {
+                "nome": "Jefte Augusto Gomes Batista",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "180057570",
+                "usuario": "180057570",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "ndaffte@email.com"
+            },
+            {
+                "nome": "Karolina de Souza Silva",
+                "curso": "ENGENHARIA DE COMPUTAÇÃO/CIC",
+                "matricula": "190046791",
+                "usuario": "190046791",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "karolinasouza@email.com"
+            },
+            {
+                "nome": "Kléber Rodrigues da Costa Júnior",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "200053680",
+                "usuario": "200053680",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "kleberrjr7@email.com"
+            },
+            {
+                "nome": "Luca Delpino Barbabella",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "180125559",
+                "usuario": "180125559",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "barbadluca@email.com"
+            },
+            {
+                "nome": "Lucas de Almeida Abreu Faria",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "170016668",
+                "usuario": "170016668",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "lucasaafaria@email.com"
+            },
+            {
+                "nome": "Lucas Gonçalves Ramalho",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190098091",
+                "usuario": "190098091",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "lucasramalho29@email.com"
+            },
+            {
+                "nome": "Lucas Monteiro Miranda",
+                "curso": "ENGENHARIA MECATRÔNICA - CONTROLE E AUTOMAÇÃO/FTD",
+                "matricula": "170149684",
+                "usuario": "170149684",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "luquinha_miranda@email.com"
+            },
+            {
+                "nome": "Lucas Resende Silveira Reis",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "180144421",
+                "usuario": "180144421",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "180144421@email.com"
+            },
+            {
+                "nome": "Luis Fernando Freitas Lamellas",
+                "curso": "CIÊNCIA DA COMPUTAÇÃO/CIC",
+                "matricula": "190016841",
+                "usuario": "190016841",
+                "formacao": "graduando",
+                "ocupacao": "dicente",
+                "email": "lflamellas@email.com"
+            }
+        ],
+        "docente": {
+            "nome": "EDUARDO ADÍLIO PELINSON ALCHIERI",
+            "departamento": "DEPTO CIÊNCIAS DA COMPUTAÇÃO",
+            "formacao": "DOUTORADO",
+            "usuario": "76973085091",
+            "email": "alchieri@unb.com.br",
+            "ocupacao": "docente"
+        }
+    }
+]
