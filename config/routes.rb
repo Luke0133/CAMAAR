@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
 
-  root "templates#index"
+  #root "templates#index"
 
   # root "posts#index"
 
@@ -30,25 +30,20 @@ Rails.application.routes.draw do
     get '/login', to: 'pessoas/sessions#new', as: :login
   end
   root to: redirect('/login')
-  
+
   namespace :admin do
     get "resultados", to: "resultados#index", as: :resultados
     get "resultados/:id/preparar_download", to: "resultados#preparar_download", as: :preparar_download
     get "resultados/:id/download", to: "resultados#download", as: :download_resultado
-  end
-  
-  namespace :admin do
-    get "/gerenciamento" => "gerenciamento#index"
 
+    get "/gerenciamento" => "gerenciamento#index"
     post '/gerenciamento/importar', to: 'gerenciamento#importar', as: 'importar_dados'
   end
   
   namespace :user do
     get 'avaliacoes', to: 'avaliacoes#index'
     resources :formularios, only: [:show]
-  end
 
-  namespace :user do
     resources :avaliacoes, only: [:index] do
       member do
         get :responder
