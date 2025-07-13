@@ -1,13 +1,15 @@
 class CreateParticipantes < ActiveRecord::Migration[8.0]
   def change
-    create_table :participantes do |t|
-      t.string :email, null: false
-      t.integer :id_turma, null: false
-      t.timestamps
-    end
-
-    add_foreign_key :participantes, :pessoas, column: :email, primary_key: :email
-    add_foreign_key :participantes, :turmas, column: :id_turma, primary_key: :id
-    add_index :participantes, [:email, :id_turma], unique: true
+    execute <<-SQL
+      CREATE TABLE participantes (
+        email TEXT NOT NULL,
+        id_turma INTEGER NOT NULL,
+        created_at DATETIME NOT NULL,
+        updated_at DATETIME NOT NULL,
+        PRIMARY KEY (email, id_turma),
+        FOREIGN KEY (email) REFERENCES pessoas(email),
+        FOREIGN KEY (id_turma) REFERENCES turmas(id)
+      );
+    SQL
   end
 end

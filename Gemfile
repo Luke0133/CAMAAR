@@ -65,6 +65,4 @@ group :test do
   gem 'capybara'
   gem 'selenium-webdriver'
   gem 'webdrivers'
-  gem 'factory_bot_rails', '~> 6.0'
-  gem "rails-controller-testing"
 end
