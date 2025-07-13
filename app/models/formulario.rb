@@ -12,10 +12,10 @@ class Formulario < ApplicationRecord
 
   scope :validos, -> { where.not(id: invalidos.select(:id)) }
   scope :invalidos, -> { where(nome: "") }
-  
+
   #scope :validos, -> { where.not(nome: nil) }
   #scope :invalidos, -> { where(nome: nil) }
-  
+
   def generate_csv
     CSV.generate(headers: true) do |csv|
       csv << %w[Pergunta Tipo Resposta]

@@ -10,7 +10,6 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
@@ -23,9 +22,9 @@ Rails.application.routes.draw do
 
   get "/dashboard", to: "home#index", as: :dashboard
 
-  resources :templates, only: [:index, :show, :edit, :update]
+  resources :templates, only: [:index, :new, :create, :edit, :update, :destroy]
   resources :formularios, only: [:new, :create, :index]
-
+  
   # remove sign up
   devise_for :pessoas, controllers: {
     sessions: 'pessoas/sessions',
@@ -36,11 +35,12 @@ Rails.application.routes.draw do
     get '/login', to: 'pessoas/sessions#new', as: :login
   end
   root to: redirect('/login')
-  
+
   namespace :admin do
     get "resultados", to: "resultados#index", as: :resultados
     get "resultados/:id/preparar_download", to: "resultados#preparar_download", as: :preparar_download
     get "resultados/:id/download", to: "resultados#download", as: :download_resultado
+
     get "/gerenciamento" => "gerenciamento#index"
     post '/gerenciamento/importar', to: 'gerenciamento#importar', as: 'importar_dados'
   end
@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   namespace :user do
     get 'avaliacoes', to: 'avaliacoes#index'
     resources :formularios, only: [:show]
+    
     resources :avaliacoes, only: [:index] do
       member do
         get :responder

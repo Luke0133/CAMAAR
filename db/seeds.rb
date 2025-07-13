@@ -315,7 +315,7 @@ Opcoes1.each_with_index do |op, i|
     item: i,
     opcao: op
   )
-  
+
   Opcao.create!(
     pergunta_id: pergunta8.id,
     item: i,
@@ -339,36 +339,5 @@ Opcoes3.each_with_index do |op, i|
   )
 end
 
-# Seed de respostas
-
-
-# Re-seed
-
-materia = Materia.create!(id: "MAT1", nome: "Matemática")
-
-turma1 = Turma.create!(semestre: "2024.1", numero_turma: 1, professor: "Prof. Silva", id_materia: materia.id)
-turma2 = Turma.create!(semestre: "2024.1", numero_turma: 2, professor: "Prof. Souza", id_materia: materia.id)
-
-ligacao = LigacaoPergunta.create!
-
-nomes = ["Qualidade do conteúdo", "Didática", "Avaliações e trabalhos"]
-nomes.each do |nome|
-  formulario = Formulario.create!(nome: nome, turma_id: turma1.id, ligacao_pergunta_id: ligacao.id)
-  4.times do |j|
-    pergunta = Pergunta.create!(ligacao_pergunta_id: ligacao.id, tipo: 1, pergunta: "#{nome} - Pergunta #{j + 1}")
-    Resposta.create!(formulario_id: formulario.id, pergunta_id: pergunta.id, conteudo: "Resposta")
-  end
-end
-
-2.times do |i|
-  Formulario.create!(nome: "Pergunta Não Respondida #{i+1}", turma_id: turma2.id, ligacao_pergunta_id: ligacao.id)
-end
-
-Formulario.create!(nome: nil, turma_id: turma1.id, ligacao_pergunta_id: ligacao.id)
-
-
-
-
-
-
 puts "Seeding complete"
+

@@ -1,7 +1,5 @@
+
 /*@media (max-width: 768px) {
-
-
-/*
 .main-area {
     display: block;
     padding-top: 0.5rem;
@@ -87,30 +85,39 @@
 }
 
 
-
-.main-area {
-  display: block;
-  padding: 1rem;
-}
-
-.formularios-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
-  width: fit-content;  /* container shrinks to fit content */
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  padding-bottom: 3rem;
-}
-
-.formulario-card {
+/*
+.error {
+  position: fixed;
+  top: 4rem;
+  right: 2rem;
+  left: auto;
+  background: #960f1f;
+  color: #ecdbdb;
+  padding: 1rem 2rem;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 1rem;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
 }
+
+.success {
+  position: fixed;
+  top: 4rem;
+  right: 2rem;
+  left: auto;
+  background: #0f961c;
+  color: #ecdbdb;
+  padding: 1rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
+*/
 
 .btn-responder {
   display: inline-block;
@@ -138,7 +145,7 @@
 }
 
 .main-container.sidebar-hidden .content {
-  margin-left: 0px;
+  margin-left: 0;
   height: 100%;
 }
 
