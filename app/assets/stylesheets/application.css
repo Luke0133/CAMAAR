@@ -8,3 +8,104 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden; 
+}
+
+.topbar {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.menu-toggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.logo {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-bar {
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    width: 200px;
+}
+
+.user-icon {
+    background-color: #651b5a;
+    color: white;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.main-container {
+    height: 100%;
+    display: flex;
+    min-height: 0; 
+    height: calc(100vh - 60px); /* assume que a topbar tem 60px */
+}
+
+.sidebar {
+    height: 100%;
+    width: 200px;
+    background-color: #ffffff;
+    border-right: 1px solid #ccc;
+    padding: 1rem;
+}
+
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.menu-item {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.menu-item.active {
+    background-color: #651b5a;
+    color: rgb(208, 208, 208);
+}
+
+.content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    padding-left: 3rem;
+    padding-bottom: 10rem; 
+    background-color: #ddd;
+    min-height: 0; 
+    box-sizing: border-box;
+}
