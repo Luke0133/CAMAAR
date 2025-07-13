@@ -1,6 +1,18 @@
 class Pessoa < ApplicationRecord
-  # Associations
-  self.primary_key = "email"
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, authentication_keys: [:login]
+
+  attr_writer :login
+
+  def login
+    @login || email || matricula
+  end
+
+  def self.find_for_database_authentication(warden_conditions)
+    login = warden_conditions[:login].to_s.downcase
+    where("lower(email) = :value OR lower(matricula) = :value", value: login).first
+  end
+
   has_many :cargos, foreign_key: 'email', dependent: :destroy
   has_many :participantes, foreign_key: 'email', dependent: :destroy
   has_many :turmas, through: :participantes

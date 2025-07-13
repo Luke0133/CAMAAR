@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
   
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -11,6 +12,19 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  get "/dashboard", to: "home#index", as: :dashboard
+
+  # remove sign up
+  devise_for :pessoas, controllers: {
+    sessions: 'pessoas/sessions'
+  }#, as: :pessoa
+
+  devise_scope :pessoa do
+    get '/login', to: 'pessoas/sessions#new', as: :login
+  end
+  root to: redirect('/login')
+
 
   namespace :user do
     get 'avaliacoes', to: 'avaliacoes#index'
