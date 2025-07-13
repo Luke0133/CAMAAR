@@ -5,31 +5,33 @@ Dado('que eu estou na página de resultados do CAMAAR') do
   visit admin_resultados_path
 end
 
-Dado(/^que existem (\d+) formulários respondidos$/) do |count|
-  materia = Materia.create!(id: "MAT1", nome: "Matemática")
-  turma1 = Turma.create!(semestre: "2024.1", numero_turma: 1, professor: "Prof. Silva", id_materia: materia.id)
+Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
+  materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
+  turma = Turma.create!(semestre: "2025.1", numero_turma: rand(100..999), professor: "Prof. Nome", id_materia: materia.id)
   ligacao = LigacaoPergunta.create!
 
   count.to_i.times do |i|
-    formulario = Formulario.create!(nome: "Formulario #{i + 1}", turma_id: turma1.id, ligacao_pergunta_id: ligacao.id)
-    pergunta = Pergunta.create!(ligacao_pergunta_id: ligacao.id, tipo: 1, pergunta: "Pergunta")
-    Resposta.create!(formulario_id: formulario.id, pergunta_id: pergunta.id, conteudo: "Resposta")
+    formulario = Formulario.create!(nome: "Formulario Respondido #{i + 1} - #{SecureRandom.hex(3)}", turma: turma, ligacao_pergunta: ligacao)
+    pergunta = Pergunta.create!(ligacao_pergunta: ligacao, tipo: 1, pergunta: "Pergunta #{i + 1}")
+    Resposta.create!(formulario: formulario, pergunta: pergunta, conteudo: "Resposta #{i + 1}")
   end
 end
 
-Dado(/^que existem? (\d+) formulários? não respondidos?$/) do |count|
-  materia = Materia.create!(id: "MAT1", nome: "Matemática")
-  turma = Turma.create!(semestre: "2024.1", numero_turma: 2, professor: "Prof. Souza", id_materia: materia.id)
+Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
+  materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
+  turma = Turma.create!(semestre: "2025.1", numero_turma: rand(1000..1999), professor: "Prof. Nome", id_materia: materia.id)
   ligacao = LigacaoPergunta.create!
+
   count.to_i.times do |i|
-    Formulario.create!(nome: "Não Respondido #{i+1}", turma: turma, ligacao_pergunta: ligacao)
+    Formulario.create!(nome: "Formulario Não Respondido #{i + 1} - #{SecureRandom.hex(3)}", turma: turma, ligacao_pergunta: ligacao)
   end
 end
 
 Dado(/^que existem? (\d+) formulários? inválidos?$/) do |count|
-  materia = Materia.create!(id: "MAT1", nome: "Matemática")
-  turma = Turma.create!(semestre: "2024.1", numero_turma: 3, professor: "Prof. Invalido", id_materia: materia.id)
+  materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
+  turma = Turma.create!(semestre: "2025.1", numero_turma: rand(2000..2999), professor: "Prof. Nome", id_materia: materia.id)
   ligacao = LigacaoPergunta.create!
+
   count.to_i.times do
     Formulario.create!(nome: nil, turma: turma, ligacao_pergunta: ligacao)
   end

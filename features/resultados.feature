@@ -13,7 +13,7 @@ Funcionalidade: Visualização de resultados no CAMAAR
     Então eu devo ver 2 formulários
 
   Cenário: Não visualizar formulários respondidos quando não houver nenhum (SAD)
-    E que existem 0 formulários respondidos
+    E que existem 0 formulários
     E que eu estou na página de resultados do CAMAAR
     Então eu devo ver 0 formulários
 
