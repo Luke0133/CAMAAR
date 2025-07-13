@@ -43,9 +43,11 @@ ligacao = LigacaoPergunta.create!
 
 nomes = ["Qualidade do conteúdo", "Didática", "Avaliações e trabalhos"]
 nomes.each do |nome|
-  pergunta = Pergunta.create!(ligacao_pergunta_id: ligacao.id, tipo: 1, pergunta: "Pergunta")
   formulario = Formulario.create!(nome: nome, turma_id: turma1.id, ligacao_pergunta_id: ligacao.id)
-  Resposta.create!(formulario_id: formulario.id, pergunta_id: pergunta.id, conteudo: "Resposta")
+  4.times do |j|
+    pergunta = Pergunta.create!(ligacao_pergunta_id: ligacao.id, tipo: 1, pergunta: "#{nome} - Pergunta #{j + 1}")
+    Resposta.create!(formulario_id: formulario.id, pergunta_id: pergunta.id, conteudo: "Resposta")
+  end
 end
 
 2.times do |i|
