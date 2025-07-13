@@ -8,6 +8,8 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 # Limpa os dados antigos (opcional em ambiente de desenvolvimento)
+require 'devise'
+
 Resposta.delete_all
 FormularioRespondido.delete_all
 Opcao.delete_all
@@ -26,7 +28,14 @@ aluno = Pessoa.create!(
   email: "aluno@teste.com",
   nome: "Aluno Teste",
   matricula: "123456",
-  senha: "123456"
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "123456")
+)
+
+Pessoa.create!(
+  email: "sem_senha@teste.com",
+  nome: "Sem Senha",
+  matricula: "000000",
+  encrypted_password: ""
 )
 
 # Cria matéria

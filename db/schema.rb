@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_09_175415) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_12_114220) do
   create_table "cargos", primary_key: ["email", "funcao"], force: :cascade do |t|
     t.text "email", null: false
     t.text "funcao", null: false
