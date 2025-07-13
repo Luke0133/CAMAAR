@@ -21,5 +21,5 @@ Funcionalidade: Visualização de resultados no CAMAAR
     E que existem 1 formulários não respondidos
     E que existem 1 formulários inválidos
     E que eu estou na página de resultados do CAMAAR
-    Então eu devo ver 0 formulários
+    Então eu devo ver 1 formulários
     E eu devo ver "Um ou mais formulários estão incompatíveis e não podem ser visualizados"

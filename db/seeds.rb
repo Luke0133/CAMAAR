@@ -49,7 +49,7 @@ nomes.each do |nome|
 end
 
 2.times do |i|
-  Formulario.create!(nome: "Aluno Não Respondido #{i+1}", turma_id: turma2.id, ligacao_pergunta_id: ligacao.id)
+  Formulario.create!(nome: "Pergunta Não Respondida #{i+1}", turma_id: turma2.id, ligacao_pergunta_id: ligacao.id)
 end
 
 Formulario.create!(nome: nil, turma_id: turma1.id, ligacao_pergunta_id: ligacao.id)
