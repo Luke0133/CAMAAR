@@ -1,2 +1,0 @@
-class Opcao < ApplicationRecord
-end

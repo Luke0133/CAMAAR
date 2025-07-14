@@ -1,2 +1,0 @@
-class Formulario < ApplicationRecord
-end

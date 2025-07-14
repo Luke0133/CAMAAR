@@ -1,2 +1,0 @@
-class Turma < ApplicationRecord
-end

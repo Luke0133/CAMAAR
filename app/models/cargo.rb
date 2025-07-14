@@ -1,2 +1,0 @@
-class Cargo < ApplicationRecord
-end
