@@ -1,13 +1,3 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
-
 # Limpa os dados antigos (opcional em ambiente de desenvolvimento)
 require 'devise'
 
@@ -24,19 +14,21 @@ Turma.delete_all
 Pessoa.delete_all
 Materia.delete_all
 
-# Cria pessoa
+# Cria aluno teste: DESCOMENTE SE QUISER JÁ TER POPULADO (ATIVA AUTOMATICAMENTE O BOTÃO EDITAR TEMPLATE)
+=begin
 aluno = Pessoa.create!(
   email: "aluno@teste.com",
   nome: "Aluno Teste",
   matricula: "123456",
   encrypted_password: Devise::Encryptor.digest(Pessoa, "123456")
 )
-
 Cargo.create!(
   email: aluno.email,
   funcao: 2
 )
+=end
 
+# Cria Admin
 admin = Pessoa.create!(
   email: "admin@teste.com",
   nome: "Admin",
@@ -48,6 +40,8 @@ Cargo.create!(
   funcao: 0
 )
 
+# Cria admin e usuario teste: DESCOMENTE SE QUISER JÁ TER POPULADO (ATIVA AUTOMATICAMENTE O BOTÃO EDITAR TEMPLATE)
+=begin
 both = Pessoa.create!(
   email: "both@teste.com",
   nome: "Both",
@@ -62,13 +56,10 @@ Cargo.create!(
   email: both.email,
   funcao: 1
 )
-Pessoa.create!(
-  email: "sem_senha@teste.com",
-  nome: "Sem Senha",
-  matricula: "000000",
-  encrypted_password: ""
-)
+=end
 
+# DADOS PARA DEBUG (SE NAO QUISER IMPORTAR DADOS, É POSSÍVEL TESTAR ALGUMAS COISAS COM ISSO)
+=begin 
 # Cria matéria
 materia = Materia.create!(
   id: "MAT123",
@@ -338,6 +329,6 @@ Opcoes3.each_with_index do |op, i|
     opcao: op
   )
 end
-
+=end
 puts "Seeding complete"
 

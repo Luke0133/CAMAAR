@@ -1,10 +1,3 @@
-Dado('que eu estou logado como admin') do
-end
-
-Dado('que eu estou na página de resultados do CAMAAR') do
-  visit admin_resultados_path
-end
-
 Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
   materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
   turma = Turma.create!(semestre: "2025.1", numero_turma: rand(100..999), professor: "Prof. Nome", id_materia: materia.id)

@@ -1,11 +1,16 @@
 require 'rails_helper'
 
 RSpec.describe User::AvaliacoesController, type: :controller do
+  let(:aluno) { create(:pessoa, email: "aluno@example.com") }
+  let(:turmas) { create_list(:turma, 2) }
+  before do
+    aluno.turmas << turmas
+    session[:email] = aluno.email # 'loga' forçado o aluno teste
+  end
+
   # Teste para página inicial de avaliacoes
   describe "GET #index" do
     # Usando factories, cria alunos, turmas e formulários para o teste
-    let(:aluno) { create(:pessoa, email: "aluno@example.com") }
-    let(:turmas) { create_list(:turma, 2) }
     let!(:formularios_validos) do
       turmas.map { |turma| create(:formulario, turma: turma, nome: "Formulário Válido") }
     end
@@ -13,10 +18,6 @@ RSpec.describe User::AvaliacoesController, type: :controller do
       create_list(:formulario, 1, nome: "")
     end
 
-    before do
-      aluno.turmas << turmas
-      session[:email] = aluno.email # 'loga' forçado o aluno teste
-    end
 
     # Checar se email da sessão está correto
     it "finds aluno by session email" do
@@ -97,13 +98,6 @@ RSpec.describe User::AvaliacoesController, type: :controller do
     let(:formulario) { create(:formulario) }
     let(:ligacao_pergunta) { formulario.ligacao_pergunta }
     let!(:perguntas) { create_list(:pergunta, 3, ligacao_pergunta: ligacao_pergunta) }
-    let(:aluno) { create(:pessoa, email: "aluno@example.com") }
-    let(:turmas) { create_list(:turma, 2) }
-    
-    before do
-      aluno.turmas << turmas
-      session[:email] = aluno.email # 'loga' forçado o aluno teste
-    end
     
     let(:valid_respostas) do
       perguntas.each_with_object({}) do |pergunta, hash|

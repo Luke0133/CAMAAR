@@ -1,17 +1,3 @@
-Dado('que eu estou logado como admin') do
-
-  @admin = Pessoa.find_or_create_by!(email: "admin@exemplo.com") do |p|
-    p.nome = "Admin"
-    p.senha = "123456"
-    p.matricula = "123456789"
-  end
-
-end
-
-Dado('que eu estou na página inicial de gerenciamento do CAMAAR') do
-  visit root_path
-end
-
 
 Dado('que existem {int} templates') do |quantidade|
   quantidade.times do |i|
