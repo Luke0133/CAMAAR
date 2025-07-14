@@ -1,0 +1,24 @@
+
+<section class="main-area">
+  <% if @show_incompatibility_message %>
+    <div class="alert alert-warning">
+      Um ou mais templates estão incompatíveis e não podem ser visualizados.
+    </div>
+  <% end %>
+
+  <%= button_to "Novo template", new_template_path, method: :get, class: "btn btn-primary" %>
+
+  <% if @valid_templates.any? %>
+    <div class="formularios-list">
+      <% @valid_templates.each do |template| %>
+          <div class="formulario-card">
+          <strong><%= template.nome %></strong>
+          <%= button_to "Edit", edit_template_path(template), method: :get, class: "btn btn-secondary" %>
+          <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
+          </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p>Nenhum template encontrado.</p>
+  <% end %>
+</section>

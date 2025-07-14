@@ -1,0 +1,149 @@
+<%= form_with model: template, local: true, html: { class: "template-form" } do |f| %>
+  <h2>Nome do Template</h2>
+  <div class="form-group">
+    <%= f.text_field :nome, required: true, class: "form-control" %>
+  </div>
+
+  <h2>Perguntas</h2>
+   <% formatted_questions = (@questions || []).map do |q|
+        {
+          pergunta: q.pergunta,
+          tipo: q.tipo,
+          opcoes: q.opcoes.map { |o| { opcao: o.opcao } }
+        }
+      end
+    %>
+
+    <div
+      id="questions-container"
+      data-questions="<%= json_escape(formatted_questions.to_json) %>"
+    >
+    </div>
+  <button type="button" id="add-question-btn" class="btn">Adicionar Pergunta</button>
+
+  <div class="form-actions mt-4">
+    <%= f.submit "Salvar Template", class: "btn btn-primary" %>
+    <%= link_to "Cancelar", templates_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const container = document.getElementById("questions-container");
+        const addBtn = document.getElementById("add-question-btn");
+
+        const existing = container.dataset.questions
+            ? JSON.parse(container.dataset.questions)
+            : [];
+
+        addBtn.addEventListener("click", () => addQuestion());
+
+        if (existing.length) existing.forEach(q => addQuestion(q));
+        else addQuestion();
+
+        function addQuestion(data = {}) {
+            const block = document.createElement("div");
+            block.className = "pergunta";
+            block.innerHTML = `
+      <label>Pergunta</label>
+      <input type="text" name="questions[][text]" required class="form-control" />
+
+      <label>Tipo</label>
+      <select name="questions[][type]" class="form-control">
+        <option value="0">Botões de Opção</option>
+        <option value="1">Texto Livre</option>
+      </select>
+
+      <div class="options-container">
+        <div class="option-wrapper">
+          <input type="text" name="questions[][options][]" required class="option-input form-control" />
+        </div>
+        <div class="option-wrapper">
+          <input type="text" name="questions[][options][]" required class="option-input form-control" />
+        </div>
+        <button type="button" class="btn add-option-btn">Adicionar Opção</button>
+      </div>
+
+      <button type="button" class="btn remove-question-btn">Remover Pergunta</button>
+    `.trim();
+
+            block.querySelector(".remove-question-btn").addEventListener("click", () => {
+                block.remove();
+                updateRemoveQuestionButtons();
+            });
+
+            const optsContainer = block.querySelector(".options-container");
+            block.querySelector(".add-option-btn").addEventListener("click", e => {
+                e.preventDefault();
+                const wrapper = document.createElement("div");
+                wrapper.className = "option-wrapper";
+                wrapper.innerHTML = `<input type="text" name="questions[][options][]" required class="option-input form-control" />`;
+                optsContainer.insertBefore(wrapper, block.querySelector(".add-option-btn"));
+                updateRemoveOptionButtons();
+            });
+
+            block.querySelector("select").addEventListener("change", e => {
+              const isTypeOption = e.target.value === "0";
+              optsContainer.style.display = isTypeOption ? "block" : "none";
+
+              optsContainer.querySelectorAll("input").forEach(input => {
+                if (isTypeOption) {
+                  input.setAttribute("required", "required");
+                } else {
+                  input.removeAttribute("required");
+                }
+              });
+            });
+
+            container.appendChild(block);
+            updateRemoveQuestionButtons();
+            updateRemoveOptionButtons();
+
+            if (data.pergunta) {
+                block.querySelector("input[name='questions[][text]']").value = data.pergunta;
+                const sel = block.querySelector("select");
+                sel.value = data.tipo;
+                sel.dispatchEvent(new Event("change"));
+
+                if (data.tipo == 0 && data.opcoes)  {
+
+                    block.querySelectorAll(".option-wrapper").forEach(w => w.remove());
+                    data.opcoes.forEach(optText => {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "option-wrapper";
+                        wrapper.innerHTML = `<input type="text" name="questions[][options][]" required class="option-input form-control" value="${optText.opcao}" />`;
+                        optsContainer.insertBefore(wrapper, block.querySelector(".add-option-btn"));
+                    });
+                    updateRemoveOptionButtons();
+                }
+            }
+        }
+
+        function updateRemoveQuestionButtons() {
+            const qs = container.querySelectorAll(".pergunta");
+            qs.forEach(q => {
+                q.querySelector(".remove-question-btn").style.display = qs.length > 1 ? "inline-block" : "none";
+            });
+        }
+
+        function updateRemoveOptionButtons() {
+            const wrappers = container.querySelectorAll(".option-wrapper");
+            wrappers.forEach((w, i) => {
+                let btn = w.querySelector(".remove-option-btn");
+                if (i >= 2 && !btn) {
+                    btn = document.createElement("button");
+                    btn.type = "button";
+                    btn.className = "btn remove-option-btn";
+                    btn.textContent = "✕";
+                    btn.addEventListener("click", () => {
+                        w.remove();
+                        updateRemoveOptionButtons();
+                    });
+                    w.appendChild(btn);
+                } else if (i < 2 && btn) {
+                    btn.remove();
+                }
+            });
+        }
+    });
+</script>
