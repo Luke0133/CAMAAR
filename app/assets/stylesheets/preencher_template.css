@@ -156,3 +156,22 @@ h1, h2 {
     background-color: #ffc107;
     color: #333;
 }
+
+.sidebar {
+  transition: transform 0.3s ease;
+}
+
+.sidebar.hidden {
+  transform: translateX(-100%);
+}
+
+.main-container.sidebar-hidden .content {
+  margin-left: 0;
+  height: 100%;
+}
+
+.main-container .content {
+  height: 100%;
+  margin-left: -250px;
+  transition: margin-left 0.3s ease;
+}

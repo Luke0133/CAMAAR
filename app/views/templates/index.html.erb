@@ -1,48 +1,24 @@
-<div class="topbar">
-  <div class="topbar-left">
-    <div class="logo">Camaar</div>
-  </div>
-  <div class="topbar-right">
-    <input class="search-bar" type="text" placeholder="Buscar templates...">
-    <div class="user-icon">A</div>
-  </div>
-</div>
 
-<div class="main-container">
-  <div class="sidebar">
-    <nav>
-      <ul>
-        <li class="menu-item active">Templates</li>
-        <li class="menu-item">Outro Menu</li>
-      </ul>
-    </nav>
-  </div>
+<section class="main-area">
+  <% if @show_incompatibility_message %>
+    <div class="alert alert-warning">
+      Um ou mais templates estão incompatíveis e não podem ser visualizados.
+    </div>
+  <% end %>
 
-  <div class="content">
-    <section class="main-area">
-      <% if @show_incompatibility_message %>
-        <div class="alert alert-warning">
-          Um ou mais templates estão incompatíveis e não podem ser visualizados.
-        </div>
+  <%= button_to "Novo template", new_template_path, method: :get, class: "btn btn-primary" %>
+
+  <% if @valid_templates.any? %>
+    <div class="formularios-list">
+      <% @valid_templates.each do |template| %>
+          <div class="formulario-card">
+          <strong><%= template.nome %></strong>
+          <%= button_to "Edit", edit_template_path(template), method: :get, class: "btn btn-secondary" %>
+          <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
+          </div>
       <% end %>
-
-      <%= button_to "Novo template", new_template_path, method: :get, class: "btn btn-primary" %>
-
-      <% if @valid_templates.any? %>
-        <div class="templates-list">
-          <% @valid_templates.each do |template| %>
-            <tr>
-              <td><%= template.nome %></td>
-              <td>
-                <%= button_to "Edit", edit_template_path(template), method: :get, class: "btn btn-secondary" %>
-                <%= button_to "Delete", template_path(template), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
-              </td>
-            </tr>
-          <% end %>
-        </div>
-      <% else %>
-        <p>Nenhum template encontrado.</p>
-      <% end %>
-    </section>
-  </div>
-</div>
+    </div>
+  <% else %>
+    <p>Nenhum template encontrado.</p>
+  <% end %>
+</section>

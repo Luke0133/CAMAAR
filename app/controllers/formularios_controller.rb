@@ -39,7 +39,7 @@ class FormulariosController < ApplicationController
       formulario = Formulario.new(
         ligacao_pergunta_id: template.ligacao_pergunta_id,
         turma_id: turma.id,
-        nome: "Formulário para #{turma.semestre} - Turma #{turma.numero_turma}"
+        nome: "#{template.nome}"
       )
 
       created_forms << formulario if formulario.save

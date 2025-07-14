@@ -1,19 +1,24 @@
-<%= form_with model: @template, local: true, html: { class: "template-form" } do |f| %>
+<%= form_with model: template, local: true, html: { class: "template-form" } do |f| %>
   <h2>Nome do Template</h2>
   <div class="form-group">
     <%= f.text_field :nome, required: true, class: "form-control" %>
   </div>
 
   <h2>Perguntas</h2>
-  <div
-    id="questions-container"
-    data-questions="<%= j (@questions || []).map { |q| {
-      pergunta: q.pergunta,
-      tipo: q.tipo,
-      opcoes: q.opcoes.map { |o| { opcao: o.opcao } }
-    }}.to_json %>"
-  >
-  </div>
+   <% formatted_questions = (@questions || []).map do |q|
+        {
+          pergunta: q.pergunta,
+          tipo: q.tipo,
+          opcoes: q.opcoes.map { |o| { opcao: o.opcao } }
+        }
+      end
+    %>
+
+    <div
+      id="questions-container"
+      data-questions="<%= json_escape(formatted_questions.to_json) %>"
+    >
+    </div>
   <button type="button" id="add-question-btn" class="btn">Adicionar Pergunta</button>
 
   <div class="form-actions mt-4">
@@ -78,7 +83,16 @@
             });
 
             block.querySelector("select").addEventListener("change", e => {
-                optsContainer.style.display = e.target.value === "0" ? "block" : "none";
+              const isTypeOption = e.target.value === "0";
+              optsContainer.style.display = isTypeOption ? "block" : "none";
+
+              optsContainer.querySelectorAll("input").forEach(input => {
+                if (isTypeOption) {
+                  input.setAttribute("required", "required");
+                } else {
+                  input.removeAttribute("required");
+                }
+              });
             });
 
             container.appendChild(block);
@@ -91,7 +105,7 @@
                 sel.value = data.tipo;
                 sel.dispatchEvent(new Event("change"));
 
-                if (data.opcoes) {
+                if (data.tipo == 0 && data.opcoes)  {
 
                     block.querySelectorAll(".option-wrapper").forEach(w => w.remove());
                     data.opcoes.forEach(optText => {

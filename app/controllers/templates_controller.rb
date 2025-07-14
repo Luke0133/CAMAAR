@@ -1,5 +1,6 @@
 class TemplatesController < ApplicationController
   layout 'templates_fill', only: [:new, :edit]
+  layout 'templates_index', only: [:index]
   def index
     @valid_templates = Template
                          .joins(ligacao_pergunta: :perguntas)
@@ -34,16 +35,17 @@ class TemplatesController < ApplicationController
         ligacao_pergunta: ligacao
       )
 
+      puts "PARAM QUESTIONS: #{params[:questions].inspect}"
       Array(params[:questions]).each do |q|
-
         pergunta = Pergunta.create!(
           ligacao_pergunta: ligacao,
           tipo:             q[:type].to_i,
           pergunta:         q[:text]
         )
 
+        # Só se for de múltipla escolha
         if q[:type].to_i.zero? && q[:options].present?
-          q[:options].each_with_index do |opt, idx|
+          q[:options].reject(&:blank?).each_with_index do |opt, idx|
             Opcao.create!(
               pergunta: pergunta,
               item:     idx + 1,
@@ -54,7 +56,7 @@ class TemplatesController < ApplicationController
       end
 
       redirect_to templates_path,
-                  notice: "Template saved successfully"
+                  notice: "Template Criado Com Sucesso"
     end
 
   rescue ActiveRecord::RecordInvalid => e
@@ -65,7 +67,7 @@ class TemplatesController < ApplicationController
   def edit
     @template  = Template.find(params[:id])
     @ligacao   = @template.ligacao_pergunta
-    @questions = @ligacao.perguntas.includes(:opcoes)
+    @questions = @template.ligacao_pergunta.perguntas.includes(:opcoes)
   end
 
   def update

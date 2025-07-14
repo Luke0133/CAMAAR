@@ -98,8 +98,10 @@ nav ul {
     padding: 0.5rem 1rem;
     cursor: pointer;
     border-radius: 4px;
-    color: rgb(208, 208, 208);
+    color: rgb(35, 35, 35);
+    background-color: rgb(204, 204, 204);
     transition: transform 0.2s ease; 
+    margin-bottom: 0.5rem;
 }
 
 .menu-item:hover {
