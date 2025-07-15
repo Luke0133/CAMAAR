@@ -10,14 +10,14 @@
 
     <!-- Editar Templates -->
     <% if @can_edit_templates %>
-      <%= link_to "Editar Templates", templates_path, class: "btn" %>
+      <%= link_to "Editar Templates", admin_templates_path, class: "btn" %>
     <% else %>
       <%= button_to "Editar Templates", "#", method: :get, class: "btn-locked", disabled: true %>
     <% end %>
 
     <!-- Enviar Formulários -->
     <% if @can_send_formularios %>
-      <%= link_to "Enviar Formulários", new_formulario_path, class: "btn" %>
+      <%= link_to "Enviar Formulários", new_admin_formulario_path, class: "btn" %>
     <% else %>
       <%= button_to "Enviar Formulários", "#", method: :get, class: "btn-locked", disabled: true %>
     <% end %>

@@ -1,4 +1,4 @@
-class FormulariosController < ApplicationController
+class Admin::FormulariosController < ApplicationController
   layout "criar_formulario"
   def new
     @formulario = Formulario.new
@@ -14,12 +14,12 @@ class FormulariosController < ApplicationController
 
     if formulario_params[:template_id].blank?
       flash[:alert] = "Nenhum template selecionado"
-      redirect_to new_formulario_path and return
+      redirect_to new_admin_formulario_path and return
     end
 
     if formulario_params[:materia_ids].blank?
       flash[:alert] = "Nenhuma matéria foi selecionada"
-      redirect_to new_formulario_path and return
+      redirect_to new_admin_formulario_path and return
     end
 
     template = Template.find(formulario_params[:template_id])
@@ -33,7 +33,7 @@ class FormulariosController < ApplicationController
 
       unless turma
         flash[:alert] = "A matéria #{materia.nome} não possui turmas"
-        redirect_to new_formulario_path and return
+        redirect_to new_admin_formulario_path and return
       end
 
       formulario = Formulario.new(
@@ -50,7 +50,7 @@ class FormulariosController < ApplicationController
       redirect_to admin_gerenciamento_path
     else
       flash[:alert] = "Erro ao salvar os formulários"
-      redirect_to new_formulario_path
+      redirect_to new_admin_formulario_path
     end
   end
 

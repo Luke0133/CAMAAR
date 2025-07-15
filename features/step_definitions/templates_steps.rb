@@ -23,7 +23,7 @@ Quando('eu clicar no botão {string}') do |botao|
 end
 
 Então('eu devo estar na página de gerenciamento de templates do CAMAAR') do
-  expect(page).to have_current_path(templates_path)
+  expect(page).to have_current_path(admin_templates_path)
 end
 
 Então('eu devo ver {int} templates') do |quantidade|

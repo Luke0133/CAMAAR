@@ -1,11 +1,8 @@
 Rails.logger.info "ABACAXI DE NOVO"
 Rails.application.routes.draw do
-  get "home/index"
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
- # devise_for :pessoas
-
- 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
@@ -14,16 +11,8 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-
-  #root "templates#index"
-
-  # root "posts#index"
-
+  get "home/index"
   get "/dashboard", to: "home#index", as: :dashboard
-
-  resources :templates, only: [:index, :new, :create, :edit, :update, :destroy]
-  resources :formularios, only: [:new, :create, :index]
   
   # remove sign up
   devise_for :pessoas, controllers: {
@@ -37,19 +26,19 @@ Rails.application.routes.draw do
   root to: redirect('/login')
 
   namespace :admin do
+    get "/gerenciamento" => "gerenciamento#index"
+    post '/gerenciamento/importar', to: 'gerenciamento#importar', as: :importar_dados
+
     get "resultados", to: "resultados#index", as: :resultados
     get "resultados/:id/preparar_download", to: "resultados#preparar_download", as: :preparar_download
     get "resultados/:id/download", to: "resultados#download", as: :download_resultado
-
-    get "/gerenciamento" => "gerenciamento#index"
-    post '/gerenciamento/importar', to: 'gerenciamento#importar', as: 'importar_dados'
+    
+    resources :templates, only: [:index, :new, :create, :edit, :update, :destroy]
+    resources :formularios, only: [:new, :create, :index]
   end
  
   
-  namespace :user do
-    get 'avaliacoes', to: 'avaliacoes#index'
-    resources :formularios, only: [:show]
-    
+  namespace :user do    
     resources :avaliacoes, only: [:index] do
       member do
         get :responder

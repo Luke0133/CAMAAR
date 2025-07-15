@@ -1,7 +1,7 @@
 
 
 Dado("que eu estou na página de envio do CAMAAR") do
-  visit new_formulario_path
+  visit new_admin_formulario_path
 end
 
 Dado("que existe um template chamado {string}") do |nome_template|

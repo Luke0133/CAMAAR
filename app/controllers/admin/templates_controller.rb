@@ -1,6 +1,5 @@
-class TemplatesController < ApplicationController
-  layout 'templates_fill', only: [:new, :edit]
-  layout 'templates_index', only: [:index]
+class Admin::TemplatesController < ApplicationController
+  layout 'templates_fill', only: [:new, :edit,:index]
   def index
     @valid_templates = Template
                          .joins(ligacao_pergunta: :perguntas)
@@ -55,7 +54,7 @@ class TemplatesController < ApplicationController
         end
       end
 
-      redirect_to templates_path,
+      redirect_to admin_templates_path,
                   notice: "Template Criado Com Sucesso"
     end
 
@@ -97,7 +96,7 @@ class TemplatesController < ApplicationController
         end
       end
 
-      redirect_to templates_path, notice: "Template atualizado com sucesso"
+      redirect_to admin_templates_path, notice: "Template atualizado com sucesso"
     end
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:error] = e.record.errors.full_messages.join(", ")
@@ -107,7 +106,7 @@ class TemplatesController < ApplicationController
   def destroy
     @template = Template.find(params[:id])
     @template.destroy!
-    redirect_to templates_path, notice: "Template excluído com sucesso"
+    redirect_to admin_templates_path, notice: "Template excluído com sucesso"
   end
 
   private

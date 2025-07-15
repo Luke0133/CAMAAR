@@ -1,4 +1,4 @@
-<%= form_with model: template, local: true, html: { class: "template-form" } do |f| %>
+<%= form_with model: [:admin, template], local: true, html: { class: "template-form" } do |f| %>
   <h2>Nome do Template</h2>
   <div class="form-group">
     <%= f.text_field :nome, required: true, class: "form-control" %>
@@ -23,7 +23,7 @@
 
   <div class="form-actions mt-4">
     <%= f.submit "Salvar Template", class: "btn btn-primary" %>
-    <%= link_to "Cancelar", templates_path, class: "btn btn-secondary" %>
+    <%= link_to "Cancelar", admin_templates_path, class: "btn btn-secondary" %>
   </div>
 <% end %>
 

@@ -27,21 +27,21 @@ RSpec.feature "Criação de Formulário", type: :feature do
 
   scenario "Criação de um formulário de avaliação bem-sucedida" do
     login_as_admin
-    visit new_formulario_path
+    visit new_admin_formulario_path
 
-    expect(page).to have_current_path(new_formulario_path)
+    expect(page).to have_current_path(new_admin_formulario_path)
 
     select "template_teste", from: "Template"
     select "materia_teste", from: "Matéria"
     click_button "Enviar"
 
-    expect(page).to have_current_path(formularios_path)
+    expect(page).to have_current_path(admin_formularios_path)
     expect(page).to have_content("Formulário enviado com sucesso")
   end
 
   scenario "Tentativa de criar um formulário sem selecionar um template" do
     login_as_admin
-    visit new_formulario_path
+    visit new_admin_formulario_path
 
     select "materia_teste", from: "Matéria"
     click_button "Enviar"
@@ -51,7 +51,7 @@ RSpec.feature "Criação de Formulário", type: :feature do
 
   scenario "Tentativa de criar um formulário sem selecionar uma matéria" do
     login_as_admin
-    visit new_formulario_path
+    visit new_admin_formulario_path
 
     select "template_teste", from: "Template"
     click_button "Enviar"
