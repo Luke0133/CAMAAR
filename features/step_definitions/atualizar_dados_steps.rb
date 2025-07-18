@@ -9,7 +9,7 @@ end
 
 Dado('que eu estou na página de gerenciamento do CAMAAR') do
   visit admin_gerenciamento_path
-  expect(page).to have_content(/Gerenciamento/i)
+  expect(page).to have_title(/Gerenciamento/)
 end
 
 Quando('eu clicar no botão "Importar dados"') do 
@@ -26,7 +26,8 @@ Então('eu devo estar na página de gerenciamento do CAMAAR') do
 end
 
 Então('eu devo ver {string}') do |mensagem|
-  expect(page).to have_content(mensagem)
+  puts page.html
+  expect(page).to have_selector('.alert', text: mensagem)
 end
 
 Dado('que foram importados dados do SIGAA') do
