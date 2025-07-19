@@ -1,3 +1,7 @@
+Dado('que eu estou na página de resultados do CAMAAR') do
+  visit admin_resultados_path
+end
+
 Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
   materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
   turma = Turma.create!(semestre: "2025.1", numero_turma: rand(100..999), professor: "Prof. Nome", id_materia: materia.id)
@@ -26,7 +30,7 @@ Dado(/^que existem? (\d+) formulários? inválidos?$/) do |count|
   ligacao = LigacaoPergunta.create!
 
   count.to_i.times do
-    Formulario.create!(nome: nil, turma: turma, ligacao_pergunta: ligacao)
+    Formulario.create!(nome: "", turma: turma, ligacao_pergunta: ligacao)
   end
 end
 
@@ -34,3 +38,8 @@ Então(/^eu devo ver (\d+) formulários?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
+Então(/^eu devo ver o erro "(.*)"$/) do |text|
+  within('.flash.flash-error') do
+    expect(page).to have_content(text)
+  end
+end
