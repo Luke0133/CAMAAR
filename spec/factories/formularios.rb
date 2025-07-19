@@ -10,5 +10,8 @@ FactoryBot.define do
         create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: "Resposta teste")
       end
     end
+
+    trait :sem_respostas do
+    end
   end
 end
