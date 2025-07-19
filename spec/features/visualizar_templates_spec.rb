@@ -25,11 +25,15 @@ RSpec.describe Admin::TemplatesController, type: :controller do
         end
       end
 
-      it "atribui apenas os templates válidos" do
-        get :index
-        expect(assigns(:valid_templates)).to match_array(templates_validos)
-        expect(assigns(:valid_templates)).not_to include(*templates_invalidos)
-      end
+      it "atribui os templates válidos corretamente" do
+      get :index
+      expect(assigns(:valid_templates)).to match_array(templates_validos)
+    end
+
+    it "não inclui templates inválidos nos templates válidos" do
+      get :index
+      expect(assigns(:valid_templates)).not_to include(*templates_invalidos)
+    end
 
       it "define o alerta se houver templates inválidos" do
         get :index

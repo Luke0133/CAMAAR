@@ -86,3 +86,4 @@ end
 #  gem 'cucumber-rails', require: false
 #  gem 'factory_bot_rails'
 #end
+gem "rubycritic", "~> 4.9", groups: [:development, :test]
