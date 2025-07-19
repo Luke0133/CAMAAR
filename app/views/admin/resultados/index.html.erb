@@ -1,22 +1,24 @@
 <section class="main-area">
 
-  <% if flash[:error] %>
-    <div class="alert alert-error">
-      <%= flash[:error] %>
-    </div>
-  <% end %>
+  <div class="flash-container">
+    <% if flash[:error] %>
+      <div class="flash flash-error">
+        <%= flash[:error] %>
+      </div>
+    <% end %>
 
-  <% if flash[:success] %>
-    <div class="flash flash-notice">
-      <%= flash[:success] %>
-    </div>
-  <% end %>
+    <% if flash[:success] %>
+      <div class="flash flash-success">
+        <%= flash[:success] %>
+      </div>
+    <% end %>
 
-  <% if flash[:alert] %>
-    <div class="alert alert-warning">
-      <%= flash[:alert] %>
-    </div>
-  <% end %>
+    <% if flash[:warning] %>
+      <div class="flash flash-warning">
+        <%= flash[:warning] %>
+      </div>
+    <% end %>
+  </div>
 
   <% if flash[:download_form_id] %>
     <iframe
@@ -43,7 +45,11 @@
                 Download
           <% end %>
           <% else %>
-            <button class="download-btn disabled" disabled title="Sem respostas">Download</button>
+            <%= link_to admin_preparar_download_path(formulario),
+                        class: "download-btn disabled",
+                        title: "Sem respostas" do %>
+            Download
+            <% end %>
           <% end %>
         </div>
       <% end %>
@@ -54,25 +60,37 @@
 </section>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".flash-notice");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
+    document.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.querySelector(".flash-error");
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.remove(), 500);
+            }, 4000);
+        }
+    });
 </script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".flash-alert");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
+    document.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.querySelector(".flash-warning");
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.remove(), 500);
+            }, 2000);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.querySelector(".flash-success");
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.remove(), 500);
+            }, 2000);
+        }
+    });
 </script>

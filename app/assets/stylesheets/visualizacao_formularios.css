@@ -1,36 +1,40 @@
-
-/*@media (max-width: 768px) {
-.main-area {
-    display: block;
-    padding-top: 0.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+.flash-container {
+    position: fixed;
+    top: 4rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    z-index: 9999;
 }
 
-=======
-*/
 .flash {
-  position: fixed;             
-  top: 4rem;
-  right: 2rem;
-  left: auto;
-  padding: 1rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease;
+    padding: 1rem 2rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    order: 1;
 }
 
-.flash-notice {
-  background-color: #e6ffed;
-  color: #2c662d;
+.flash-error {
+    background: #f8d7da;
+    color: #5f121b;
+    border-bottom-color: #f5c6cb;
+    order: 0;
 }
 
-.flash-alert {
-  background-color: #ffe6e6;
-  color: #991b1b;
+.flash-warning {
+    background: #ffeeba;
+    color: #5a4303;
+    border-bottom-color: #d6b600;
+}
+
+.flash-success {
+    background: #d4edda;
+    color: #0e3e23;
+    border-bottom-color: #c3e6cb;
 }
 
 .formularios-list {
@@ -83,41 +87,6 @@
 .formularios-list {
   justify-content: center;
 }
-
-
-/*
-.error {
-  position: fixed;
-  top: 4rem;
-  right: 2rem;
-  left: auto;
-  background: #960f1f;
-  color: #ecdbdb;
-  padding: 1rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-
-.success {
-  position: fixed;
-  top: 4rem;
-  right: 2rem;
-  left: auto;
-  background: #0f961c;
-  color: #ecdbdb;
-  padding: 1rem 2rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 9999;
-  opacity: 1;
-  transition: opacity 0.5s ease;
-}
-*/
 
 .btn-responder {
   display: inline-block;
@@ -229,43 +198,3 @@
 .btn-submit:hover {
   background: #ddd;
 }
-
-.alert {
-    position: relative;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    border-bottom: 1px solid;
-    z-index: 1000;
-}
-
-.alert-warning {
-     background: #ffeeba;
-     color: #5a4303;
-     border-bottom-color: #d6b600;
- }
-
-.alert-error {
-    background: #f8d7da;
-    color: #5f121b;
-    border-bottom-color: #f5c6cb;
-}
-
-.alert-success {
-    background: #d4edda;
-    color: #0e3e23;
-    border-bottom-color: #c3e6cb;
-}
-
-
-.alert {
-  position: relative;
-  margin-bottom: 1rem;
-  background: #ffeeba;
-  color: #856404;
-  padding: 1rem;
-  border-bottom: 1px solid #ccc;
-  z-index: 1000;
-  border-radius: 5px;
-}
-
-

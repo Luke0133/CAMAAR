@@ -22,4 +22,4 @@ Funcionalidade: Visualização de resultados no CAMAAR
     E que existem 1 formulários inválidos
     E que eu estou na página de resultados do CAMAAR
     Então eu devo ver 1 formulários
-    E eu devo ver "Um ou mais formulários estão incompatíveis e não podem ser visualizados"
+    E eu devo ver o erro "Um ou mais formulários estão incompatíveis e não podem ser visualizados"

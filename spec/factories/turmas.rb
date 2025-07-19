@@ -4,6 +4,5 @@ FactoryBot.define do
     numero_turma { "101" }
     professor { "Prof. Silva" }
     association :materia
-    # add other attributes as needed
   end
 end
