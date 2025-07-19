@@ -34,6 +34,3 @@ Então(/^eu devo ver (\d+) formulários?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
-Então(/^eu devo ver "(.*)"$/) do |text|
-  expect(page).to have_content(text)
-end

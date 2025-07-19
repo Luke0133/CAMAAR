@@ -12,7 +12,7 @@ require 'rspec/rails'
 
 require 'capybara/rspec'
 require 'devise'
-
+require 'warden/test/helpers'
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
@@ -46,6 +46,7 @@ RSpec.configure do |config|
   config.include Rails::Controller::Testing::TestProcess, type: :controller
   config.include Rails::Controller::Testing::TemplateAssertions, type: :controller
   config.include Rails::Controller::Testing::Integration, type: :controller
+  config.include Warden::Test::Helpers
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
@@ -106,4 +107,12 @@ RSpec.configure do |config|
   config.after(:each) do
     DatabaseCleaner.clean
   end
+  config.before(:suite) do
+  Warden.test_mode!
+end
+
+config.after(:each) do
+  Warden.test_reset!
+end
+
 end

@@ -27,11 +27,9 @@ Então('eu devo estar na página de gerenciamento de templates do CAMAAR') do
 end
 
 Então('eu devo ver {int} templates') do |quantidade|
-  expect(page).to have_selector('.template-card', count: quantidade)
+  expect(page).to have_selector('.formulario-card', count: quantidade)
 end
 Então('nenhum template deve ser exibido na lista') do
-  expect(page).not_to have_selector('.template-card')
+  expect(page).not_to have_selector('.formulario-card')
 end
-Então('eu devo ver {string}') do |mensagem|
-  expect(page).to have_content(mensagem)
-end
+
