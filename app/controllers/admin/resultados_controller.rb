@@ -15,7 +15,7 @@ class Admin::ResultadosController < ApplicationController
     formulario = Formulario.find(params[:id])
 
     if formulario.respostas.empty?
-      flash[:alert] = "Este formulário ainda não contém respostas"
+      flash[:warning] = "Este formulário ainda não contém respostas"
       return redirect_to admin_resultados_path
     else
       flash[:success] = "Arquivo de resultado baixado com sucesso"
