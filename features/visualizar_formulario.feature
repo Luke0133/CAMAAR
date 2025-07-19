@@ -6,18 +6,19 @@ Funcionalidade: Visualização de formulários para responder
 
   Contexto:
     Dado que eu estou logado como aluno
+
+  Cenário: Existem formulários não respondidos HAPPY
+    E que existem 2 formulários não respondidos
     E que eu estou na página de avaliação do CAMAAR
+    Então eu devo ver 2 formulários
 
-  Cenário: Existem formulários não respondidos (HAPPY)
-    E que existe(m) 2 formulário(s) não respondido(s)
-    Então eu devo ver 2 formulário(s)
+  Cenário: Não existem formulários não respondidos HAPPY
+    E que existem 0 formulários não respondidos
+    E que eu estou na página de avaliação do CAMAAR
+    Então eu devo ver 0 formulários
 
-  Cenário: Não existem formulários não respondidos (HAPPY)
-    E que existe(m) 0 formulário(s) não respondido(s)
-    Então eu devo ver 0 formulário(s)
-
-  Cenário: Formulário inválido (SAD)
-    E que existe(m) 1 formulário(s) não respondido(s)
-    E que existe(m) 1 formulário(s) inválido(s)
-    Então eu devo ver 0 formulário(s)
+  Cenário: Formulário inválido SAD
+    E que existem 1 formulários inválidos
+    E que eu estou na página de avaliação do CAMAAR
+    Então eu devo ver 0 formulários
     E eu devo ver "Um ou mais formulários estão incompatíveis e não podem ser visualizados"

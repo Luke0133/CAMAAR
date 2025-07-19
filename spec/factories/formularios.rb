@@ -1,17 +1,28 @@
 FactoryBot.define do
   factory :formulario do
-    nome { "Formulário 1" }
+    nome { "Formulário #{SecureRandom.hex(2)}" }
     association :turma
     association :ligacao_pergunta
 
-    trait :com_respostas do
+
+#    trait :com_respostas do
+#      after(:create) do |formulario|
+#        pergunta = create(:pergunta, ligacao_pergunta: formulario.ligacao_pergunta)
+#        create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: "Resposta teste")
+#      end
+#    end
+#
+#    trait :sem_respostas do
+
+    trait :com_perguntas do
       after(:create) do |formulario|
-        pergunta = create(:pergunta, ligacao_pergunta: formulario.ligacao_pergunta)
-        create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: "Resposta teste")
+        create(:pergunta, ligacao_pergunta: formulario.ligacao_pergunta)
+        create(:pergunta, :radio, ligacao_pergunta: formulario.ligacao_pergunta)
       end
     end
 
-    trait :sem_respostas do
+    trait :invalido do
+      nome { "" }
     end
   end
 end
