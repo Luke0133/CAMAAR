@@ -6,38 +6,11 @@ RSpec.describe Admin::ResultadosController, type: :controller do
   before do
     session[:email] = admin.email
   end
-  
-  def criar_formularios_respondidos(count)
-    ligacao = create(:ligacao_pergunta)
-    turma = create(:turma)
-
-    count.times do |i|
-      create(:formulario, :com_respostas, nome: "Respondido #{i + 1}", turma: turma, ligacao_pergunta: ligacao)
-    end
-  end
-
-  def criar_formularios_nao_respondidos(count)
-    ligacao = create(:ligacao_pergunta)
-    turma = create(:turma)
-
-    count.times do |i|
-      create(:formulario, nome: "Não respondido #{i + 1}", turma: turma, ligacao_pergunta: ligacao)
-    end
-  end
-
-  def criar_formularios_invalidos(count)
-    ligacao = create(:ligacao_pergunta)
-    turma = create(:turma)
-
-    count.times do
-      Formulario.create!(nome: "", turma: turma, ligacao_pergunta: ligacao)
-    end
-  end
 
   describe 'GET #index' do
     context 'HAPPY: com formulários respondidos' do
       it 'retorna os formulários respondidos' do
-        criar_formularios_respondidos(2)
+        create_list(:formulario, 2, :com_respostas)
 
         get :index
 
@@ -57,13 +30,13 @@ RSpec.describe Admin::ResultadosController, type: :controller do
 
     context 'SAD: há inválidos e respondidos' do
       it 'retorna os válidos e sinaliza erro' do
-        criar_formularios_nao_respondidos(1)
-        criar_formularios_invalidos(1)
-        criar_formularios_respondidos(1)
+        create(:formulario, :com_perguntas)          # válido não respondido
+        create(:formulario, :invalido)               # inválido
+        create(:formulario, :com_respostas)          # respondido
 
         get :index
 
-        expect(assigns(:forms).count).to eq(2)
+        expect(assigns(:forms).count).to eq(2)  # um respondido + um válido
         expect(flash[:error]).to eq('Um ou mais formulários estão incompatíveis e não podem ser visualizados.')
       end
     end
