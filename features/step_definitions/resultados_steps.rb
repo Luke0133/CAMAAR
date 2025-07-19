@@ -38,8 +38,14 @@ Então(/^eu devo ver (\d+) formulários?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
-Então(/^eu devo ver o erro "(.*)"$/) do |text|
-  within('.flash.flash-error') do
+Então(/^eu devo ver a mensagem de (.*) "(.*)"$/) do |type, text|
+  type = case type
+    when "erro" then "error"
+    when "sucesso" then "success"
+    when "aviso" then "warning"
+    else type
+  end
+  within(".flash.flash-#{type}") do
     expect(page).to have_content(text)
   end
 end
