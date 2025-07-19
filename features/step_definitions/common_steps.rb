@@ -16,7 +16,11 @@ def paginas_camaaar
     "envio" => {
       path: -> { new_admin_formulario_path },
       title: /Gerenciamento - CAMAAR/
-    }
+    },
+    "resultados" => {
+      path: -> { admin_resultados_path },
+      title: /Resultados - CAMAAR/
+    }, 
   }
 
 end
@@ -69,7 +73,7 @@ end
 
 # Visão de mensagens
 Então(/^eu devo ver "(.*)"$/) do |mensagem|
-  expect(page).to have_selector('.flash-alert, .flash-notice, .success, .alert, .error', text: mensagem, visible: :visible)
+  expect(page).to have_selector('.flash-alert, .flash-notice, .flash-success, .flash-warning, .flash-error, .success, .alert, .error', text: mensagem, visible: :visible)
 end
 
 
@@ -85,7 +89,7 @@ end
 
 
 # Existem n formulários
-Dado(/^que existem? (\d+) formulários? não respondidos?$/) do |count|
+Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
   email = @aluno&.email || @admin&.email || @professor&.email || @admin_professor&.email || raise("Nenhum usuário está logado no contexto")
   pessoa = Pessoa.find_by(email: email)
   cargos = Cargo.where(email: email)
@@ -101,7 +105,13 @@ Dado(/^que existem? (\d+) formulários? não respondidos?$/) do |count|
       # Gera o resto dos formulários normalmente
       FactoryBot.create_list(:formulario, count - 1, :com_perguntas, turma: turma) if count > 1
     else
-      FactoryBot.create_list(:formulario, count.to_i, :com_perguntas)
+      materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
+      turma = Turma.create!(semestre: "2025.1", numero_turma: rand(1000..1999), professor: "Prof. Nome", id_materia: materia.id)
+      ligacao = LigacaoPergunta.create!
+
+      count.to_i.times do |i|
+        Formulario.create!(nome: "Formulario Não Respondido #{i + 1} - #{SecureRandom.hex(3)}", turma: turma, ligacao_pergunta: ligacao)
+      end
     end
   end
 
@@ -125,7 +135,15 @@ Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
       FormularioRespondido.create!(formulario: formulario, email: pessoa.email)
     end
   else
-    FactoryBot.create_list(:formulario, count.to_i, :com_perguntas)
+    materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
+    turma = Turma.create!(semestre: "2025.1", numero_turma: rand(100..999), professor: "Prof. Nome", id_materia: materia.id)
+    ligacao = LigacaoPergunta.create!
+
+    count.to_i.times do |i|
+      formulario = Formulario.create!(nome: "Formulario Respondido #{i + 1} - #{SecureRandom.hex(3)}", turma: turma, ligacao_pergunta: ligacao)
+      pergunta = Pergunta.create!(ligacao_pergunta: ligacao, tipo: 1, pergunta: "Pergunta #{i + 1}")
+      Resposta.create!(formulario: formulario, pergunta: pergunta, conteudo: "Resposta #{i + 1}")
+    end
   end
 end
 
@@ -140,7 +158,14 @@ Dado(/^que existem? (\d+) formulários? inválidos?$/) do |count|
 
     FactoryBot.create_list(:formulario, count.to_i, :invalido, turma: turma)
   else
-    FactoryBot.create_list(:formulario, count.to_i, :invalido)
+    materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
+    turma = Turma.create!(semestre: "2025.1", numero_turma: rand(2000..2999), professor: "Prof. Nome", id_materia: materia.id)
+    ligacao = LigacaoPergunta.create!
+
+    count.to_i.times do
+      FactoryBot.create_list(:formulario, count.to_i, :invalido, turma: turma,ligacao_pergunta: ligacao)
+      #Formulario.create!(nome: "", turma: turma, ligacao_pergunta: ligacao)
+    end
   end
 end
 
@@ -243,4 +268,3 @@ end
 Então('nenhum template deve ser exibido na lista') do
   expect(page).not_to have_selector('.formulario-card')
 end
-

@@ -4,16 +4,6 @@ FactoryBot.define do
     association :turma
     association :ligacao_pergunta
 
-
-#    trait :com_respostas do
-#      after(:create) do |formulario|
-#        pergunta = create(:pergunta, ligacao_pergunta: formulario.ligacao_pergunta)
-#        create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: "Resposta teste")
-#      end
-#    end
-#
-#    trait :sem_respostas do
-
     trait :com_perguntas do
       after(:create) do |formulario|
         create(:pergunta, ligacao_pergunta: formulario.ligacao_pergunta)
@@ -23,6 +13,16 @@ FactoryBot.define do
 
     trait :invalido do
       nome { "" }
+    end
+
+    trait :com_respostas do
+      after(:create) do |formulario|
+        pergunta = create(:pergunta, ligacao_pergunta: formulario.ligacao_pergunta)
+        create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: "Resposta teste")
+      end
+    end
+
+    trait :sem_respostas do
     end
   end
 end

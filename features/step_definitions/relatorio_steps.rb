@@ -12,10 +12,6 @@ Quando(/^eu clicar em "Download" em um formulário respondido$/) do
   end
 end
 
-Então(/^eu devo estar na página de resultados do CAMAAR$/) do
-  expect(current_path).to eq(admin_resultados_path)
-end
-
 Então(/^um arquivo "\.csv" deve ser baixado$/) do
   iframe = find('iframe', visible: false)
   src = iframe[:src]

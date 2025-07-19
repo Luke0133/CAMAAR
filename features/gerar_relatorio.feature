@@ -14,9 +14,9 @@ A fim de avaliar o desempenho das turmas
     E eu clicar em "Download" em um formulário respondido
     Então eu devo estar na página de resultados do CAMAAR
     E um arquivo ".csv" deve ser baixado
-    E eu devo ver a mensagem de sucesso "Arquivo de resultado baixado com sucesso"
+    E eu devo ver "Arquivo de resultado baixado com sucesso"
 
   Cenário: Tentar baixar resultados de um formulario sem respostas (SAD)
     E eu clicar em "Download" em um formulário não respondido
     Então eu devo estar na página de resultados do CAMAAR
-    E eu devo ver a mensagem de aviso "Este formulário ainda não contém respostas"
+    E eu devo ver "Este formulário ainda não contém respostas"
