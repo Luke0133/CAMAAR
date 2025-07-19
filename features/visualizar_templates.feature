@@ -7,6 +7,7 @@ Funcionalidade: Visualização dos templates criados
 
   Contexto:
     Dado que eu estou logado como admin
+    E que foram importados dados do SIGAA
     E que eu estou na página de gerenciamento do CAMAAR
 
   Cenário: Visualizar e editar templates como admin
