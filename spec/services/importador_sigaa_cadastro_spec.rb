@@ -53,7 +53,7 @@ RSpec.describe ImportadorSigaa, type: :service do
       # verifica o e-mail enviado
       mail = ActionMailer::Base.deliveries.find { |m| m.to.include?("aluno@email.com") }
       expect(mail).not_to be_nil
-      expect(mail.subject).to match(/Redefinir senha/i)
+      expect(mail.subject).to match(/Definição de Senha - CAMAAR/i)
     end
   end
 end

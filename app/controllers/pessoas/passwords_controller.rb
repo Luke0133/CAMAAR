@@ -1,14 +1,15 @@
 class Pessoas::PasswordsController < Devise::PasswordsController
 
-  # Método chamado quando o token é inválido
+  # Metodo chamado quando o token é inválido
   def assert_reset_token_passed
     if params[:reset_password_token].blank?
-      set_flash_message(:alert, "Token de redefinição de senha é inválido") if is_navigational_format?
-      redirect_to new_session_path(resource_name)
+      flash[:alert] = "Token de redefinição de senha é inválido" if is_navigational_format?
+      redirect_to new_pessoa_session_path
+      return true
     end
   end
 
-  # Também pode sobrescrever o método responsável pelo update para capturar token inválido
+  # Também pode sobrescrever o metodo responsável pelo update para capturar token inválido
   def update
     self.resource = resource_class.reset_password_by_token(resource_params)
     if resource.errors.empty?
@@ -18,10 +19,17 @@ class Pessoas::PasswordsController < Devise::PasswordsController
       session[:email] = resource.email
       respond_with resource, location: after_resetting_password_path_for(resource)
     else
+      session[:email] = nil
       if resource.errors.details[:reset_password_token].present?
         flash[:alert] = "Token de redefinição de senha é inválido"
       end
       respond_with resource
     end
+  end
+
+  protected
+
+  def after_resetting_password_path_for(resource)
+    user_avaliacoes_path
   end
 end
