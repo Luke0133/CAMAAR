@@ -11,7 +11,7 @@ def paginas_camaaar
     },
     "gerenciamento de templates" => {
       path: -> { admin_templates_path },
-      title: /Criar\/Editar Template - CAMAAR/
+      title: /Criar ou Editar Template - CAMAAR/
     },
     "envio" => {
       path: -> { new_admin_formulario_path },
