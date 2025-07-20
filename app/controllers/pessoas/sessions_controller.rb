@@ -21,7 +21,6 @@ class Pessoas::SessionsController < Devise::SessionsController
   end
 
   protected
-
   def configure_sign_in_params
     # Permite email e password na autenticação
     devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :matricula])
@@ -29,11 +28,10 @@ class Pessoas::SessionsController < Devise::SessionsController
 
   def after_sign_in_path_for(resource)
     flash[:notice] = "Login efetuado com sucesso"
-    dashboard_path
+    user_avaliacoes_path
   end
 
   private
-
   def set_devise_vars
     # Torna as variáveis disponíveis na view
     @resource = resource_class.new(sign_in_params)
