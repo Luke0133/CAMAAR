@@ -1,3 +1,5 @@
+# Controller responsável pela exibição e submissão de respostas aos
+# formulários de avaliação para alunos e professores em suas respectivas turmas
 class User::AvaliacoesController < ApplicationController
   layout "avaliacoes"
 
@@ -8,15 +10,9 @@ class User::AvaliacoesController < ApplicationController
 
     respondidos_ids = aluno.formulario_respondidos.pluck(:formulario_id)
 
-    @formularios = Formulario
-      .includes(:turma => :materia)
-      .validos
-      .where(turma_id: turmas_ids)
-      .where.not(id: respondidos_ids)
-    
+    @formularios = buscar_formularios_validos(turmas_ids, respondidos_ids)
 
-    invalid_forms = Formulario.invalidos
-    if invalid_forms.any?
+    if Formulario.invalidos.any?
       puts "warning"
       flash.now[:alert] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados"
     end 
@@ -34,15 +30,8 @@ class User::AvaliacoesController < ApplicationController
 
     respostas_params = params[:respostas] || {}
 
-    if @perguntas.all? { |p| respostas_params[p.id.to_s].present? }
-      @perguntas.each do |pergunta|
-        Resposta.create!(
-          formulario: @formulario,
-          pergunta: pergunta,
-          conteudo: respostas_params[pergunta.id.to_s]
-        )
-      end
-
+    if respostas_completas?(@perguntas, respostas_params) 
+      salvar_respostas(@perguntas, respostas_params)
       FormularioRespondido.create!(formulario: @formulario, email: session[:email])
       redirect_to user_avaliacoes_path, notice: "Resposta enviada com sucesso"
     else
@@ -50,5 +39,29 @@ class User::AvaliacoesController < ApplicationController
       render "responder_formulario", status: :unprocessable_entity
     end
   end
+  
+  def salvar_respostas(perguntas, respostas_params)
+    perguntas.each do |pergunta|
+      Resposta.create!(
+        formulario: @formulario,
+        pergunta: pergunta,
+        conteudo: respostas_params[pergunta.id.to_s]
+      )
+    end
+  end
 
+  private
+  
+  # Retorna formulários válidos de um aluno, que ainda não foram respondidos
+  def buscar_formularios_validos(turmas_ids, respondidos_ids)
+    Formulario
+      .includes(turma: :materia)
+      .validos
+      .where(turma_id: turmas_ids)
+      .where.not(id: respondidos_ids)
+  end
+
+  def respostas_completas?(perguntas, respostas_params)
+    perguntas.all? { |pergunta| respostas_params[pergunta.id.to_s].present? }
+  end
 end
