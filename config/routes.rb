@@ -12,32 +12,31 @@ Rails.application.routes.draw do
 
   get "home/index"
   get "/dashboard", to: "home#index", as: :dashboard
-  
+
   # remove sign up
   devise_for :pessoas, controllers: {
-    sessions: 'pessoas/sessions',
-    passwords: 'pessoas/passwords'
+    sessions: "pessoas/sessions",
+    passwords: "pessoas/passwords"
   }#, as: :pessoa
 
   devise_scope :pessoa do
-    get '/login', to: 'pessoas/sessions#new', as: :login
+    get "/login", to: "pessoas/sessions#new", as: :login
   end
-  root to: redirect('/login')
+  root to: redirect("/login")
 
   namespace :admin do
     get "/gerenciamento" => "gerenciamento#index"
-    post '/gerenciamento/importar', to: 'gerenciamento#importar', as: :importar_dados
+    post "/gerenciamento/importar", to: "gerenciamento#importar", as: :importar_dados
 
     get "resultados", to: "resultados#index", as: :resultados
     get "resultados/:id/preparar_download", to: "resultados#preparar_download", as: :preparar_download
     get "resultados/:id/download", to: "resultados#download", as: :download_resultado
-    
+
     resources :templates, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :formularios, only: [:new, :create, :index]
   end
- 
-  
-  namespace :user do    
+
+  namespace :user do
     resources :avaliacoes, only: [:index] do
       member do
         get :responder
