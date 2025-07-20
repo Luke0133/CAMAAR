@@ -24,7 +24,11 @@ def paginas_camaaar
     "login" => {
       path: -> { new_pessoa_session_path },
       title: /Login - CAMAAR/
-    }
+    },
+    "registro" => {
+      path: -> { edit_pessoa_password_path },
+      title: /Defina sua Senha - CAMAAR/
+    },
   }
 
 end
@@ -304,11 +308,37 @@ Então(/^um arquivo "\.csv" deve ser baixado$/) do
 end
 
 # Login
-
 Dado('que existe uma pessoa cadastrada com {string} e {string}') do |email, senha|
   FactoryBot.create(:pessoa, email: email, password: senha)
 end
 
 Quando('eu preencher o campo {string} com {string}') do |campo, valor|
   fill_in campo, with: valor
+end
+
+# Senha
+Dado('que eu estou na página de registro do CAMAAR com um token válido') do
+  include ActionMailer::TestHelper
+  Devise.mappings[:pessoa] ||= Devise::Mapping.new(:pessoa, {})
+  ActionMailer::Base.deliveries.clear
+  pessoa = FactoryBot.create(:pessoa, email: "myemail@email", password: nil)
+  raw_token, enc_token = Devise.token_generator.generate(Pessoa, :reset_password_token)
+  pessoa.update!(
+    reset_password_token: enc_token,
+    reset_password_sent_at: Time.current
+  )
+  Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
+  mail = ActionMailer::Base.deliveries.last
+  link = mail.body.encoded.match(/href="(?<url>.+?)"/)[:url]
+  token = CGI.parse(URI.parse(link).query)["reset_password_token"].first
+  visit edit_pessoa_password_path(reset_password_token: token)
+end
+
+Dado('que eu estou na página de registro do CAMAAR com um token inválido') do
+  visit edit_pessoa_password_path(reset_password_token: "token_invalido")
+end
+
+Então('deve existir uma pessoa cadastrada com {string} e {string}') do |email, senha|
+  pessoa = Pessoa.find_by(email: email)
+  expect(pessoa.valid_password?(senha)).to be(true)
 end
