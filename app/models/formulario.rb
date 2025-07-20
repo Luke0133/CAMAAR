@@ -14,16 +14,6 @@ class Formulario < ApplicationRecord
   scope :invalidos, -> { where(nome: "") }
 
   def generate_csv
-    CSV.generate(headers: true) do |csv|
-      csv << %w[Pergunta Tipo Resposta]
-      respostas.includes(:pergunta).each do |resposta|
-        csv << [
-          resposta.pergunta&.pergunta,
-          resposta.pergunta.tipo,
-          resposta.conteudo
-        ]
-      end
-    end
+    FormularioCsvExporter.new(self).generate
   end
-
 end
