@@ -12,17 +12,54 @@
     </div>
 
   <% if @valid_templates.any? %>
-    <div class="formularios-list">
       <% @valid_templates.each do |template| %>
         <div class="template-card">
           <strong><%= template.nome %></strong>
-          <%= button_to "Edit", edit_admin_template_path(template), method: :get, class: "btn btn-secondary" %>
-          <%= button_to "Delete", admin_template_path(template), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
+          <div class="form-actions">
+            <%= button_to "Editar", edit_admin_template_path(template), method: :get, class: "btn btn-secondary" %>
+            <button
+                class="btn btn-danger delete-button"
+                data-url="<%= admin_template_path(template) %>"
+                data-template-name="<%= template.nome %>">
+              Delete
+            </button>
           </div>
+        </div>
       <% end %>
-    </div>
   <% else %>
     <p>Nenhum template encontrado.</p>
   <% end %>
   </div>
 </section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const templateName = button.getAttribute('data-template-name');
+                const message = `Tem certeza que deseja deletar o template "${templateName}"?`;
+
+                if (confirm(message)) {
+                    const url = button.getAttribute('data-url');
+
+                    fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                    })
+                      .then(response => {
+                          if (response.ok) {
+                              window.location.reload();
+                          } else {
+                              alert('Erro ao deletar o template.');
+                          }
+                      })
+                      .catch(() => alert('Erro ao deletar o template.'));
+                }
+            });
+        });
+    });
+</script>
