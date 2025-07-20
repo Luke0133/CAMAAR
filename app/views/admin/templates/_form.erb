@@ -127,22 +127,28 @@
         }
 
         function updateRemoveOptionButtons() {
-            const wrappers = container.querySelectorAll(".option-wrapper");
-            wrappers.forEach((w, i) => {
-                let btn = w.querySelector(".remove-option-btn");
-                if (i >= 2 && !btn) {
-                    btn = document.createElement("button");
-                    btn.type = "button";
-                    btn.className = "btn remove-option-btn";
-                    btn.textContent = "✕";
-                    btn.addEventListener("click", () => {
-                        w.remove();
-                        updateRemoveOptionButtons();
-                    });
-                    w.appendChild(btn);
-                } else if (i < 2 && btn) {
-                    btn.remove();
-                }
+            const allQuestions = container.querySelectorAll(".pergunta");
+
+            allQuestions.forEach(question => {
+                const wrappers = question.querySelectorAll(".option-wrapper");
+
+                wrappers.forEach((w, i) => {
+                    let btn = w.querySelector(".remove-option-btn");
+
+                    if (wrappers.length > 2 && !btn) {
+                        btn = document.createElement("button");
+                        btn.type = "button";
+                        btn.className = "btn remove-option-btn";
+                        btn.textContent = "✕";
+                        btn.addEventListener("click", () => {
+                            w.remove();
+                            updateRemoveOptionButtons();
+                        });
+                        w.appendChild(btn);
+                    } else if (wrappers.length <= 2 && btn) {
+                        btn.remove();
+                    }
+                });
             });
         }
     });
