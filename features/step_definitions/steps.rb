@@ -55,8 +55,6 @@ Dado(/^que eu estou logado como (.+)$/) do |pessoa|
   fill_in 'Senha', with: senha
   click_button 'Entrar'
 
-  #puts page.html
-  # FALHA: em criar_template, com @javascript, "Login ou senha inválidos"
 end
 
 # Checar página
@@ -232,11 +230,6 @@ Quando('eu preencher o formulário') do
       raise "Tipo de campo de pergunta não reconhecido"
     end
   end
-end
-
-# Importar dados
-Quando('eu clicar no botão "Importar dados"') do
-  click_button 'Importar dados'
 end
 
 Quando('eu selecionar o arquivo {string}') do
