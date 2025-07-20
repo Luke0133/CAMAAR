@@ -1,61 +1,71 @@
 require 'rails_helper'
 
-RSpec.feature "Criação de Formulário", type: :feature do
-  let!(:admin) do
-    Pessoa.where(email: "admin@exemplo.com").destroy_all
-    Pessoa.create!(
-      email: "admin@exemplo.com",
-      nome: "Admin",
-      matricula: "123456789",
-      senha: "123456"
-    )
+RSpec.describe Admin::FormulariosController, type: :controller do
+  render_views
+
+  let(:admin) { create(:pessoa, email: "admin@camaar.com") }
+
+  before do
+    session[:email] = admin.email
   end
 
-  let!(:template) do
-    ligacao = LigacaoPergunta.create!
-    Pergunta.create!(pergunta: "Pergunta exemplo", tipo: 1, ligacao_pergunta_id: ligacao.id)
-    Template.create!(nome: "template_teste", ligacao_pergunta_id: ligacao.id)
-  end
+  describe "POST #create" do
+    context "com dados válidos" do
+      it "cria um formulário e redireciona" do
+        materia = create(:materia)
+        turma = create(:turma, materia: materia)
 
-  let!(:materia) do
-    Materia.create!(id: "MAT01", nome: "materia_teste")
-  end
+        ligacao = create(:ligacao_pergunta)
+        create(:pergunta, ligacao_pergunta: ligacao)
+        template = create(:template, ligacao_pergunta: ligacao)
 
-  def login_as_admin
-    # Login desabilitado para foco exclusivo no formulário
-  end
+        expect {
+          post :create, params: {
+            formulario: {
+              template_id: template.id,
+              materia_ids: [materia.id]
+            }
+          }
+        }.to change(Formulario, :count).by(1)
 
-  scenario "Criação de um formulário de avaliação bem-sucedida" do
-    login_as_admin
-    visit new_admin_formulario_path
+        expect(response).to redirect_to(admin_gerenciamento_path)
+        expect(flash[:notice]).to eq("Formulário enviado com sucesso")
+      end
+    end
 
-    expect(page).to have_current_path(new_admin_formulario_path)
+    context "sem template selecionado" do
+      it "não cria formulário e renderiza :new com erro" do
+        materia = create(:materia)
+        create(:turma, materia: materia)
 
-    select "template_teste", from: "Template"
-    select "materia_teste", from: "Matéria"
-    click_button "Enviar"
+        post :create, params: {
+          formulario: {
+            template_id: nil,
+            materia_ids: [materia.id]
+          }
+        }
 
-    expect(page).to have_current_path(admin_formularios_path)
-    expect(page).to have_content("Formulário enviado com sucesso")
-  end
+        expect(response).to render_template(:new)
+        expect(flash.now[:alert]).to eq("Nenhum template selecionado")
+      end
+    end
 
-  scenario "Tentativa de criar um formulário sem selecionar um template" do
-    login_as_admin
-    visit new_admin_formulario_path
+    context "sem matéria selecionada" do
+      it "não cria formulário e renderiza :new com erro" do
+        ligacao = create(:ligacao_pergunta)
+        create(:pergunta, ligacao_pergunta: ligacao)
+        template = create(:template, ligacao_pergunta: ligacao)
 
-    select "materia_teste", from: "Matéria"
-    click_button "Enviar"
+        post :create, params: {
+          formulario: {
+            template_id: template.id,
+            materia_ids: []
+          }
+        }
 
-    expect(page).to have_content("Nenhum template selecionado")
-  end
-
-  scenario "Tentativa de criar um formulário sem selecionar uma matéria" do
-    login_as_admin
-    visit new_admin_formulario_path
-
-    select "template_teste", from: "Template"
-    click_button "Enviar"
-
-    expect(page).to have_content("Nenhuma matéria foi selecionada")
+        expect(response).to render_template(:new)
+        expect(flash.now[:alert]).to eq("Nenhuma matéria foi selecionada")
+      end
+    end
   end
 end
