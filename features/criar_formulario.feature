@@ -15,14 +15,14 @@ Funcionalidade: Criar formulário de avaliação
     E eu selecionar a matéria "materia_teste"
     E eu clicar no botão “Enviar”
     Então eu devo estar na página de gerenciamento do CAMAAR
-    E eu devo ver a mensagem "Formulário enviado com sucesso"
+    E eu devo ver "Formulário enviado com sucesso"
 
   Cenário: Tentativa de criar um formulário sem selecionar um template (SAD)
     Quando eu selecionar a matéria "materia_teste"
     E eu clicar no botão “Enviar”
-    Então eu devo ver a mensagem "Nenhum template selecionado"
+    Então eu devo ver "Nenhum template selecionado"
 
   Cenário: Tentativa de criar um formulário sem selecionar uma matéria (SAD)
     Quando eu escolher o template "template_teste"
     E eu clicar no botão “Enviar”
-    Então eu devo ver a mensagem "Nenhuma matéria foi selecionada"
+    Então eu devo ver "Nenhuma matéria foi selecionada"

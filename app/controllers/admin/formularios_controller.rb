@@ -14,12 +14,14 @@ class Admin::FormulariosController < ApplicationController
 
     if formulario_params[:template_id].blank?
       flash[:alert] = "Nenhum template selecionado"
-      redirect_to new_admin_formulario_path and return
+      # redirect_to new_admin_formulario_path and return
+      return render :new
     end
 
     if formulario_params[:materia_ids].blank?
       flash[:alert] = "Nenhuma matéria foi selecionada"
-      redirect_to new_admin_formulario_path and return
+      # redirect_to new_admin_formulario_path and return
+      return render :new
     end
 
     template = Template.find(formulario_params[:template_id])
@@ -46,7 +48,7 @@ class Admin::FormulariosController < ApplicationController
     end
 
     if created_forms.any?
-      flash[:notice] = "Formulários enviados com sucesso"
+      flash[:notice] = "Formulário enviado com sucesso"
       redirect_to admin_gerenciamento_path
     else
       flash[:alert] = "Erro ao salvar os formulários"
