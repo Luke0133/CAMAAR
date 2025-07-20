@@ -234,8 +234,10 @@ Quando(/^eu escolher o template "(.*)"$/) do |nome_template|
 end
 
 Quando(/^eu selecionar a matéria "(.*)"$/) do |nome_materia|
-  select nome_materia, from: "Matéria"
+  materia_row = find('tr', text: nome_materia)
+  materia_row.find('input[type="checkbox"]').click
 end
+
 
 Quando("eu clicar no botão “Enviar”") do
   click_button "Enviar"
