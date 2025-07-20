@@ -131,6 +131,7 @@ h1, h2 {
 }
 
 .remove-option-btn,
+.btn-delete,
 .remove-question-btn {
     background-color: #e57373;
     border-radius: 8px;
@@ -149,6 +150,7 @@ h1, h2 {
 }
 
 .remove-option-btn:hover,
+.btn-delete,
 .remove-question-btn:hover {
     background-color: #d94a4a;
     box-shadow: 0 6px 12px rgba(217, 74, 74, 0.5);
