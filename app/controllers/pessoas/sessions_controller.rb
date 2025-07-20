@@ -29,7 +29,7 @@ class Pessoas::SessionsController < Devise::SessionsController
 
   def after_sign_in_path_for(resource)
     flash[:notice] = "Login efetuado com sucesso"
-    dashboard_path
+    user_avaliacoes_path
   end
 
   private

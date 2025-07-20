@@ -20,7 +20,11 @@ def paginas_camaaar
     "resultados" => {
       path: -> { admin_resultados_path },
       title: /Resultados - CAMAAR/
-    }, 
+    },
+    "login" => {
+      path: -> { new_pessoa_session_path },
+      title: /Login - CAMAAR/
+    }
   }
 
 end
@@ -297,4 +301,14 @@ Então(/^um arquivo "\.csv" deve ser baixado$/) do
     .to include('attachment')
   expect(download_response.headers['Content-Type'])
     .to eq('text/csv')
+end
+
+# Login
+
+Dado('que existe uma pessoa cadastrada com {string} e {string}') do |email, senha|
+  FactoryBot.create(:pessoa, email: email, password: senha)
+end
+
+Quando('eu preencher o campo {string} com {string}') do |campo, valor|
+  fill_in campo, with: valor
 end
