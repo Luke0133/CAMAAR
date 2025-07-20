@@ -21,7 +21,6 @@ class Pessoas::SessionsController < Devise::SessionsController
   end
 
   protected
-
   def configure_sign_in_params
     # Permite email e password na autenticação
     devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :matricula])
@@ -33,7 +32,6 @@ class Pessoas::SessionsController < Devise::SessionsController
   end
 
   private
-
   def set_devise_vars
     # Torna as variáveis disponíveis na view
     @resource = resource_class.new(sign_in_params)
