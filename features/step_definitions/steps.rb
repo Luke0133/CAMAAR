@@ -20,7 +20,7 @@ def paginas_camaaar
     "resultados" => {
       path: -> { admin_resultados_path },
       title: /Resultados - CAMAAR/
-    }, 
+    },
   }
 
 end
@@ -33,7 +33,7 @@ Dado(/^que eu estou logado como (.+)$/) do |pessoa|
   when 'admin'
     @admin = FactoryBot.create(:pessoa, :admin, email: email, password: senha)
   when 'admin usuário'
-    @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)
+    @admin = FactoryBot.create(:pessoa, :admin, email: email, password: senha, password_confirmation: senha)
   when 'aluno'
     @aluno = FactoryBot.create(:pessoa, :aluno, email: email, password: senha)
   when 'professor'
@@ -46,6 +46,9 @@ Dado(/^que eu estou logado como (.+)$/) do |pessoa|
   fill_in 'Email', with: email
   fill_in 'Senha', with: senha
   click_button 'Entrar'
+
+  #puts page.html
+  # FALHA: "Login ou senha inválidos"
 end
 
 # Checar página
@@ -82,11 +85,42 @@ Então(/^eu devo ver (\d+) formulários?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
-Então(/^eu devo ver (\d+) templates$/) do |count|
+Então(/^eu devo ver (\d+) templates?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
+Quando('eu preencher o template') do
+  expect(page).to have_selector('input[name="template[nome]"]')
+  find('input[name="template[nome]"]').set('Template de Teste')
 
+  expect(page).to have_selector('.pergunta')
+  all('.pergunta').each do |pergunta_div|
+    tipo_select = pergunta_div.find('select[name="questions[][type]"]', visible: false)
+    tipo = tipo_select.value
+
+    pergunta_div.find('input[name="questions[][text]"]').set('Pergunta de Teste')
+
+    if tipo == "0"
+      expect(pergunta_div).to have_selector('input[name="questions[][options][]"]', count: 2)
+      pergunta_div.all('input[name="questions[][options][]"]').each_with_index do |opt_input, i|
+        opt_input.set("Opção #{i + 1}")
+      end
+    elsif tipo == "1"
+    else
+      raise "Tipo de pergunta não reconhecido: #{tipo}"
+    end
+  end
+end
+
+Quando("eu não preencher o template") do
+end
+
+Então("eu devo ver algum campo como inválido") do
+  invalid_fields = page.evaluate_script <<~JS
+    Array.from(document.querySelectorAll('input, select, textarea')).filter(el => el.validity && !el.validity.valid)
+  JS
+  expect(invalid_fields).not_to be_empty
+end
 
 # Existem n formulários
 Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
@@ -195,11 +229,11 @@ Quando('eu preencher o formulário') do
 end
 
 # Importar dados
-Quando('eu clicar no botão "Importar dados"') do 
+Quando('eu clicar no botão "Importar dados"') do
   click_button 'Importar dados'
 end
 
-Quando('eu selecionar o arquivo {string}') do 
+Quando('eu selecionar o arquivo {string}') do
   caminho = Rails.root.join('spec', 'fixtures', nome_arquivo)
   attach_file('arquivo', caminho)
 end

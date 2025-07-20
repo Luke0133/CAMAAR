@@ -75,7 +75,7 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'capybara'
   gem 'selenium-webdriver'
-  gem 'webdrivers'
+  gem 'webdrivers', '~> 5.3'
   gem 'factory_bot_rails', '~> 6.0'
   gem "rails-controller-testing"
 end
