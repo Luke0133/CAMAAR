@@ -69,10 +69,6 @@ Então(/^eu devo estar na página de (.+) do CAMAAR$/) do |pagina|
   expect(page).to have_title(config[:title])
 end
 
-#Então('eu devo estar na página de gerenciamento do CAMAAR') do
-#  expect(current_path).to eq admin_gerenciamento_path
-#end
-
 Dado('que foram importados dados do SIGAA') do
   caminho = Rails.root.join("spec/fixtures/valido.json")
   json = JSON.parse(File.read(caminho))
@@ -83,7 +79,6 @@ end
 Então(/^eu devo ver "(.*)"$/) do |mensagem|
   expect(page).to have_selector('.flash-alert, .flash-notice, .flash-success, .flash-warning, .flash-error, .success, .alert, .error', text: mensagem, visible: :visible)
 end
-
 
 # Visão de templates/formulários
 Então(/^eu devo ver (\d+) formulários?$/) do |count|
@@ -203,25 +198,16 @@ Quando('eu preencher o formulário') do
 end
 
 # Importar dados
-Quando('eu clicar no botão "Importar dados"') do 
-  click_button 'Importar dados'
-end
 
-Quando('eu selecionar o arquivo {string}') do 
-  caminho = Rails.root.join('spec', 'fixtures', nome_arquivo)
-  attach_file('arquivo', caminho)
-end
-
-Quando('eu selecionar o arquivo {string} para importar') do |nome_arquivo|
+Quando('eu selecionar o arquivo {string}') do |nome_arquivo|
   caminho = Rails.root.join("spec/fixtures/#{nome_arquivo}")
-  attach_file('file', caminho, visible: false)
-  click_button 'Importar dados'
+  attach_file('file', caminho)  # o nome do campo no formulário é :file
 end
 
 Então('um email deve ter sido enviado para {string}') do |email|
   mail = ActionMailer::Base.deliveries.find { |m| m.to.include?(email) }
   expect(mail).not_to be_nil
-  expect(mail.subject).to match(/Redefinir senha/i)
+  expect(mail.subject).to match(/Definição de Senha - CAMAAR/i)
 end
 
 
