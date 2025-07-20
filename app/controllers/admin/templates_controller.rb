@@ -34,7 +34,6 @@ class Admin::TemplatesController < ApplicationController
         ligacao_pergunta: ligacao
       )
 
-      puts "PARAM QUESTIONS: #{params[:questions].inspect}"
       Array(params[:questions]).each do |q|
         pergunta = Pergunta.create!(
           ligacao_pergunta: ligacao,
@@ -64,13 +63,24 @@ class Admin::TemplatesController < ApplicationController
   end
 
   def edit
-    @template  = Template.find(params[:id])
+    @template = Template.find_by(id: params[:id])
+
+    unless @template
+      redirect_to admin_templates_path, alert: "Falha ao editar: o template selecionado não existe."
+      return
+    end
+
     @ligacao   = @template.ligacao_pergunta
     @questions = @template.ligacao_pergunta.perguntas.includes(:opcoes)
   end
 
   def update
-    @template = Template.find(params[:id])
+    @template = Template.find_by(id: params[:id])
+
+    unless @template
+      redirect_to admin_templates_path, alert: "Falha ao editar: o template selecionado não existe."
+      return
+    end
 
     if params[:questions].blank? || params[:questions].reject { |q| q[:text].blank? }.empty?
       flash.now[:error] = "O template precisa ter pelo menos uma pergunta."
@@ -104,9 +114,15 @@ class Admin::TemplatesController < ApplicationController
   end
 
   def destroy
-    @template = Template.find(params[:id])
-    @template.destroy!
-    redirect_to admin_templates_path, notice: "Template excluído com sucesso"
+    @template = Template.find_by(id: params[:id])
+
+    if @template
+      nome = @template.nome
+      @template.destroy!
+      redirect_to admin_templates_path, notice: "O #{nome} foi excluído!"
+    else
+      redirect_to admin_templates_path, alert: "Falha ao excluir: o template selecionado não existe."
+    end
   end
 
   private
