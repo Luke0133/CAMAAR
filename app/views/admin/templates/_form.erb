@@ -21,7 +21,7 @@
     </div>
   <button type="button" id="add-question-btn" class="btn">Adicionar Pergunta</button>
 
-  <div class="form-actions mt-4">
+  <div class="form-actions">
     <%= f.submit "Salvar Template", class: "btn btn-primary" %>
     <%= link_to "Cancelar", admin_templates_path, class: "btn btn-secondary" %>
   </div>
@@ -48,7 +48,7 @@
       <label>Pergunta</label>
       <input type="text" name="questions[][text]" required class="form-control" />
 
-      <label>Tipo</label>
+      <label class="sub-label">Tipo</label>
       <select name="questions[][type]" class="form-control">
         <option value="0">Botões de Opção</option>
         <option value="1">Texto Livre</option>
@@ -105,7 +105,7 @@
                 sel.value = data.tipo;
                 sel.dispatchEvent(new Event("change"));
 
-                if (data.tipo == 0 && data.opcoes)  {
+                if (data.tipo === 0 && data.opcoes)  {
 
                     block.querySelectorAll(".option-wrapper").forEach(w => w.remove());
                     data.opcoes.forEach(optText => {
