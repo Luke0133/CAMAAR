@@ -11,7 +11,7 @@ def paginas_camaaar
     },
     "gerenciamento de templates" => {
       path: -> { admin_templates_path },
-      title: /Criar\/Editar Template - CAMAAR/
+      title: /Criar ou Editar Template - CAMAAR/
     },
     "envio" => {
       path: -> { new_admin_formulario_path },
@@ -85,11 +85,35 @@ Então(/^eu devo ver (\d+) formulários?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
-Então(/^eu devo ver (\d+) templates$/) do |count|
-  expect(page).to have_css('.formulario-card', count: count)
+Então(/^eu devo ver (\d+) templates?$/) do |count|
+  expect(page).to have_css('.template-card:not(.new)', count: count)
 end
 
+Quando('eu preencher o template') do
+  expect(page).to have_selector('input[name="template[nome]"]')
+  find('input[name="template[nome]"]').set('Template de Teste')
 
+  expect(page).to have_selector('.pergunta')
+  all('.pergunta').each_with_index do |pergunta_div, i|
+    tipo_select = pergunta_div.find('select[name="questions[][type]"]', visible: false)
+    tipo = tipo_select.value
+
+    pergunta_div.find('input[name="questions[][text]"]').set("Pergunta de Teste#{i + 1}")
+
+    if tipo == "0"
+      expect(pergunta_div).to have_selector('input[name="questions[][options][]"]', count: 2)
+      pergunta_div.all('input[name="questions[][options][]"]').each_with_index do |opt_input, j|
+        opt_input.set("Opção #{j + 1}")
+      end
+    elsif tipo == "1"
+    else
+      raise "Tipo de pergunta não reconhecido: #{tipo}"
+    end
+  end
+end
+
+Quando("eu não preencher o template") do
+end
 
 # Existem n formulários
 Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
@@ -179,7 +203,6 @@ Quando(/^eu clicar no formulário "(.*)"$/) do |form_name|
       click_link 'Responder'
     end
   end
-  puts "Caminho atual: #{current_path}"
 end
 
 Quando('eu preencher o formulário') do
@@ -191,7 +214,6 @@ Quando('eu preencher o formulário') do
     elsif pergunta_div.has_selector?('input[type="text"]', wait: false)
       pergunta_div.find('input[type="text"]').set('Outra resposta')
     else
-      puts "HTML da pergunta não reconhecida:\n#{pergunta_div.native.inner_html}"
       raise "Tipo de campo de pergunta não reconhecido"
     end
   end
@@ -232,7 +254,6 @@ Quando(/^eu selecionar a matéria "(.*)"$/) do |nome_materia|
   materia_row.find('input[type="checkbox"]').click
 end
 
-
 Quando("eu clicar no botão “Enviar”") do
   click_button "Enviar"
 end
@@ -259,6 +280,37 @@ end
 
 Quando('eu clicar no botão {string}') do |botao|
   click_on botao
+end
+
+Dado('que o template {string} foi excluído por outro admin enquanto eu estava na tela') do |template_nome|
+  template = Template.find_by(nome: template_nome)
+  raise "Template '#{template_nome}' não encontrado" unless template
+
+  template.destroy!
+end
+
+Quando('eu clicar no botão {string} no template {string}') do |botao, nome_template|
+  within('.templates-list') do
+    template_card = find('.template-card', text: nome_template)
+    raise "Template '#{nome_template}' não encontrado" unless template_card
+
+    if botao.downcase == 'excluir'
+      accept_confirm("Tem certeza que deseja excluir o template #{nome_template}?") do
+        template_card.find('input.btn-delete', match: :first).click
+      end
+
+    else
+      within(template_card) do
+        click_on botao
+      end
+    end
+  end
+end
+
+Então('eu não devo ver o template {string}') do |texto|
+  within('.templates-list') do
+    expect(page).not_to have_content(texto)
+  end
 end
 
 Então('nenhum template deve ser exibido na lista') do

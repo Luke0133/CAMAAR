@@ -1,17 +1,11 @@
 class Admin::TemplatesController < ApplicationController
-  layout 'templates_fill', only: [:new, :edit,:index]
+  layout 'templates_fill', only: [:new, :edit, :index]
   def index
     @valid_templates = Template
                          .joins(ligacao_pergunta: :perguntas)
                          .distinct
                          .includes(ligacao_pergunta: :perguntas)
-
     @invalid_templates = Template.all - @valid_templates
-
-    # puts "Templates válidos: #{@valid_templates.count}"
-    # puts "Templates no banco: #{Template.count}"
-
-
     @show_incompatibility_message = Template.count != @valid_templates.count
   end
 
@@ -20,9 +14,35 @@ class Admin::TemplatesController < ApplicationController
   end
 
   def create
-    if params[:questions].blank? || params[:questions].reject { |q| q[:text].blank? }.empty?
-      flash.now[:error] = "O template precisa ter pelo menos uma pergunta."
-      return render :new
+    @template = Template.new(template_params)
+    @name = params[:template][:nome]
+
+    @questions = (params[:questions] || []).map do |q|
+      {
+        pergunta: q[:text] || q["text"],
+        tipo: (q[:type] || q["type"]).to_i,
+        opcoes: Array(q[:options] || q["options"]).map { |opt| { opcao: opt } }
+      }
+    end
+
+    if @name.blank?
+      flash.now[:error] = "O nome do template não pode estar em branco."
+      return render :new, layout: 'templates_fill', status: :unprocessable_entity
+    end
+
+    if @questions.blank? || @questions.any? { |q| q[:pergunta].blank? }
+      flash.now[:error] = "O template precisa ter pelo menos uma pergunta e todas as perguntas devem ter texto."
+      return render :new, layout: 'templates_fill', status: :unprocessable_entity
+    end
+
+    @questions.each_with_index do |q, index|
+      if q[:tipo] == 0
+        original_options = (params[:questions][index][:options] || params[:questions][index]["options"]) || []
+        if original_options.any?(&:blank?)
+          flash.now[:error] = "Todas as opções das perguntas de múltipla escolha devem estar preenchidas."
+          return render :new, layout: 'templates_fill', status: :unprocessable_entity
+        end
+      end
     end
 
     ActiveRecord::Base.transaction do
@@ -34,7 +54,6 @@ class Admin::TemplatesController < ApplicationController
         ligacao_pergunta: ligacao
       )
 
-      puts "PARAM QUESTIONS: #{params[:questions].inspect}"
       Array(params[:questions]).each do |q|
         pergunta = Pergunta.create!(
           ligacao_pergunta: ligacao,
@@ -42,7 +61,6 @@ class Admin::TemplatesController < ApplicationController
           pergunta:         q[:text]
         )
 
-        # Só se for de múltipla escolha
         if q[:type].to_i.zero? && q[:options].present?
           q[:options].reject(&:blank?).each_with_index do |opt, idx|
             Opcao.create!(
@@ -60,21 +78,65 @@ class Admin::TemplatesController < ApplicationController
 
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:error] = e.record.errors.full_messages.join(", ")
-    return render :new
+    @name = params[:template][:nome]
+    @questions = (params[:questions] || []).map do |q|
+      {
+        pergunta: q[:text] || q["text"],
+        tipo: (q[:type] || q["type"]).to_i,
+        opcoes: Array(q[:options] || q["options"]).map { |opt| { opcao: opt } }
+      }
+    end
+    return render :new, layout: 'templates_fill', status: :unprocessable_entity
   end
 
   def edit
-    @template  = Template.find(params[:id])
+    @template = Template.find_by(id: params[:id])
+
+    unless @template
+      redirect_to admin_templates_path, alert: "Falha ao editar: o template selecionado não existe."
+      return
+    end
+
     @ligacao   = @template.ligacao_pergunta
     @questions = @template.ligacao_pergunta.perguntas.includes(:opcoes)
   end
 
   def update
-    @template = Template.find(params[:id])
+    @template = Template.find_by(id: params[:id])
 
-    if params[:questions].blank? || params[:questions].reject { |q| q[:text].blank? }.empty?
-      flash.now[:error] = "O template precisa ter pelo menos uma pergunta."
-      return render :edit
+    unless @template
+      redirect_to admin_templates_path, alert: "Falha ao editar: o template selecionado não existe."
+      return
+    end
+
+    @name = params[:template][:nome]
+
+    @questions = (params[:questions] || []).map do |q|
+      {
+        pergunta: q[:text] || q["text"],
+        tipo: (q[:type] || q["type"]).to_i,
+        opcoes: Array(q[:options] || q["options"]).map { |opt| { opcao: opt } }
+      }
+    end
+
+    if @name.blank?
+      flash.now[:error] = "O nome do template não pode estar em branco."
+      return render :edit, layout: 'templates_fill', status: :unprocessable_entity
+    end
+
+    if @questions.blank? || @questions.any? { |q| q[:pergunta].blank? }
+      flash.now[:error] = "O template precisa ter pelo menos uma pergunta e todas as perguntas devem ter texto."
+      return render :edit, layout: 'templates_fill', status: :unprocessable_entity
+    end
+
+    @questions.each_with_index do |q, index|
+      if q[:tipo] == 0
+        original_options = (params[:questions][index][:options] || params[:questions][index]["options"]) || []
+        if original_options.any?(&:blank?)
+          flash.now[:error] = "Todas as opções das perguntas de múltipla escolha devem estar preenchidas."
+          return render :edit, layout: 'templates_fill', status: :unprocessable_entity
+        end
+      end
     end
 
     ActiveRecord::Base.transaction do
@@ -98,15 +160,30 @@ class Admin::TemplatesController < ApplicationController
 
       redirect_to admin_templates_path, notice: "Template atualizado com sucesso"
     end
+
   rescue ActiveRecord::RecordInvalid => e
     flash.now[:error] = e.record.errors.full_messages.join(", ")
-    render :edit
+    @name = params[:template][:nome]
+    @questions = (params[:questions] || []).map do |q|
+      {
+        pergunta: q[:text] || q["text"],
+        tipo: (q[:type] || q["type"]).to_i,
+        opcoes: Array(q[:options] || q["options"]).map { |opt| { opcao: opt } }
+      }
+    end
+    return render :edit, layout: 'templates_fill', status: :unprocessable_entity
   end
 
   def destroy
-    @template = Template.find(params[:id])
-    @template.destroy!
-    redirect_to admin_templates_path, notice: "Template excluído com sucesso"
+    @template = Template.find_by(id: params[:id])
+
+    if @template
+      nome = @template.nome
+      @template.destroy!
+      redirect_to admin_templates_path, notice: "O #{nome} foi excluído!"
+    else
+      redirect_to admin_templates_path, alert: "Falha ao excluir: o template selecionado não existe."
+    end
   end
 
   private
