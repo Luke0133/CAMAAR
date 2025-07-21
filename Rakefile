@@ -4,9 +4,3 @@
 require_relative "config/application"
 
 Rails.application.load_tasks
-
-require 'rubycritic/rake_task'
-
-RubyCritic::RakeTask.new do |task|
-  task.options = '--no-browser'
-end

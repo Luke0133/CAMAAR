@@ -66,29 +66,4 @@ RSpec.describe Admin::ResultadosController, type: :controller do
       end
     end
   end
-
-  describe 'GET #preparar_download' do
-    context 'HAPPY: quando o formulário possui respostas' do
-      it 'define flashes e redireciona corretamente' do
-        formulario = create(:formulario, :com_respostas)
-
-        get :preparar_download, params: { id: formulario.id }
-
-        expect(response).to redirect_to(admin_resultados_path)
-        expect(flash[:success]).to eq('Arquivo de resultado baixado com sucesso')
-        expect(flash[:download_form_id]).to eq(formulario.id)
-      end
-    end
-
-    context 'SAD: quando o formulário não possui respostas' do
-      it 'redireciona com flash de aviso' do
-        formulario = create(:formulario, :sem_respostas)
-
-        get :preparar_download, params: { id: formulario.id }
-
-        expect(response).to redirect_to(admin_resultados_path)
-        expect(flash[:warning]).to eq('Este formulário ainda não contém respostas')
-      end
-    end
-  end
 end

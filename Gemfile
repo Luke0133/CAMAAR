@@ -17,6 +17,9 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 
+gem "devise"
+
+gem 'csv'
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
@@ -28,13 +31,12 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
-gem "csv"
-gem "cocoon"
-gem "rdoc", "~> 6.14"
+gem 'csv'
+gem 'cocoon'
 
 # Para login e definição de senha
-gem "devise"
-gem "letter_opener"
+gem 'devise'
+gem 'letter_opener'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
@@ -48,7 +50,6 @@ gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
-gem "rubycritic", require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -59,6 +60,7 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+  gem 'rubycritic', require: false
 end
 
 group :development do
@@ -68,14 +70,14 @@ end
 
 group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing
-  gem "byebug"
-  gem "rspec-rails"
-  gem "cucumber-rails", require: false
-  gem "database_cleaner-active_record"
-  gem "capybara"
-  gem "selenium-webdriver"
-  gem "webdrivers", "~> 5.3"
-  gem "factory_bot_rails", "~> 6.0"
+  gem 'byebug'
+  gem 'rspec-rails'
+  gem 'cucumber-rails', require: false
+  gem 'database_cleaner-active_record'
+  gem 'capybara'
+  gem 'selenium-webdriver'
+  gem 'webdrivers'
+  gem 'factory_bot_rails', '~> 6.0'
   gem "rails-controller-testing"
 end
 #
@@ -85,3 +87,4 @@ end
 #  gem 'cucumber-rails', require: false
 #  gem 'factory_bot_rails'
 #end
+gem "rdoc", "~> 6.14"

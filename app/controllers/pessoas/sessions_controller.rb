@@ -7,30 +7,21 @@ class Pessoas::SessionsController < Devise::SessionsController
   def create
     self.resource = warden.authenticate(auth_options)
     if self.resource
-      successful_login
+      set_flash_message!(:notice, :signed_in)
+      sign_in(resource_name, resource)
+      session[:email] = resource.email
+      
+      respond_with resource, location: after_sign_in_path_for(resource)
     else
-      failed_login
+      flash.now[:alert] = "Login ou senha inválidos"
+      self.resource = resource_class.new(sign_in_params)
+      clean_up_passwords(resource)
+      respond_with_navigational(resource) { render :new, status: :unauthorized }
     end
   end
 
-
-  def successful_login
-    set_flash_message!(:notice, :signed_in)
-    sign_in(resource_name, resource)
-    session[:email] = resource.email
-    respond_with resource, location: after_sign_in_path_for(resource)
-  end
-
-
-  def failed_login
-    flash.now[:alert] = "Login ou senha inválidos"
-    self.resource = resource_class.new(sign_in_params)
-    clean_up_passwords(resource)
-    respond_with_navigational(resource) { render :new, status: :unauthorized }
-  end
-
-
   protected
+
   def configure_sign_in_params
     # Permite email e password na autenticação
     devise_parameter_sanitizer.permit(:sign_in, keys: [:email, :matricula])
@@ -42,6 +33,7 @@ class Pessoas::SessionsController < Devise::SessionsController
   end
 
   private
+
   def set_devise_vars
     # Torna as variáveis disponíveis na view
     @resource = resource_class.new(sign_in_params)

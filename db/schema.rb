@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_20_225901) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_13_204544) do
   create_table "cargos", id: false, force: :cascade do |t|
     t.string "email", null: false
     t.integer "funcao", null: false
@@ -82,7 +82,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_225901) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.index ["email"], name: "index_pessoas_on_email_unique", unique: true
     t.index ["reset_password_token"], name: "index_pessoas_on_reset_password_token", unique: true
   end
 

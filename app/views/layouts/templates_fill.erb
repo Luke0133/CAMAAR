@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Criar ou Editar Template - CAMAAR</title>
+  <title>Criar/Editar Template - CAMAAR</title>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
@@ -27,7 +27,7 @@
 <header class="topbar">
   <div class="topbar-left">
     <span class="menu-toggle">☰</span>
-    <span class="logo">Gerenciamento - Criar ou Editar Template</span>
+    <span class="logo">Gerenciamento - Criar/Editar Template</span>
   </div>
   <div class="topbar-right">
     <!-- <input type="text" class="search-bar" placeholder="Buscar..."> -->
@@ -72,10 +72,6 @@
         <div class="flash flash-alert"><%= flash[:alert] %></div>
       <% end %>
 
-      <% if flash[:error] %>
-        <div class="flash flash-error"><%= flash[:error] %></div>
-      <% end %>
-
       <%= yield %>
     </main>
 </div>
@@ -118,25 +114,13 @@
 </script>
 
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.querySelector(".flash-alert");
-        if (alertBox) {
-            setTimeout(() => {
-                alertBox.style.opacity = "0";
-                setTimeout(() => alertBox.remove(), 500);
-            }, 2000);
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.querySelector(".flash-error");
-        if (alertBox) {
-            setTimeout(() => {
-                alertBox.style.opacity = "0";
-                setTimeout(() => alertBox.remove(), 500);
-            }, 5000);
-        }
-    });
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".flash-alert");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
 </script>

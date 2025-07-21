@@ -1,4 +1,3 @@
-# language: pt
 # Definição de páginas
 def paginas_camaaar
   {
@@ -12,7 +11,7 @@ def paginas_camaaar
     },
     "gerenciamento de templates" => {
       path: -> { admin_templates_path },
-      title: /Criar ou Editar Template - CAMAAR/
+      title: /Criar\/Editar Template - CAMAAR/
     },
     "envio" => {
       path: -> { new_admin_formulario_path },
@@ -21,16 +20,7 @@ def paginas_camaaar
     "resultados" => {
       path: -> { admin_resultados_path },
       title: /Resultados - CAMAAR/
-    },
-    "login" => {
-      path: -> { new_pessoa_session_path },
-      title: /Login - CAMAAR/
-    },
-    # > Não é necessário, pois seu step é mais complexo que somente estar na página de registro
-    #"registro" => {                                   
-    #  path: -> { edit_pessoa_password_path },
-    #  title: /Defina sua Senha - CAMAAR/
-    #},
+    }, 
   }
 
 end
@@ -42,13 +32,14 @@ Dado(/^que eu estou logado como (.+)$/) do |pessoa|
   case pessoa
   when 'admin'
     @admin = FactoryBot.create(:pessoa, :admin, email: email, password: senha)
-  # > Por enquanto, não foi necessário usar em nenhum caso
-  #when 'admin usuário'
-  #  @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)   
+  when 'admin usuário'
+    @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)
   when 'aluno'
     @aluno = FactoryBot.create(:pessoa, :aluno, email: email, password: senha)
   when 'professor'
     @professor = FactoryBot.create(:pessoa, :professor, email: email, password: senha)
+  else
+    raise "Tipo de pessoa desconhecido: #{pessoa}"
   end
 
   visit new_pessoa_session_path
@@ -70,6 +61,10 @@ Então(/^eu devo estar na página de (.+) do CAMAAR$/) do |pagina|
   expect(page).to have_title(config[:title])
 end
 
+#Então('eu devo estar na página de gerenciamento do CAMAAR') do
+#  expect(current_path).to eq admin_gerenciamento_path
+#end
+
 Dado('que foram importados dados do SIGAA') do
   caminho = Rails.root.join("spec/fixtures/valido.json")
   json = JSON.parse(File.read(caminho))
@@ -81,37 +76,17 @@ Então(/^eu devo ver "(.*)"$/) do |mensagem|
   expect(page).to have_selector('.flash-alert, .flash-notice, .flash-success, .flash-warning, .flash-error, .success, .alert, .error', text: mensagem, visible: :visible)
 end
 
+
 # Visão de templates/formulários
 Então(/^eu devo ver (\d+) formulários?$/) do |count|
   expect(page).to have_css('.formulario-card', count: count)
 end
 
-Então(/^eu devo ver (\d+) templates?$/) do |count|
-  expect(page).to have_css('.template-card:not(.new)', count: count)
+Então(/^eu devo ver (\d+) templates$/) do |count|
+  expect(page).to have_css('.formulario-card', count: count)
 end
 
-Quando('eu preencher o template') do
-  expect(page).to have_selector('input[name="template[nome]"]')
-  find('input[name="template[nome]"]').set('Template de Teste')
 
-  expect(page).to have_selector('.pergunta')
-  all('.pergunta').each_with_index do |pergunta_div, i|
-    tipo_select = pergunta_div.find('select[name="questions[][type]"]', visible: false)
-    tipo = tipo_select.value
-
-    pergunta_div.find('input[name="questions[][text]"]').set("Pergunta de Teste#{i + 1}")
-
-    if tipo == "0"
-      expect(pergunta_div).to have_selector('input[name="questions[][options][]"]', count: 2)
-      pergunta_div.all('input[name="questions[][options][]"]').each_with_index do |opt_input, j|
-        opt_input.set("Opção #{j + 1}")
-      end
-    end
-  end
-end
-
-Quando("eu não preencher o template") do
-end
 
 # Existem n formulários
 Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
@@ -148,17 +123,16 @@ Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
   cargos = Cargo.where(email: email)
 
   if cargos.any? { |c| [1, 2].include?(c.funcao) }
-    puts "QAAOASOIDHAOIHDIOASDIO"
-    turma = FactoryBot.create(:turma)                                                                    # <----
-    Participante.create!(email: pessoa.email, id_turma: turma.id)                                        # <----
+    turma = FactoryBot.create(:turma)
+    Participante.create!(email: pessoa.email, id_turma: turma.id)
 
-    count.to_i.times do                                                                                  # <----
-      formulario = FactoryBot.create(:formulario, :com_perguntas, turma: turma)                          # <----
-      formulario.ligacao_pergunta.perguntas.each do |pergunta|                                           # <----
-        conteudo = pergunta.tipo == 0 ? "a" : "Alguma resposta"                                          # <----
-        FactoryBot.create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: conteudo)     # <----
-      end 
-      FormularioRespondido.create!(formulario: formulario, email: pessoa.email)                          # <----
+    count.to_i.times do
+      formulario = FactoryBot.create(:formulario, :com_perguntas, turma: turma)
+      formulario.ligacao_pergunta.perguntas.each do |pergunta|
+        conteudo = pergunta.tipo == 0 ? "a" : "Alguma resposta"
+        FactoryBot.create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: conteudo)
+      end
+      FormularioRespondido.create!(formulario: formulario, email: pessoa.email)
     end
   else
     materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
@@ -202,6 +176,7 @@ Quando(/^eu clicar no formulário "(.*)"$/) do |form_name|
       click_link 'Responder'
     end
   end
+  puts "Caminho atual: #{current_path}"
 end
 
 Quando('eu preencher o formulário') do
@@ -210,21 +185,35 @@ Quando('eu preencher o formulário') do
       pergunta_div.find('input[type="radio"]', match: :first).click
     elsif pergunta_div.has_selector?('textarea', wait: false)
       pergunta_div.find('textarea').set('Resposta de teste')
+    elsif pergunta_div.has_selector?('input[type="text"]', wait: false)
+      pergunta_div.find('input[type="text"]').set('Outra resposta')
+    else
+      puts "HTML da pergunta não reconhecida:\n#{pergunta_div.native.inner_html}"
+      raise "Tipo de campo de pergunta não reconhecido"
     end
   end
 end
 
 # Importar dados
+Quando('eu clicar no botão "Importar dados"') do 
+  click_button 'Importar dados'
+end
 
-Quando('eu selecionar o arquivo {string}') do |nome_arquivo|
+Quando('eu selecionar o arquivo {string}') do 
+  caminho = Rails.root.join('spec', 'fixtures', nome_arquivo)
+  attach_file('arquivo', caminho)
+end
+
+Quando('eu selecionar o arquivo {string} para importar') do |nome_arquivo|
   caminho = Rails.root.join("spec/fixtures/#{nome_arquivo}")
-  attach_file('file', caminho)  # o nome do campo no formulário é :file
+  attach_file('file', caminho, visible: false)
+  click_button 'Importar dados'
 end
 
 Então('um email deve ter sido enviado para {string}') do |email|
   mail = ActionMailer::Base.deliveries.find { |m| m.to.include?(email) }
   expect(mail).not_to be_nil
-  expect(mail.subject).to match(/Definição de Senha - CAMAAR/i)
+  expect(mail.subject).to match(/Redefinir senha/i)
 end
 
 
@@ -248,6 +237,7 @@ Quando(/^eu selecionar a matéria "(.*)"$/) do |nome_materia|
   materia_row = find('tr', text: nome_materia)
   materia_row.find('input[type="checkbox"]').click
 end
+
 
 Quando("eu clicar no botão “Enviar”") do
   click_button "Enviar"
@@ -275,37 +265,6 @@ end
 
 Quando('eu clicar no botão {string}') do |botao|
   click_on botao
-end
-
-Dado('que o template {string} foi excluído por outro admin enquanto eu estava na tela') do |template_nome|
-  template = Template.find_by(nome: template_nome)
-  raise "Template '#{template_nome}' não encontrado" unless template
-
-  template.destroy!
-end
-
-Quando('eu clicar no botão {string} no template {string}') do |botao, nome_template|
-  within('.templates-list') do
-    template_card = find('.template-card', text: nome_template)
-    raise "Template '#{nome_template}' não encontrado" unless template_card
-
-    if botao.downcase == 'excluir'
-      accept_confirm("Tem certeza que deseja excluir o template #{nome_template}?") do
-        template_card.find('input.btn-delete', match: :first).click
-      end
-
-    else
-      within(template_card) do
-        click_on botao
-      end
-    end
-  end
-end
-
-Então('eu não devo ver o template {string}') do |texto|
-  within('.templates-list') do
-    expect(page).not_to have_content(texto)
-  end
 end
 
 Então('nenhum template deve ser exibido na lista') do
@@ -338,45 +297,4 @@ Então(/^um arquivo "\.csv" deve ser baixado$/) do
     .to include('attachment')
   expect(download_response.headers['Content-Type'])
     .to eq('text/csv')
-end
-
-# Login
-Dado(/^que existe um (.+) cadastrado com "(.+)" e "(.+)"$/) do |tipo, email, senha|
-  valid_traits = %w[aluno admin professor admin_professor]
-  tipo_normalizado = tipo.downcase
-
-  raise ArgumentError, "Tipo inválido: #{tipo}" unless valid_traits.include?(tipo_normalizado)
-
-  FactoryBot.create(:pessoa, tipo_normalizado.to_sym, email: email, password: senha, password_confirmation: senha)
-end
-
-Quando('eu preencher o campo {string} com {string}') do |campo, valor|
-  fill_in campo, with: valor
-end
-
-# Senha
-Dado('que eu estou na página de registro do CAMAAR com um token válido') do
-  include ActionMailer::TestHelper
-  Devise.mappings[:pessoa] ||= Devise::Mapping.new(:pessoa, {})
-  ActionMailer::Base.deliveries.clear
-  pessoa = FactoryBot.create(:pessoa, email: "myemail@email", password: nil)
-  raw_token, enc_token = Devise.token_generator.generate(Pessoa, :reset_password_token)
-  pessoa.update!(
-    reset_password_token: enc_token,
-    reset_password_sent_at: Time.current
-  )
-  Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
-  mail = ActionMailer::Base.deliveries.last
-  link = mail.body.encoded.match(/href="(?<url>.+?)"/)[:url]
-  token = CGI.parse(URI.parse(link).query)["reset_password_token"].first
-  visit edit_pessoa_password_path(reset_password_token: token)
-end
-
-Dado('que eu estou na página de registro do CAMAAR com um token inválido') do
-  visit edit_pessoa_password_path(reset_password_token: "token_invalido")
-end
-
-Então('deve existir uma pessoa cadastrada com {string} e {string}') do |email, senha|
-  pessoa = Pessoa.find_by(email: email)
-  expect(pessoa.valid_password?(senha)).to be(true)
 end

@@ -1,131 +1,117 @@
-# frozen_string_literal: true
+class Admin::TemplatesController < ApplicationController
+  layout 'templates_fill', only: [:new, :edit,:index]
+  def index
+    @valid_templates = Template
+                         .joins(ligacao_pergunta: :perguntas)
+                         .distinct
+                         .includes(ligacao_pergunta: :perguntas)
 
-module Admin
-  class TemplatesController < ApplicationController
-    layout "templates_fill", only: %i[new edit index]
+    @invalid_templates = Template.all - @valid_templates
 
-    before_action :set_template, only: %i[edit update]
+    # puts "Templates válidos: #{@valid_templates.count}"
+    # puts "Templates no banco: #{Template.count}"
 
-    def index
-      @valid_templates   = Template
-                             .joins(ligacao_pergunta: :perguntas)
-                             .distinct
-                             .includes(ligacao_pergunta: :perguntas)
-      @invalid_templates = Template.all - @valid_templates
-      @show_incompatibility_message = @valid_templates.count != Template.count
+
+    @show_incompatibility_message = Template.count != @valid_templates.count
+  end
+
+  def new
+    @template = Template.new
+  end
+
+  def create
+    if params[:questions].blank? || params[:questions].reject { |q| q[:text].blank? }.empty?
+      flash.now[:error] = "O template precisa ter pelo menos uma pergunta."
+      return render :new
     end
 
-    def new
-      @template  = Template.new
-      @name      = ""
-      @questions = []
-    end
+    ActiveRecord::Base.transaction do
 
-    def create
-      # puts params[:questions].inspect
-      @form = TemplateForm.new(template_form_params)
+      ligacao = LigacaoPergunta.create!
 
-      if @form.save
-        redirect_to admin_templates_path,
-                    notice: "Template Criado Com Sucesso"
-      else
-        render_with_errors(@form, :new)
+      @template = Template.create!(
+        nome: params[:template][:nome],
+        ligacao_pergunta: ligacao
+      )
+
+      puts "PARAM QUESTIONS: #{params[:questions].inspect}"
+      Array(params[:questions]).each do |q|
+        pergunta = Pergunta.create!(
+          ligacao_pergunta: ligacao,
+          tipo:             q[:type].to_i,
+          pergunta:         q[:text]
+        )
+
+        # Só se for de múltipla escolha
+        if q[:type].to_i.zero? && q[:options].present?
+          q[:options].reject(&:blank?).each_with_index do |opt, idx|
+            Opcao.create!(
+              pergunta: pergunta,
+              item:     idx + 1,
+              opcao:    opt
+            )
+          end
+        end
       end
-    end
-
-    def edit
-      @name      = @template.nome
-      @questions = questions_for_edit(@template)
-    end
-
-    def update
-      # puts params[:questions].inspect
-      @form = TemplateForm.new(template_form_params)
-
-      if @form.save(@template)
-        redirect_to admin_templates_path,
-                    notice: "Template atualizado com sucesso"
-      else
-        render_with_errors(@form, :edit)
-      end
-    end
-
-    def destroy
-      template = Template.find_by(id: params[:id])
-      if template
-        nome = template.nome
-        template.destroy!
-        redirect_to admin_templates_path,
-                    notice: "O #{nome} foi excluído!"
-      else
-        redirect_to admin_templates_path,
-                    alert: "Falha ao excluir: o template selecionado não existe."
-      end
-    end
-
-    private
-
-    def set_template
-      @template = Template.find_by(id: params[:id])
-      return if @template
 
       redirect_to admin_templates_path,
-                  alert: "Falha ao editar: o template selecionado não existe."
+                  notice: "Template Criado Com Sucesso"
     end
 
-    def template_form_params
-      permitted = params.require(:template).permit(:nome)
-      {
-        nome:      permitted[:nome],
-        questions: build_questions_array
-      }
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:error] = e.record.errors.full_messages.join(", ")
+    return render :new
+  end
+
+  def edit
+    @template  = Template.find(params[:id])
+    @ligacao   = @template.ligacao_pergunta
+    @questions = @template.ligacao_pergunta.perguntas.includes(:opcoes)
+  end
+
+  def update
+    @template = Template.find(params[:id])
+
+    if params[:questions].blank? || params[:questions].reject { |q| q[:text].blank? }.empty?
+      flash.now[:error] = "O template precisa ter pelo menos uma pergunta."
+      return render :edit
     end
 
-    def build_questions_array
-      Array(params[:questions]).map do |question_data|
-        {
-          text:    question_data[:text].to_s.strip,
-          type:    question_data[:type],
-          options: Array(question_data[:options])
-        }
+    ActiveRecord::Base.transaction do
+      ligacao = @template.ligacao_pergunta
+      ligacao.perguntas.destroy_all
+
+      @template.update!(nome: params[:template][:nome])
+
+      Array(params[:questions]).each do |q|
+        pergunta = Pergunta.create!(
+          ligacao_pergunta: ligacao,
+          tipo:             q[:type].to_i,
+          pergunta:         q[:text]
+        )
+        if q[:type].to_i.zero? && q[:options].present?
+          q[:options].each_with_index do |opt, idx|
+            Opcao.create!(pergunta: pergunta, item: idx + 1, opcao: opt)
+          end
+        end
       end
+
+      redirect_to admin_templates_path, notice: "Template atualizado com sucesso"
     end
+  rescue ActiveRecord::RecordInvalid => e
+    flash.now[:error] = e.record.errors.full_messages.join(", ")
+    render :edit
+  end
 
-    def render_with_errors(form, action_name)
-      @name      = form.nome
-      @questions = form.questions.map { |dq| map_question_payload(dq) }
-      @template ||= Template.new(nome: @name)
+  def destroy
+    @template = Template.find(params[:id])
+    @template.destroy!
+    redirect_to admin_templates_path, notice: "Template excluído com sucesso"
+  end
 
-      flash.now[:error] = "Erro(s) no template: " +
-                          form.errors.map(&:message).join("; ") + "."
+  private
 
-      render action_name, layout: "templates_fill", status: :unprocessable_entity
-    end
-
-    def map_question_payload(question_data)
-      {
-        pergunta: question_data[:text],
-        tipo:     question_data[:type].to_i,
-        opcoes:   Array(question_data[:options]).map { |opt| { opcao: opt } }
-      }
-    end
-
-    def questions_for_edit(template)
-      template
-        .ligacao_pergunta
-        .perguntas
-        .includes(:opcoes)
-        .order(:id)
-        .map { |record| map_edit_question(record) }
-    end
-
-    def map_edit_question(record)
-      {
-        pergunta: record.pergunta,
-        tipo:     record.tipo.to_s,
-        opcoes:   record.opcoes.order(:item).map { |op| { opcao: op.opcao } }
-      }
-    end
+  def template_params
+    params.require(:template).permit(:nome)
   end
 end
-
