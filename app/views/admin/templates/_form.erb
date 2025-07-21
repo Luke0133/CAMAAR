@@ -1,20 +1,13 @@
-<%= form_with model: [:admin, template], local: true, html: { class: "template-form" } do |f| %>
+<%= form_with model: [:admin, @template], local: true, html: { class: "template-form" } do |f| %>
   <h2>Nome do Template</h2>
   <div class="form-group">
-    <%= f.text_field :nome, required: true, class: "form-control" %>
+    <%= f.text_field :nome, class: "form-control" %>
   </div>
 
   <h2>Perguntas</h2>
-   <% formatted_questions = (@questions || []).map do |q|
-        {
-          pergunta: q.pergunta,
-          tipo: q.tipo,
-          opcoes: q.opcoes.map { |o| { opcao: o.opcao } }
-        }
-      end
-    %>
+    <% formatted_questions = @questions || [] %>
 
-    <div
+  <div
       id="questions-container"
       data-questions="<%= json_escape(formatted_questions.to_json) %>"
     >
@@ -46,7 +39,7 @@
             block.className = "pergunta";
             block.innerHTML = `
       <label>Pergunta</label>
-      <input type="text" name="questions[][text]" required class="form-control" />
+      <input type="text" name="questions[][text]" class="form-control" />
 
       <label class="sub-label">Tipo</label>
       <select name="questions[][type]" class="form-control">
@@ -56,10 +49,10 @@
 
       <div class="options-container">
         <div class="option-wrapper">
-          <input type="text" name="questions[][options][]" required class="option-input form-control" />
+          <input type="text" name="questions[][options][]" class="option-input form-control" />
         </div>
         <div class="option-wrapper">
-          <input type="text" name="questions[][options][]" required class="option-input form-control" />
+          <input type="text" name="questions[][options][]" class="option-input form-control" />
         </div>
         <button type="button" class="btn add-option-btn">Adicionar Opção</button>
       </div>
@@ -77,7 +70,7 @@
                 e.preventDefault();
                 const wrapper = document.createElement("div");
                 wrapper.className = "option-wrapper";
-                wrapper.innerHTML = `<input type="text" name="questions[][options][]" required class="option-input form-control" />`;
+                wrapper.innerHTML = `<input type="text" name="questions[][options][]" class="option-input form-control" />`;
                 optsContainer.insertBefore(wrapper, block.querySelector(".add-option-btn"));
                 updateRemoveOptionButtons();
             });
@@ -85,37 +78,48 @@
             block.querySelector("select").addEventListener("change", e => {
               const isTypeOption = e.target.value === "0";
               optsContainer.style.display = isTypeOption ? "block" : "none";
-
-              optsContainer.querySelectorAll("input").forEach(input => {
-                if (isTypeOption) {
-                  input.setAttribute("required", "required");
-                } else {
-                  input.removeAttribute("required");
-                }
-              });
             });
 
             container.appendChild(block);
             updateRemoveQuestionButtons();
             updateRemoveOptionButtons();
 
-            if (data.pergunta) {
-                block.querySelector("input[name='questions[][text]']").value = data.pergunta;
+            const perguntaText = data.pergunta != null ? data.pergunta : "";
+            const opcoes = Array.isArray(data.opcoes) ? data.opcoes : [];
+
+            if (perguntaText !== "" || opcoes.length > 0) {
+                block.querySelector("input[name='questions[][text]']").value = perguntaText;
+
                 const sel = block.querySelector("select");
-                sel.value = data.tipo;
+                sel.value = data.tipo || "0";
                 sel.dispatchEvent(new Event("change"));
 
-                if (data.tipo === 0 && data.opcoes)  {
+                block.querySelectorAll(".option-wrapper").forEach(w => w.remove());
 
-                    block.querySelectorAll(".option-wrapper").forEach(w => w.remove());
-                    data.opcoes.forEach(optText => {
+                if (opcoes.length > 0) {
+                    opcoes.forEach(optText => {
                         const wrapper = document.createElement("div");
                         wrapper.className = "option-wrapper";
-                        wrapper.innerHTML = `<input type="text" name="questions[][options][]" required class="option-input form-control" value="${optText.opcao}" />`;
+                        wrapper.innerHTML = `<input type="text" name="questions[][options][]" class="option-input form-control" value="${optText.opcao || ""}" />`;
                         optsContainer.insertBefore(wrapper, block.querySelector(".add-option-btn"));
                     });
-                    updateRemoveOptionButtons();
+
+                    for (let i = opcoes.length; i < 2; i++) {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "option-wrapper";
+                        wrapper.innerHTML = `<input type="text" name="questions[][options][]" class="option-input form-control" value="" />`;
+                        optsContainer.insertBefore(wrapper, block.querySelector(".add-option-btn"));
+                    }
+                } else {
+
+                    for (let i = 0; i < 2; i++) {
+                        const wrapper = document.createElement("div");
+                        wrapper.className = "option-wrapper";
+                        wrapper.innerHTML = `<input type="text" name="questions[][options][]" class="option-input form-control" value="" />`;
+                        optsContainer.insertBefore(wrapper, block.querySelector(".add-option-btn"));
+                    }
                 }
+                updateRemoveOptionButtons();
             }
         }
 
