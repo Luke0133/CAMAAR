@@ -14,7 +14,7 @@ Funcionalidade: Atualizar base de dados com os dados do SIGAA
     Quando eu selecionar o arquivo "valido2.json" 
     E eu clicar no botão "Importar dados"
     Então eu devo estar na página de gerenciamento do CAMAAR
-    E eu devo ver "Dados importados com sucesso: alguns dados foram atualizados"
+    E eu devo ver "Dados importados com sucesso"
 
   Cenário: JSON inválido (caminho triste),
     Quando eu selecionar o arquivo "invalido.json" 

@@ -25,6 +25,14 @@ class TurmaInfo
   def initialize(data)
     @data = data
   end
+
+  def method_missing(name, *args)
+    @data[name.to_s] || @data[name.to_sym]
+  end
+
+  def respond_to_missing?(name, include_private = false)
+    @data.key?(name.to_s) || @data.key?(name.to_sym) || super
+  end
 end
 
 # Classe auxiliar para armazenar os dados de cada importador.
@@ -83,7 +91,7 @@ class ImportadorTurma < ImportadorBase
         id_materia: turma_info.code,
         numero_turma: turma_info.classCode.to_i,
         semestre: turma_info.semester,
-        professor: turma_info.docente["email"]
+        professor: turma_info.docente["nome"]
       )
     end
   end
@@ -97,7 +105,7 @@ class ImportadorAlunos < ImportadorBase
   end
 
   def importar
-    turma_info.dicente.each do |aluno|
+    turma_info.discente.each do |aluno|
       email = aluno["email"]
 
       pessoa = Pessoa.find_by(email: email)
