@@ -7,15 +7,15 @@ RSpec.describe ImportadorSigaa, type: :service do
     end
 
     let!(:professor_existente) do
-      Pessoa.create!(nome: "Lamar", email: "lamar@email.com", matricula: "123", senha: "testeProfessor")
+      Pessoa.create!(nome: "Prof", email: "prof@email.com", matricula: "123", senha: "testeProfessor")
     end
 
     let!(:aluno_existente) do
-      Pessoa.create!(nome: "José", email: "jose@email.com", matricula: "123456789", senha: "testeAluno")
+      Pessoa.create!(nome: "Aluno", email: "aluno@email.com", matricula: "123456789", senha: "testeAluno")
     end
 
     let!(:turma_existente) do
-      Turma.create!(id: 1, id_materia: "CIC0001", numero_turma: 1, semestre: "2024.2", professor: "lamar@email.com")
+      Turma.create!(id: 1, id_materia: "CIC0001", numero_turma: 1, semestre: "2024.2", professor: "prof@email.com")
     end
 
     let(:json_data) do
@@ -29,20 +29,20 @@ RSpec.describe ImportadorSigaa, type: :service do
           "semester" => "2025.1",
           "dicente" => [
             {
-              "nome" => "José Edson",
+              "nome" => "Aluno Teste",
               "matricula" => "123456789",
-              "usuario" => "jose@email.com",
+              "usuario" => "aluno@email.com",
               "formacao" => "Graduação",
               "ocupacao" => "Estudante",
-              "email" => "jose@email.com"
+              "email" => "aluno@email.com"
             }
           ],
           "docente" => {
-            "nome" => "Prof. Lamar",
+            "nome" => "Prof. Teste",
             "usuario" => "987654321",
             "formacao" => "Doutorado",
             "ocupacao" => "Docente",
-            "email" => "lamar@email.com",
+            "email" => "prof@email.com",
             "departamento" => "CIC"
           }
         }
@@ -57,15 +57,15 @@ RSpec.describe ImportadorSigaa, type: :service do
       materia = Materia.find_by(id: "CIC0001")
       expect(materia.nome).to eq("ISC")
 
-      professor = Pessoa.find_by(email: "lamar@email.com")
-      expect(professor.nome).to eq("Prof. Lamar")
+      professor = Pessoa.find_by(email: "prof@email.com")
+      expect(professor.nome).to eq("Prof. Teste")
 
-      aluno = Pessoa.find_by(email: "jose@email.com")
-      expect(aluno.nome).to eq("José Edson")
+      aluno = Pessoa.find_by(email: "aluno@email.com")
+      expect(aluno.nome).to eq("Aluno Teste")
 
       turma = Turma.find(1)
       expect(turma.semestre).to eq("2025.1")
-      expect(turma.professor).to eq("lamar@email.com")
+      expect(turma.professor).to eq("prof@email.com")
     end
   end
 end

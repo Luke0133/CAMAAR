@@ -22,11 +22,11 @@ RSpec.describe ImportadorSigaa, type: :service do
             }
           ],
           "docente" => {
-            "nome" => "Prof. Lamar",
-            "usuario" => "lamar@email.com",
+            "nome" => "Prof. Teste",
+            "usuario" => "prof@email.com",
             "formacao" => "Doutorado",
             "ocupacao" => "Docente",
-            "email" => "lamar@email.com",
+            "email" => "prof@email.com",
             "departamento" => "CIC"
           }
         }

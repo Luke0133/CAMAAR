@@ -13,20 +13,20 @@ RSpec.describe ImportadorSigaa, type: :service do
           "semester" => "2025.1",
           "dicente" => [
             {
-              "nome" => "José",
+              "nome" => "Aluno",
               "matricula" => "987654321",
-              "usuario" => "jose@email.com",
+              "usuario" => "aluno@email.com",
               "formacao" => "Graduação",
               "ocupacao" => "Estudante",
-              "email" => "jose@email.com"
+              "email" => "aluno@email.com"
             }
           ],
           "docente" => {
-            "nome" => "Prof. Lamar",
-            "usuario" => "lamar@email.com",
+            "nome" => "Prof. Teste",
+            "usuario" => "prof@email.com",
             "formacao" => "Doutorado",
             "ocupacao" => "Docente",
-            "email" => "lamar@email.com",
+            "email" => "prof@email.com",
             "departamento" => "CIC"
           }
         }
@@ -45,17 +45,17 @@ RSpec.describe ImportadorSigaa, type: :service do
       materia = Materia.find_by(id: "CIC0001")
       expect(materia.nome).to eq("OAC")
 
-      professor = Pessoa.find_by(email: "lamar@email.com")
-      expect(professor.nome).to eq("Prof. Lamar")
+      professor = Pessoa.find_by(email: "prof@email.com")
+      expect(professor.nome).to eq("Prof. Teste")
 
-      aluno = Pessoa.find_by(email: "jose@email.com")
-      expect(aluno.nome).to eq("José")
+      aluno = Pessoa.find_by(email: "aluno@email.com")
+      expect(aluno.nome).to eq("Aluno")
 
       turma = Turma.find(1)
       expect(turma.semestre).to eq("2025.1")
-      expect(turma.professor).to eq("lamar@email.com")
+      expect(turma.professor).to eq("prof@email.com")
 
-      participante = Participante.find_by(email: "jose@email.com", id_turma: turma.id)
+      participante = Participante.find_by(email: "aluno@email.com", id_turma: turma.id)
       expect(participante).to be_present
     end
   end
