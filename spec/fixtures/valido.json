@@ -7,20 +7,20 @@
         "semester" : "2025.1",
         "dicente" : [
         {
-            "nome" : "José",
+            "nome" : "Aluno",
             "matricula" : "123456789",
-            "usuario" : "jose@email.com",
+            "usuario" : "aluno@email.com",
             "formacao" : "Graduação",
             "ocupacao" : "Estudante",
-            "email" : "jose@email.com"
+            "email" : "aluno@email.com"
         }
         ],
         "docente" : {
-        "nome" : "Prof. Lamar",
-        "usuario" : "lamar@email.com",
+        "nome" : "Prof. Teste",
+        "usuario" : "prof@email.com",
         "formacao" : "Doutorado",
         "ocupacao" : "Docente",
-        "email" : "lamar@email.com",
+        "email" : "prof@email.com",
         "departamento" : "CIC"
         }
     }
