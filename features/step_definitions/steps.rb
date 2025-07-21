@@ -115,13 +115,6 @@ end
 Quando("eu não preencher o template") do
 end
 
-Então("eu devo ver algum campo como inválido") do
-  invalid_fields = page.evaluate_script <<~JS
-    Array.from(document.querySelectorAll('input, select, textarea')).filter(el => el.validity && !el.validity.valid)
-  JS
-  expect(invalid_fields).not_to be_empty
-end
-
 # Existem n formulários
 Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
   email = @aluno&.email || @admin&.email || @professor&.email || @admin_professor&.email || raise("Nenhum usuário está logado no contexto")

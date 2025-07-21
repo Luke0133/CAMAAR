@@ -23,4 +23,4 @@ Funcionalidade: Criar templates para formulários
     Quando eu clicar no botão "Novo template"
     E eu não preencher o template
     E eu clicar no botão "Salvar Template"
-    Então eu devo ver algum campo como inválido
+    Então eu devo ver "O nome do template não pode estar em branco."
