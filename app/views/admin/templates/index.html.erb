@@ -1,32 +1,23 @@
 <section class="main-area">
-
   <% if @show_incompatibility_message %>
-    <div class="flash flash-error">
+    <div class="alert alert-warning">
       Um ou mais templates estão incompatíveis e não podem ser visualizados.
     </div>
   <% end %>
 
-  <div class="templates-list">
-    <div class="template-card new">
-      <%= button_to "Novo template", new_admin_template_path, method: :get, class: "btn btn-primary" %>
-    </div>
+  <%= button_to "Novo template", new_admin_template_path, method: :get, class: "btn btn-primary" %>
 
   <% if @valid_templates.any? %>
+    <div class="formularios-list">
       <% @valid_templates.each do |template| %>
-        <div class="template-card">
+          <div class="formulario-card">
           <strong><%= template.nome %></strong>
-          <div class="form-actions">
-            <%= button_to "Editar", edit_admin_template_path(template), method: :get, class: "btn btn-secondary" %>
-            <form action="<%= admin_template_path(template) %>" method="post" onsubmit="return confirm('Tem certeza que deseja excluir o template <%= j template.nome %>?');">
-              <input type="hidden" name="_method" value="delete">
-              <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
-              <input type="submit" value="Excluir" class="btn btn-delete">
-            </form>
+          <%= button_to "Edit", edit_admin_template_path(template), method: :get, class: "btn btn-secondary" %>
+          <%= button_to "Delete", admin_template_path(template), method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger" %>
           </div>
-        </div>
       <% end %>
+    </div>
   <% else %>
     <p>Nenhum template encontrado.</p>
   <% end %>
-  </div>
 </section>

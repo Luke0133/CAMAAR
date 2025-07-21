@@ -1,17 +1,5 @@
-##
-# Modelo que representa um formulário com perguntas e respostas associadas.
-#
-# Associações:
-# - Pertence a uma ligação de pergunta (LigacaoPergunta)
-# - Pertence a uma turma (Turma)
-# - Possui muitas respostas
-# - Possui muitos registros de formulários respondidos
-#
-# Escopos:
-# - +respondidos+: retorna formulários que possuem pelo menos uma resposta
-# - +validos+: retorna formulários com nome preenchido
-# - +invalidos+: retorna formulários com nome em branco
-#
+require 'csv'
+
 class Formulario < ApplicationRecord
   belongs_to :ligacao_pergunta
   belongs_to :turma
@@ -19,24 +7,23 @@ class Formulario < ApplicationRecord
   has_many :respostas, dependent: :destroy
   has_many :formulario_respondidos, dependent: :destroy
 
+
   scope :respondidos, -> { joins(:respostas).distinct }
+
   scope :validos, -> { where.not(id: invalidos.select(:id)) }
   scope :invalidos, -> { where(nome: "") }
 
-  ##
-  # Gera o conteúdo CSV das respostas do formulário.
-  #
-  # Não recebe argumentos.
-  #
-  # Retorna:
-  # - Uma string no formato CSV com os dados de pergunta, tipo e resposta.
-  #
-  # Efeitos colaterais:
-  # - Nenhum efeito colateral.
-  #
-  # Exemplo de uso:
-  #   formulario.generate_csv
   def generate_csv
-    FormularioCsvExporter.new(self).generate
+    CSV.generate(headers: true) do |csv|
+      csv << %w[Pergunta Tipo Resposta]
+      respostas.includes(:pergunta).each do |resposta|
+        csv << [
+          resposta.pergunta&.pergunta,
+          resposta.pergunta.tipo,
+          resposta.conteudo
+        ]
+      end
+    end
   end
+
 end
