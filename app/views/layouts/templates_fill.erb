@@ -73,7 +73,7 @@
       <% end %>
 
       <% if flash[:error] %>
-        <div class="flash flash-alert"><%= flash[:error] %></div>
+        <div class="flash flash-error"><%= flash[:error] %></div>
       <% end %>
 
       <%= yield %>
@@ -118,13 +118,25 @@
 </script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".flash-alert");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
+    document.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.querySelector(".flash-alert");
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.remove(), 500);
+            }, 2000);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const alertBox = document.querySelector(".flash-error");
+        if (alertBox) {
+            setTimeout(() => {
+                alertBox.style.opacity = "0";
+                setTimeout(() => alertBox.remove(), 500);
+            }, 5000);
+        }
+    });
 </script>
