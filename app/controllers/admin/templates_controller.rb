@@ -98,7 +98,13 @@ class Admin::TemplatesController < ApplicationController
     end
 
     @ligacao   = @template.ligacao_pergunta
-    @questions = @template.ligacao_pergunta.perguntas.includes(:opcoes)
+    @questions = @template.ligacao_pergunta.perguntas.includes(:opcoes).map do |pergunta|
+      {
+        pergunta: pergunta.pergunta,
+        tipo: pergunta.tipo,
+        opcoes: pergunta.opcoes.map { |opt| { opcao: opt.opcao } }
+      }
+end
   end
 
   def update

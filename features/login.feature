@@ -7,13 +7,20 @@ Funcionalidade: Sistema de Login
 
   Contexto:
     Dado que eu estou na página de login do CAMAAR
-    Dado que existe uma pessoa cadastrada com "email@registrado" e "senhaCorreta"
 
-  Cenário: Login realizado com sucesso (HAPPY)
+  Cenário: Login realizado com sucesso - usuário (HAPPY)
+    Dado que existe um aluno cadastrado com "email@registrado" e "senhaCorreta"
     Quando eu preencher o campo "Email ou Matrícula" com "email@registrado"
     E eu preencher o campo "Senha" com "senhaCorreta"
     E eu clicar no botão "Entrar"
     Então eu devo estar na página de avaliação do CAMAAR
+  
+  Cenário: Login realizado com sucesso - admin (HAPPY)
+    Dado que existe um admin cadastrado com "email@registrado" e "senhaCorreta"
+    Quando eu preencher o campo "Email ou Matrícula" com "email@registrado"
+    E eu preencher o campo "Senha" com "senhaCorreta"
+    E eu clicar no botão "Entrar"
+    Então eu devo estar na página de gerenciamento do CAMAAR
 
   Cenário: Login com e-mail não cadastrados (SAD)
     Quando eu preencher o campo "Email ou Matrícula" com "email@nãoRegistrado"

@@ -1,3 +1,4 @@
+# language: pt
 # Definição de páginas
 def paginas_camaaar
   {
@@ -346,8 +347,13 @@ Então(/^um arquivo "\.csv" deve ser baixado$/) do
 end
 
 # Login
-Dado('que existe uma pessoa cadastrada com {string} e {string}') do |email, senha|
-  FactoryBot.create(:pessoa, email: email, password: senha)
+Dado(/^que existe um (.+) cadastrado com "(.+)" e "(.+)"$/) do |tipo, email, senha|
+  valid_traits = %w[aluno admin professor admin_professor]
+  tipo_normalizado = tipo.downcase
+
+  raise ArgumentError, "Tipo inválido: #{tipo}" unless valid_traits.include?(tipo_normalizado)
+
+  FactoryBot.create(:pessoa, tipo_normalizado.to_sym, email: email, password: senha, password_confirmation: senha)
 end
 
 Quando('eu preencher o campo {string} com {string}') do |campo, valor|

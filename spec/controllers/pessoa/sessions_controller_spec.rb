@@ -34,7 +34,7 @@ RSpec.describe Pessoas::SessionsController, type: :controller do
         expect(controller.current_pessoa).to eq(pessoa)
         expect(session[:email]).to eq(pessoa.email)
         expect(flash[:notice]).to eq("Login efetuado com sucesso")
-        expect(response).to redirect_to(user_avaliacoes_path)
+        expect(response).to redirect_to(dashboard_path)
       end
     end
 
@@ -50,7 +50,7 @@ RSpec.describe Pessoas::SessionsController, type: :controller do
         expect(controller.current_pessoa).to eq(pessoa)
         expect(session[:email]).to eq(pessoa.email)
         expect(flash[:notice]).to eq("Login efetuado com sucesso")
-        expect(response).to redirect_to(user_avaliacoes_path)
+        expect(response).to redirect_to(dashboard_path)
       end
     end
 
