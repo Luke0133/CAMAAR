@@ -62,8 +62,8 @@ class Admin::FormulariosController < ApplicationController
   end
 
   def sem_turma_alerta(materia)
-    flash.now[:alert] = "A matéria #{materia.nome} não possui turmas"                # <---- Cucumber/Rspec
-    nil                                                                              # <---- Cucumber/Rspec 
+    flash.now[:alert] = "A matéria #{materia.nome} não possui turmas"               
+    nil                                                                             
   end
 
   def construir_formulario(template, turma)

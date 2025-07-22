@@ -1,5 +1,5 @@
 ##
-# Controlador responsável pela gestão de resultados dos formulários no painel administrativo.
+# Controladora responsável pela gestão de resultados dos formulários no painel administrativo.
 #
 # Usa o layout personalizado "resultados".
 #
@@ -21,7 +21,7 @@ class Admin::ResultadosController < ApplicationController
   #
   # Não recebe argumentos.
   #
-  # Retorna: nada.
+  # Não há retorno.
   #
   # Efeitos colaterais:
   # - Atribui formulários válidos à variável de instância @forms
@@ -43,9 +43,9 @@ class Admin::ResultadosController < ApplicationController
   ##
   # Verifica se o formulário possui respostas antes de permitir ações de download.
   #
-  # Recebe: ID do formulário via \params[:id].
+  # Não recebe argumentos (recebe a identificação do formulário via \params[:id])
   #
-  # Retorna: nada.
+  # Não há retorno.
   #
   # Efeitos colaterais:
   # - Se o formulário não tiver respostas:
@@ -64,9 +64,9 @@ class Admin::ResultadosController < ApplicationController
   ##
   # Prepara o ambiente para o download do arquivo de resultados.
   #
-  # Não recebe argumentos diretamente (usa @formulario do filtro[ResultadosController.html#method-i-verificar_respostas_existentes]).
+  # Não recebe argumentos (usa @formulario do filtro[ResultadosController.html#method-i-verificar_respostas_existentes]).
   #
-  # Retorna: nada.
+  # Não há retorno.
   #
   # Efeitos colaterais:
   # - Define mensagens flash:
@@ -91,7 +91,7 @@ class Admin::ResultadosController < ApplicationController
   # - Semestre
   # - Número da turma
   #
-  # Recebe: ID do formulário via \params[:id] (atribuído em filtro).
+  # Não recebe argumentos (recebe a identificação do formulário via \params[:id] - atribuído em filtro).
   #
   # Retorna: arquivo CSV enviado ao navegador.
   #
