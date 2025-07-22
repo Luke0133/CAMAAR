@@ -131,11 +131,35 @@ RSpec.describe Admin::TemplatesController, type: :controller do
     let!(:template) { FactoryBot.create(:template) }
 
     context 'quando o template existe' do
+      # Gera exemplos de perguntas para verificar se estão sendo recebidas corretamente
+      let(:ligacao)  { create(:ligacao_pergunta) }
+      let(:template) { create(:template, ligacao_pergunta: ligacao) }
+      let!(:pergunta) { create(:pergunta, ligacao_pergunta: ligacao, pergunta: "Qual a cor?", tipo: 0) }
+      let!(:opcao1)   { create(:opcao, pergunta: pergunta, opcao: "Azul", item: 1) }
+      let!(:opcao2)   { create(:opcao, pergunta: pergunta, opcao: "Vermelho", item: 2) }
+
+      before do
+        get :edit, params: { id: template.id }
+      end
+      
       it 'renderiza os campos de um template' do
         get :edit, params: { id: template.id }
+
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:edit)
         expect(assigns(:template)).to eq(template)
+
+        # Checa se perguntas mockadas estão corretas
+        expect(assigns(:questions)).to eq([
+          {
+            pergunta: "Qual a cor?",
+            tipo: "0",
+            opcoes: [
+              { opcao: "Azul" },
+              { opcao: "Vermelho" }
+            ]
+          }
+        ])
       end
     end
 

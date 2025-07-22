@@ -3,9 +3,9 @@ class Pessoas::PasswordsController < Devise::PasswordsController
   # Metodo chamado quando o token é inválido
   def assert_reset_token_passed
     if params[:reset_password_token].blank?
-      flash[:alert] = "Token de redefinição de senha é inválido" if is_navigational_format?
-      redirect_to new_pessoa_session_path
-      return true
+      flash[:alert] = "Token de redefinição de senha é inválido" if is_navigational_format?                # <---- Cucumber
+      redirect_to new_pessoa_session_path                                                                  # <---- Cucumber
+      return true                                                                                          # <---- Cucumber
     end
   end
 

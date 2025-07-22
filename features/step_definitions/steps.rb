@@ -26,10 +26,11 @@ def paginas_camaaar
       path: -> { new_pessoa_session_path },
       title: /Login - CAMAAR/
     },
-    "registro" => {
-      path: -> { edit_pessoa_password_path },
-      title: /Defina sua Senha - CAMAAR/
-    },
+    # > Não é necessário, pois seu step é mais complexo que somente estar na página de registro
+    #"registro" => {                                   
+    #  path: -> { edit_pessoa_password_path },
+    #  title: /Defina sua Senha - CAMAAR/
+    #},
   }
 
 end
@@ -41,14 +42,13 @@ Dado(/^que eu estou logado como (.+)$/) do |pessoa|
   case pessoa
   when 'admin'
     @admin = FactoryBot.create(:pessoa, :admin, email: email, password: senha)
-  when 'admin usuário'
-    @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)
+  # > Por enquanto, não foi necessário usar em nenhum caso
+  #when 'admin usuário'
+  #  @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)   
   when 'aluno'
     @aluno = FactoryBot.create(:pessoa, :aluno, email: email, password: senha)
   when 'professor'
     @professor = FactoryBot.create(:pessoa, :professor, email: email, password: senha)
-  else
-    raise "Tipo de pessoa desconhecido: #{pessoa}"
   end
 
   visit new_pessoa_session_path
@@ -106,9 +106,6 @@ Quando('eu preencher o template') do
       pergunta_div.all('input[name="questions[][options][]"]').each_with_index do |opt_input, j|
         opt_input.set("Opção #{j + 1}")
       end
-    elsif tipo == "1"
-    else
-      raise "Tipo de pergunta não reconhecido: #{tipo}"
     end
   end
 end
@@ -151,16 +148,17 @@ Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
   cargos = Cargo.where(email: email)
 
   if cargos.any? { |c| [1, 2].include?(c.funcao) }
-    turma = FactoryBot.create(:turma)
-    Participante.create!(email: pessoa.email, id_turma: turma.id)
+    puts "QAAOASOIDHAOIHDIOASDIO"
+    turma = FactoryBot.create(:turma)                                                                    # <----
+    Participante.create!(email: pessoa.email, id_turma: turma.id)                                        # <----
 
-    count.to_i.times do
-      formulario = FactoryBot.create(:formulario, :com_perguntas, turma: turma)
-      formulario.ligacao_pergunta.perguntas.each do |pergunta|
-        conteudo = pergunta.tipo == 0 ? "a" : "Alguma resposta"
-        FactoryBot.create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: conteudo)
-      end
-      FormularioRespondido.create!(formulario: formulario, email: pessoa.email)
+    count.to_i.times do                                                                                  # <----
+      formulario = FactoryBot.create(:formulario, :com_perguntas, turma: turma)                          # <----
+      formulario.ligacao_pergunta.perguntas.each do |pergunta|                                           # <----
+        conteudo = pergunta.tipo == 0 ? "a" : "Alguma resposta"                                          # <----
+        FactoryBot.create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: conteudo)     # <----
+      end 
+      FormularioRespondido.create!(formulario: formulario, email: pessoa.email)                          # <----
     end
   else
     materia = Materia.create!(id: "#{SecureRandom.uuid}", nome: "Matéria")
@@ -212,10 +210,6 @@ Quando('eu preencher o formulário') do
       pergunta_div.find('input[type="radio"]', match: :first).click
     elsif pergunta_div.has_selector?('textarea', wait: false)
       pergunta_div.find('textarea').set('Resposta de teste')
-    elsif pergunta_div.has_selector?('input[type="text"]', wait: false)
-      pergunta_div.find('input[type="text"]').set('Outra resposta')
-    else
-      raise "Tipo de campo de pergunta não reconhecido"
     end
   end
 end

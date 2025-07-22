@@ -9,7 +9,9 @@ ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __dir__)
 
 require 'simplecov'
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'features/support/hooks.rb'
+end
 
 require 'cucumber/rails'
 require 'capybara/cucumber'

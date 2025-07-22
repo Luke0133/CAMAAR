@@ -123,3 +123,47 @@ RSpec.describe ImportadorAlunos do
     expect(mail).not_to be_nil
   end
 end
+
+RSpec.describe TurmaInfo do
+  # Checa se responds_to e method missing estão funcionando
+  let(:data) do
+    {
+      "name" => "OAC",
+      :code => "CIC0001",
+      "docente" => {
+        "nome" => "Prof",
+        "email" => "prof@email.com"
+      }
+    }
+  end
+
+  subject(:turma_info) { described_class.new(data) }
+
+  describe '#respond_to?' do
+    it 'responde a métodos baseados nas chaves da hash (string)' do
+      expect(turma_info.respond_to?(:name)).to be true
+    end
+
+    it 'responde a métodos baseados nas chaves da hash (symbol)' do
+      expect(turma_info.respond_to?(:code)).to be true
+    end
+
+    it 'não responde a métodos não existentes' do
+      expect(turma_info.respond_to?(:banana)).to be false
+    end
+  end
+
+  describe '#method_missing' do
+    it 'acessa corretamente valores de string keys' do
+      expect(turma_info.name).to eq("OAC")
+    end
+
+    it 'acessa corretamente valores de symbol keys' do
+      expect(turma_info.code).to eq("CIC0001")
+    end
+
+    it 'acessa corretamente hashes aninhadas' do
+      expect(turma_info.docente["nome"]).to eq("Prof")
+    end
+  end
+end

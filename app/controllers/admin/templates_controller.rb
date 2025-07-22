@@ -22,7 +22,7 @@ module Admin
     end
 
     def create
-      puts params[:questions].inspect
+      # puts params[:questions].inspect
       @form = TemplateForm.new(template_form_params)
 
       if @form.save
@@ -39,7 +39,7 @@ module Admin
     end
 
     def update
-      puts params[:questions].inspect
+      # puts params[:questions].inspect
       @form = TemplateForm.new(template_form_params)
 
       if @form.save(@template)

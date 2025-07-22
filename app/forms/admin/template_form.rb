@@ -24,8 +24,8 @@ module Admin
       end
 
       true
-    rescue ActiveRecord::RecordInvalid => error
-      add_model_errors(error.record)
+    rescue ActiveRecord::RecordInvalid => error                 
+      add_model_errors(error.record)                              
       false
     end
 
@@ -73,8 +73,8 @@ module Admin
     end
 
     def add_model_errors(model)
-      model.errors.each do |attribute, message|
-        errors.add(attribute, message)
+      model.errors.each do |error|
+        errors.add(error.attribute, error.message)
       end
     end
 

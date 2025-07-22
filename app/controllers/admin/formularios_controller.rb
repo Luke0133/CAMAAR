@@ -2,8 +2,8 @@ class Admin::FormulariosController < ApplicationController
   layout "criar_formulario"
 
   def new
-    carregar_dados_formulario
-    @formulario = Formulario.new
+    carregar_dados_formulario     
+    @formulario = Formulario.new        
   end
 
   def create
@@ -19,8 +19,8 @@ class Admin::FormulariosController < ApplicationController
       flash[:notice] = "Formulário enviado com sucesso"
       redirect_to admin_gerenciamento_path
     else
-      flash.now[:alert] = "Erro ao salvar os formulários"
-      render :new
+      flash.now[:alert] ||= "Erro ao salvar os formulários"                  
+      render :new                                                        
     end
   end
 
@@ -62,8 +62,8 @@ class Admin::FormulariosController < ApplicationController
   end
 
   def sem_turma_alerta(materia)
-    flash.now[:alert] = "A matéria #{materia.nome} não possui turmas"
-    nil
+    flash.now[:alert] = "A matéria #{materia.nome} não possui turmas"                # <---- Cucumber/Rspec
+    nil                                                                              # <---- Cucumber/Rspec 
   end
 
   def construir_formulario(template, turma)

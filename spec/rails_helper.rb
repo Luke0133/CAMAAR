@@ -11,7 +11,10 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require "simplecov"
-SimpleCov.start
+SimpleCov.start do
+  add_filter 'features/support/hooks.rb'
+end
+
 require 'capybara/rspec'
 require 'devise'
 require 'warden/test/helpers'

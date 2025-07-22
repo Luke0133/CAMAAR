@@ -13,7 +13,7 @@ class User::AvaliacoesController < ApplicationController
     @formularios = buscar_formularios_validos(turmas_ids, respondidos_ids)
 
     if Formulario.invalidos.any?
-      puts "warning"
+      # puts "warning"
       flash.now[:alert] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados"
     end 
   end
