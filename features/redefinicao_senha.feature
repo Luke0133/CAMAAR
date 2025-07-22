@@ -40,4 +40,7 @@ Funcionalidade: Redefinir senha do usuário
     E um email deve ter sido enviado para "aluno@example.com"
     E eu devo ver "Email de redefinição de senha enviado com sucesso!"
 
-
+  Cenário: Tentar redefinir a senha sem estar autenticado (SAD)
+    Dado que eu não estou logado no sistema
+    Quando eu tento acessar diretamente a rota de redefinição de senha
+    Então eu devo ver "Você precisa estar logado para acessar esta página."

@@ -148,7 +148,6 @@ Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
   cargos = Cargo.where(email: email)
 
   if cargos.any? { |c| [1, 2].include?(c.funcao) }
-    puts "QAAOASOIDHAOIHDIOASDIO"
     turma = FactoryBot.create(:turma)                                                                    # <----
     Participante.create!(email: pessoa.email, id_turma: turma.id)                                        # <----
 
@@ -382,6 +381,16 @@ Então('deve existir uma pessoa cadastrada com {string} e {string}') do |email, 
 end
 
 # Steps para redefinição de senha
+Dado('que eu não estou logado no sistema') do
+  reset_session! if respond_to?(:reset_session!)
+  visit new_pessoa_session_path
+  expect(page).to have_title(/Login - CAMAAR/)
+end
+
+Quando('eu tento acessar diretamente a rota de redefinição de senha') do
+  page.driver.submit :post, '/admin/redefinir_senha', {}
+end
+
 Quando('eu clicar no ícone do usuário') do
   find('.user-icon').click
 end
