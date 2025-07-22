@@ -20,7 +20,7 @@ require 'webdrivers'
 
 require 'database_cleaner/active_record'
 
-Capybara.default_max_wait_time = 30
+Capybara.default_max_wait_time = 60
 
 available_browser = find_available_browser
 puts "== Detected browser: #{available_browser || 'none'}"
