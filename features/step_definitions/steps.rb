@@ -380,3 +380,8 @@ Então('deve existir uma pessoa cadastrada com {string} e {string}') do |email, 
   pessoa = Pessoa.find_by(email: email)
   expect(pessoa.valid_password?(senha)).to be(true)
 end
+
+# Steps para redefinição de senha
+Quando('eu clicar no ícone do usuário') do
+  find('.user-icon').click
+end

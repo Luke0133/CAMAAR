@@ -34,6 +34,9 @@ Rails.application.routes.draw do
 
     resources :templates, only: [:index, :new, :create, :edit, :update, :destroy]
     resources :formularios, only: [:new, :create, :index]
+    
+    # Rota unificada para redefinir senha em todas as áreas admin
+    post :redefinir_senha, to: "gerenciamento#redefinir_senha"
   end
 
   namespace :user do
@@ -43,5 +46,6 @@ Rails.application.routes.draw do
         post :enviar_respostas
       end
     end
+    post :redefinir_senha, to: "avaliacoes#redefinir_senha"
   end
 end

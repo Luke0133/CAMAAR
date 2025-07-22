@@ -37,6 +37,9 @@
     <div id="userPopup" class="user-popup hidden">
       <p><strong>Email:</strong> <%= current_pessoa&.email %></p>
       <p><strong>Nome:</strong> <%= current_pessoa&.nome %></p>
+      <%= form_with url: user_redefinir_senha_path, method: :post, local: true do %>
+        <%= submit_tag "Redefinir Senha", class: "reset-password-button" %>
+      <% end %>
       <%= form_with url: destroy_pessoa_session_path, method: :delete do %>
         <%= submit_tag "Logout", class: "logout-button" %>
       <% end %>
