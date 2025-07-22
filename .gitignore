@@ -39,6 +39,9 @@
 #Ignore temp coverage results
 /coverage
 
+#Ignore temp documentation files
+/doc
+
 .DS_Store
 app/.DS_Store
 config/.DS_Store
