@@ -1,48 +1,122 @@
-# Esse serviço é responsável por processar os dados importados do SIGAA vindos 
-# do botão "Importar dados" da tela de gerenciamento.
-# Ele lê um JSON contendo informações sobre turmas, professores e alunos,
-# e atualiza ou cria os registros correspondentes no banco de dados.
+##
+# Serviço responsável por processar os dados de um JSON para atualizar ou criar
+# os registros correspondentes no banco de dados.
+#
+# Utilizado pela controller da página de gerenciamento para processar os dados
+# recebidos pelo botão "Importar dados".
+#
 class ImportadorSigaa
+  ##
+  # Inicializa o importador com os dados JSON.
+  #
+  # Argumentos:
+  # - json_data: Array de hashes representando as turmas e seus dados.
+  #
   def initialize(json_data)
     @json_data = json_data.map { |turma| TurmaInfo.new(turma) }
-    @atualizado = false
   end
 
+  ##
+  # Utiliza o método importar de cada classe de Importador para processar os dados do JSON,
+  # processando as matérias, professores, turmas e alunos correspondentes.
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Criação ou atualização de registros no banco de dados.
+  #
   def processar
     @json_data.each do |turma_info|
       ImportadorMateria.new(turma_info).importar
       ImportadorProfessor.new(turma_info).importar
-      turma = ImportadorTurma.new(turma_info).importar
-      ImportadorAlunos.new(turma_info, turma).importar
+      ImportadorTurma.new(turma_info).importar
+      ImportadorAlunos.new(turma_info).importar
     end
-    @atualizado
   end
 end
 
-# Classe auxiliar para encapsular os dados de cada turma
-# e facilitar o acesso aos seus dados.
+##
+# Classe auxiliar para encapsular os dados de cada turma e facilitar o acesso aos seus dados.
+#
+# Utilizada pelos importadores para acessar os atributos de forma dinâmica.
+#
 class TurmaInfo
+
+  ##
+  # Inicializa a instância com os dados fornecidos.
+  #
+  # Argumentos:
+  # - data: [Hash] Hash com os dados da turma.
+  #
   def initialize(data)
     @data = data
   end
 
+  ##
+  # Permite acessar os dados da turma como se fossem atributos, mesmo que não sejam
+  # definidos explicitamente como métodos.
+  #
+  # Tenta buscar o atributo no hash original por nome, tanto como string quanto como símbolo.
+  #
+  # Argumentos:
+  # - name: [Symbol] Nome do atributo a ser acessado.
+  # - args: [Array] Argumentos adicionais (não utilizados, mas presentes para compatibilidade).
+  #
+  # Retorna:
+  # - [Object, nil] Valor do atributo se existir, ou nil caso contrário.
+  #
   def method_missing(name, *args)
     @data[name.to_s] || @data[name.to_sym]
   end
 
+  ##
+  # Verifica se o método chamado existe no hash de dados.
+  #
+  # Argumentos:
+  # - name: [Symbol] Nome do método a ser verificado.
+  # - include_private: [Boolean] Indica se deve incluir métodos privados na verificação (não utilizado, mas presente para compatibilidade).
+  #
+  # Retorna:
+  # - [Boolean] true se o método existir no hash de dados, false caso contrário.
+  #
   def respond_to_missing?(name, include_private = false)
     @data.key?(name.to_s) || @data.key?(name.to_sym) || super
   end
 end
 
+##
 # Classe auxiliar para armazenar os dados de cada importador.
+#
+# Utilizada para definir a inicialização dos importadores, como também o método de definir 
+# dados de pessoas, comum entre os importadores de professores e alunos.
+#
 class ImportadorBase
   attr_reader :turma_info
 
+  ##
+  # Inicializa o importador com os dados da turma.
+  #
+  # Argumentos:
+  # - turma_info: instância de +TurmaInfo+ com os dados da turma.
+  # 
   def initialize(turma_info)
     @turma_info = turma_info
   end
 
+  ##
+  # Define os dados de uma pessoa com base nas informações fornecidas.
+  #
+  # Argumentos:
+  # - pessoa: instância de +Pessoa+ a ser criada ou atualizada.
+  # - info: [Hash] Hash com os dados da pessoa.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Define ou atualiza um objeto +Pessoa+ no banco de dados.
+  #
   def set_dados_pessoa(pessoa, info)
     pessoa.update!(
       nome: info["nome"],
@@ -52,11 +126,28 @@ class ImportadorBase
   end
 end
 
+##
 # Importadores específicos para cada tipo de dado,
 # verificando se já existem registros e atualizando-os ou criando novos conforme necessário.
+# 
 
+##
 # Importador específico para as matérias.
+#
 class ImportadorMateria < ImportadorBase
+  ##
+  # Importa ou atualiza a matéria com base nas informações fornecidas.
+  #
+  # Verifica se a matéria já existe pelo código e atualiza o nome se necessário,
+  # ou cria uma nova matéria caso não exista.
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Criação ou atualização de registros de matérias no banco de dados.
+  #
   def importar
     code = turma_info.code
     name = turma_info.name
@@ -70,8 +161,23 @@ class ImportadorMateria < ImportadorBase
   end
 end
 
+##
 # Importador específico para os professores.
+#
 class ImportadorProfessor < ImportadorBase
+  ##
+  # Importa ou atualiza o professor com base nas informações fornecidas.
+  #
+  # Verifica se o professor já existe pelo e-mail e atualiza os dados se necessário,
+  # ou cria um novo registro caso não exista.
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Criação ou atualização de registros de pessoa e cargo no banco de dados.
+  #
   def importar
     docente = turma_info.docente
     pessoa = Pessoa.find_or_create_by(email: docente["email"])
@@ -83,8 +189,23 @@ class ImportadorProfessor < ImportadorBase
   end
 end
 
+##
 # Importador específico para as turmas.
+#
 class ImportadorTurma < ImportadorBase
+  ##
+  # Importa ou atualiza a turma com base nas informações fornecidas.
+  #
+  # Verifica se a turma já existe pelo ID e atualiza os dados se necessário,
+  # ou cria um novo registro caso não exista.
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Criação ou atualização de registros de turma no banco de dados.
+  #
   def importar
     Turma.find_or_create_by(id: turma_info.id).tap do |turma|
       turma.update!(
@@ -93,17 +214,28 @@ class ImportadorTurma < ImportadorBase
         semestre: turma_info.semester,
         professor: turma_info.docente["nome"]
       )
+      turma_info.instance_variable_get(:@data)["id"] ||= turma.id
     end
   end
 end
 
+##
 # Importador específico para os alunos.
+#
 class ImportadorAlunos < ImportadorBase
-  def initialize(turma_info, turma)
-    super(turma_info)
-    @turma = turma
-  end
-
+  ##
+  # Importa ou atualiza os alunos com base nas informações fornecidas.
+  #
+  # Verifica se o aluno já existe pelo e-mail e atualiza os dados se necessário,
+  # ou cria um novo registro caso não exista, enviando um e-mail de definição de senha neste caso.
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Criação ou atualização de registros de pessoa, cargo e participante no banco de dados.
+  #
   def importar
     turma_info.discente.each do |aluno|
       email = aluno["email"]
@@ -120,7 +252,7 @@ class ImportadorAlunos < ImportadorBase
 
       Cargo.find_or_create_by!(email: email) { |cargo| cargo.funcao = 2 }
 
-      Participante.find_or_create_by!(email: email, id_turma: @turma.id)
+      Participante.find_or_create_by!(email: email, id_turma: turma_info.id)
 
       enviar_email_inicial(pessoa, email) if novo
     end
@@ -128,6 +260,19 @@ class ImportadorAlunos < ImportadorBase
 
   private
 
+  ##
+  # Envia um e-mail inicial para o aluno para a definição de senha.
+  #
+  # Argumentos:
+  # - pessoa: instância de +Pessoa+ do aluno.
+  # - email: [String] E-mail do aluno para envio do link de definição de senha.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Envia um e-mail com o link de definição de senha.
+  # - Registra o envio no log de emails_enviados.
+  #
   def enviar_email_inicial(pessoa, email)
     time = Time.current
 

@@ -90,8 +90,6 @@ RSpec.describe ImportadorTurma do
 end
 
 RSpec.describe ImportadorAlunos do
-  let(:turma) { Turma.create!(id: 1, id_materia: "CIC0001", numero_turma: 1, semestre: "2025.1", professor: "Prof Teste") }
-
   let(:aluno_info) do
     {
       "nome" => "Aluno Teste",
@@ -100,17 +98,18 @@ RSpec.describe ImportadorAlunos do
     }
   end
 
-  let(:turma_info) { TurmaInfo.new({ "discente" => [aluno_info] }) }
+  let(:turma_info) { TurmaInfo.new({ "id" => 1, "discente" => [aluno_info] }) }
 
   before do
     Materia.create!(id: "CIC0001")
+    Turma.create!(id: 1, id_materia: "CIC0001", numero_turma: 1, semestre: "2025.1", professor: "Prof Teste")
     ActionMailer::Base.deliveries.clear
     Devise.mappings[:pessoa] ||= Devise::Mapping.new(:pessoa, {})
   end
 
   it 'cria novo aluno, cargo, participante e envia e-mail' do
     expect {
-      described_class.new(turma_info, turma).importar
+      described_class.new(turma_info).importar
     }.to change(Pessoa, :count).by(1)
      .and change(Cargo, :count).by(1)
      .and change(Participante, :count).by(1)

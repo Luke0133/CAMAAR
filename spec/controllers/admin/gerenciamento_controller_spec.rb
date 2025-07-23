@@ -48,24 +48,15 @@ RSpec.describe Admin::GerenciamentoController, type: :controller do
       Rack::Test::UploadedFile.new(tempfile.path, "application/json")
     end
 
-    it "importa com sucesso e exibe mensagem sem atualização" do
-      importador = instance_double(ImportadorSigaa, processar: false)
+    it "importa com sucesso e exibe mensagem" do
+      importador = instance_double(ImportadorSigaa)
       allow(ImportadorSigaa).to receive(:new).and_return(importador)
+      allow(importador).to receive(:processar)
 
       post :importar, params: { file: temp_file }
 
       expect(response).to redirect_to(admin_gerenciamento_path)
       expect(flash[:notice]).to eq("Dados importados com sucesso")
-    end
-
-    it "importa com sucesso e exibe mensagem de atualização" do
-      importador = instance_double(ImportadorSigaa, processar: true)
-      allow(ImportadorSigaa).to receive(:new).and_return(importador)
-
-      post :importar, params: { file: temp_file }
-
-      expect(response).to redirect_to(admin_gerenciamento_path)
-      expect(flash[:notice]).to eq("Dados importados com sucesso: alguns dados foram atualizados")
     end
 
     context "arquivo com extensão incorreta" do
