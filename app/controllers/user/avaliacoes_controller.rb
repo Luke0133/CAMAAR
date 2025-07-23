@@ -101,6 +101,21 @@ class User::AvaliacoesController < ApplicationController
     end
   end
 
+  ##
+  # Redefine a senha do usuário atual.
+  #
+  # Se houver uma pessoa logada, envia o email de redefinição de senha
+  # e redireciona de volta com uma mensagem de sucesso.
+  # Caso contrário, redireciona de volta com uma mensagem de erro.
+  #
+  # Não recebe argumentos.
+  # Não há retorno
+  # 
+  # Efeitos colaterais:
+  # - cria uma mensagem de sucesso ou fracasso no flash
+  # 
+  # Exemplo de uso:
+  #   POST /user/redefinir_senha
   def redefinir_senha
     pessoa = current_pessoa
     if pessoa
@@ -177,6 +192,20 @@ class User::AvaliacoesController < ApplicationController
     perguntas.all? { |pergunta| respostas_params[pergunta.id.to_s].present? }
   end
 
+  ##
+  # Envia um email de redefinição de senha (método auxiliar).
+  #
+  # Gera um token de redefinição de senha para a Pessoa informada, atualiza o registro com o token e o timestamp,
+  # envia o email com instruções para redefinição de senha e registra o evento com o token e a URL de redefinição.
+  #
+  # Argumento:
+  # - pessoa [Pessoa] O objeto do usuário para o qual o email de redefinição de senha será enviado.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - lança uma exceção se a atualização da Pessoa falhar.
+  # - loga o envio do email
   def enviar_email_redefinicao(pessoa)
     time = Time.current
 
@@ -184,13 +213,25 @@ class User::AvaliacoesController < ApplicationController
     pessoa.update!(reset_password_token: enc_token, reset_password_sent_at: time)
     Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
 
-    url = Rails.application.routes.url_helpers.edit_pessoa_password_url(
-      reset_password_token: raw_token,
-      host: request.host_with_port
-    )
+    url = gerar_url_redefinicao(raw_token)
 
     File.open(Rails.root.join("log", "emails_enviados.log"), "a") do |arquivo_log|
       arquivo_log.puts "[#{time}] Redefinição solicitada para #{pessoa.email} - Token: #{raw_token} - URL: #{url}"
     end
+  end
+
+  ##
+  # Gera URL personalizada para redefinição de senha
+  #
+  # Argumento:
+  # - raw_token: o token de redefinição de senha gerado pelo Devise
+  #
+  # Retorno:
+  # - a URL gerada
+  def gerar_url_redefinicao(raw_token)
+    Rails.application.routes.url_helpers.edit_pessoa_password_url(
+      reset_password_token: raw_token,
+      host: request.host_with_port
+    )
   end
 end
