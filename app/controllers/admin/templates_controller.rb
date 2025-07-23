@@ -58,7 +58,6 @@ module Admin
 
     private
 
-    def set_template
     def set_template(is_delete = false)
       @template = Template.find_by(id: params[:id])
       return if @template
