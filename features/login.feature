@@ -8,20 +8,28 @@ Funcionalidade: Sistema de Login
   Contexto:
     Dado que eu estou na página de login do CAMAAR
 
-  Cenário: Login realizado com sucesso    (HAPPY)
-    Quando eu preencher o campo “email” com “email@registrado”
-    E eu preencher o campo “senha” com “senhaCorreta”
-    E eu clicar no botão “login”
-    Então eu devo ver a página inicial do CAMAAR
+  Cenário: Login realizado com sucesso - usuário (HAPPY)
+    Dado que existe um aluno cadastrado com "email@registrado" e "senhaCorreta"
+    Quando eu preencher o campo "Email ou Matrícula" com "email@registrado"
+    E eu preencher o campo "Senha" com "senhaCorreta"
+    E eu clicar no botão "Entrar"
+    Então eu devo estar na página de avaliação do CAMAAR
+  
+  Cenário: Login realizado com sucesso - admin (HAPPY)
+    Dado que existe um admin cadastrado com "email@registrado" e "senhaCorreta"
+    Quando eu preencher o campo "Email ou Matrícula" com "email@registrado"
+    E eu preencher o campo "Senha" com "senhaCorreta"
+    E eu clicar no botão "Entrar"
+    Então eu devo estar na página de gerenciamento do CAMAAR
 
-  Cenário: Login com e-mail não cadastrados    (SAD)
-    Quando eu preencher o campo “email” com “email@nãoRegistrado”
-    E eu preencher o campo “senha” com “senhaCorreta”
-    E eu clicar no botão “login”
-    Então eu devo ver “Usuário ou senha incorretos”
+  Cenário: Login com e-mail não cadastrados (SAD)
+    Quando eu preencher o campo "Email ou Matrícula" com "email@nãoRegistrado"
+    E eu preencher o campo "Senha" com "senhaCorreta"
+    E eu clicar no botão "Entrar"
+    Então eu devo ver "Login ou senha inválidos"
 
-  Cenário: Login com senha incorreta      (SAD)
-    Quando eu preencher o campo “email” com “email@registrado”
-    E eu preencher o campo “senha” com “senhaIncorreta”
-    E eu clicar no botão “login”
-    Então eu devo ver “Usuário ou senha incorretos”
+  Cenário: Login com senha incorreta (SAD)
+    Quando eu preencher o campo "Email ou Matrícula" com "email@Registrado"
+    E eu preencher o campo "Senha" com "senhaIncorreta"
+    E eu clicar no botão "Entrar"
+    Então eu devo ver "Login ou senha inválidos"

@@ -7,20 +7,22 @@ Funcionalidade: Cadastrar usuários do sistema
   Contexto:
     Dado que eu estou logado como admin
     E que eu estou na página de gerenciamento do CAMAAR
-    Quando eu clicar no botão "Importar dados"
 
   Cenário: Upload de dados dos usuários bem-sucedido (HAPPY)
-    E eu selecionar o arquivo "valido.json" para importar
+    Quando eu selecionar o arquivo "valido.json" 
+    E eu clicar no botão "Importar dados"
     Então eu devo estar na página de gerenciamento do CAMAAR
-    E um email deve ter sido enviado para "myemail@email"
-    E eu devo ver "Alunos notificados com sucesso"
+    E um email deve ter sido enviado para "aluno@email.com"
+    E eu devo ver "Dados importados com sucesso"
 
   Cenário: Tentativa de upload de arquivo de tipo inválido (SAD)
-    E eu selecionar o arquivo "invalido.txt" para importar
+    Quando eu selecionar o arquivo "invalido.txt" 
+    E eu clicar no botão "Importar dados"
     Então eu devo estar na página de gerenciamento do CAMAAR
-    E eu devo ver "Arquivo com extensão inválida"
+    E eu devo ver "Falha ao importar dados: arquivo com extensão incorreta"
 
   Cenário: Tentativa de upload de arquivo com informações inválidas (SAD)
-    E eu selecionar o arquivo "invalido.json" para importar
+    Quando eu selecionar o arquivo "invalido.json"
+    E eu clicar no botão "Importar dados" 
     Então eu devo estar na página de gerenciamento do CAMAAR
-    E eu devo ver "Arquivo de dados inválido"
+    E eu devo ver "Falha ao importar dados: dados do arquivo em formato inválido"
