@@ -2,9 +2,10 @@
 
 module Admin
   class TemplatesController < ApplicationController
-    layout "templates_fill", only: %i[new edit index]
+    layout "templates"
 
-    before_action :set_template, only: %i[edit update]
+    before_action :set_template,             only: %i[edit update]
+    before_action -> { set_template(true) }, only: %i[destroy]
 
     def index
       @valid_templates   = Template
@@ -22,12 +23,11 @@ module Admin
     end
 
     def create
-      # puts params[:questions].inspect
       @form = TemplateForm.new(template_form_params)
 
       if @form.save
-        redirect_to admin_templates_path,
-                    notice: "Template Criado Com Sucesso"
+        flash[:success] = "Template criado com sucesso!"
+        redirect_to admin_templates_path
       else
         render_with_errors(@form, :new)
       end
@@ -39,38 +39,32 @@ module Admin
     end
 
     def update
-      # puts params[:questions].inspect
       @form = TemplateForm.new(template_form_params)
 
       if @form.save(@template)
-        redirect_to admin_templates_path,
-                    notice: "Template atualizado com sucesso"
+        flash[:success] = "Template atualizado com sucesso!"
+        redirect_to admin_templates_path
       else
         render_with_errors(@form, :edit)
       end
     end
 
     def destroy
-      template = Template.find_by(id: params[:id])
-      if template
-        nome = template.nome
-        template.destroy!
-        redirect_to admin_templates_path,
-                    notice: "O #{nome} foi excluído!"
-      else
-        redirect_to admin_templates_path,
-                    alert: "Falha ao excluir: o template selecionado não existe."
-      end
+      nome = @template.nome
+      @template.destroy!
+      flash[:warning] = "O template \"#{nome}\" foi excluído!"
+      redirect_to admin_templates_path
     end
 
     private
 
-    def set_template
+    def set_template(is_delete = false)
       @template = Template.find_by(id: params[:id])
       return if @template
 
-      redirect_to admin_templates_path,
-                  alert: "Falha ao editar: o template selecionado não existe."
+      action = is_delete ? 'excluir' : 'editar'
+      flash[:error] = "Falha ao #{action}: o template selecionado não existe."
+      redirect_to admin_templates_path
     end
 
     def template_form_params
@@ -99,7 +93,7 @@ module Admin
       flash.now[:error] = "Erro(s) no template: " +
                           form.errors.map(&:message).join("; ") + "."
 
-      render action_name, layout: "templates_fill", status: :unprocessable_entity
+      render action_name, layout: "templates", status: :unprocessable_entity
     end
 
     def map_question_payload(question_data)
@@ -128,4 +122,3 @@ module Admin
     end
   end
 end
-

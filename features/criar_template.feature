@@ -23,4 +23,4 @@ Funcionalidade: Criar templates para formulários
     Quando eu clicar no botão "Novo template"
     E eu não preencher o template
     E eu clicar no botão "Salvar Template"
-    Então eu devo ver "O nome do template não pode estar em branco."
+    Então eu devo ver "Erro(s) no template: O nome do template não pode estar em branco; Deve haver pelo menos uma pergunta e todas devem ter texto; Todas as opções de todas as perguntas devem estar preenchidas."
