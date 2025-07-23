@@ -37,6 +37,9 @@
     <div id="userPopup" class="user-popup hidden">
       <p><strong>Email:</strong> <%= current_pessoa&.email %></p>
       <p><strong>Nome:</strong> <%= current_pessoa&.nome %></p>
+      <%= form_with url: admin_redefinir_senha_path, method: :post, local: true do %>
+        <%= submit_tag "Redefinir Senha", class: "reset-password-button" %>
+      <% end %>
       <%= form_with url: destroy_pessoa_session_path, method: :delete do %>
         <%= submit_tag "Logout", class: "logout-button" %>
       <% end %>
@@ -64,8 +67,16 @@
   </aside>
 
   <main class="content">
-      <%= yield %>
-    </main>
+    <% if flash[:notice] %>
+      <div class="flash flash-notice"><%= flash[:notice] %></div>
+    <% end %>
+
+    <% if flash[:alert] %>
+      <div class="flash flash-alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <%= yield %>
+  </main>
 </div>
 </body>
 </html>
@@ -90,6 +101,30 @@
     userPopup.addEventListener("click", (e) => {
       e.stopPropagation();
     });
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".flash-notice");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alertBox = document.querySelector(".flash-alert");
+    if (alertBox) {
+      setTimeout(() => {
+        alertBox.style.opacity = "0";
+        setTimeout(() => alertBox.remove(), 500);
+      }, 2000);
+    }
   });
 </script>
 
