@@ -32,7 +32,7 @@ RSpec.describe Admin::TemplateForm, type: :model do
         form = described_class.new(nome: '', questions: valid_questions)
 
         expect(form.save).to be false
-        expect(form.errors[:nome]).to include("O nome do template não pode estar em branco.")
+        expect(form.errors[:nome]).to include("O nome do template não pode estar em branco")
       end
     end
 

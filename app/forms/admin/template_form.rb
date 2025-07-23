@@ -8,7 +8,7 @@ module Admin
     attribute :nome, :string
     attribute :questions, default: []
 
-    validates :nome, presence: { message: "O nome do template não pode estar em branco." }
+    validates :nome, presence: { message: "O nome do template não pode estar em branco" }
     validate  :questions_presence_and_text
     validate  :options_presence_for_multiple_choice
 
@@ -24,8 +24,8 @@ module Admin
       end
 
       true
-    rescue ActiveRecord::RecordInvalid => error                 
-      add_model_errors(error.record)                              
+    rescue ActiveRecord::RecordInvalid => error
+      add_model_errors(error.record)
       false
     end
 

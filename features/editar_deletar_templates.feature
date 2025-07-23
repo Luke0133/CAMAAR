@@ -13,7 +13,7 @@ Funcionalidade: Edição e deleção de templates
   Cenário: Excluir um template com sucesso (HAPPY)
     Quando eu clicar no botão "Excluir" no template "Template1"
     Então eu devo estar na página de gerenciamento de templates do CAMAAR
-    E eu devo ver "O Template1 foi excluído!"
+    E eu devo ver "O template "Template1" foi excluído!"
     E eu não devo ver o template "Template1"
 
   @javascript

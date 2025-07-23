@@ -107,7 +107,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
       it 'redireciona ao gerenciamento de templates com um aviso' do
         post :create, params: { template: valid_attributes, questions: valid_questions }
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:notice]).to match(/Template criado com sucesso/i)
+        expect(flash[:success]).to match(/Template criado com sucesso!/i)
       end
     end
 
@@ -168,7 +168,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
         template.destroy
         get :edit, params: { id: template.id }
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:alert]).to match(/Falha ao editar: o template selecionado não existe/i)
+        expect(flash[:error]).to match(/Falha ao editar: o template selecionado não existe/i)
       end
     end
   end
@@ -187,7 +187,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
       it 'redireciona para index com uma mensagem de sucesso' do
         put :update, params: { id: template.id, template: new_attributes, questions: valid_questions }
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:notice]).to match(/Template atualizado com sucesso/i)
+        expect(flash[:success]).to match(/Template atualizado com sucesso!/i)
       end
     end
 
@@ -196,7 +196,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
         template.destroy
         put :update, params: { id: template.id, template: new_attributes }
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:alert]).to match(/Falha ao editar: o template selecionado não existe/i)
+        expect(flash[:error]).to match(/Falha ao editar: o template selecionado não existe/i)
       end
     end
 
@@ -223,7 +223,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
       it 'redireciona para a index com uma mensagem de sucesso' do
         delete :destroy, params: { id: template.id }
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:notice]).to match(/.* foi excluído!/i)
+        expect(flash[:warning]).to match(/O template ".*" foi excluído!/i)
       end
     end
 
@@ -234,7 +234,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
           delete :destroy, params: { id: template.id }
         }.not_to change(Template, :count)
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:alert]).to match(/Falha ao excluir: o template selecionado não existe/i)
+        expect(flash[:error]).to match(/Falha ao excluir: o template selecionado não existe/i)
       end
     end
   end

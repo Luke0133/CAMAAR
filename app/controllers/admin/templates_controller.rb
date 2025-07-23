@@ -2,7 +2,7 @@
 
 module Admin
   class TemplatesController < ApplicationController
-    layout "templates_fill", only: %i[new edit index]
+    layout "templates"
 
     before_action :set_template, only: %i[edit update]
 
@@ -22,12 +22,11 @@ module Admin
     end
 
     def create
-      # puts params[:questions].inspect
       @form = TemplateForm.new(template_form_params)
 
       if @form.save
-        redirect_to admin_templates_path,
-                    notice: "Template Criado Com Sucesso"
+        flash[:success] = "Template criado com sucesso!"
+        redirect_to admin_templates_path
       else
         render_with_errors(@form, :new)
       end
@@ -39,12 +38,11 @@ module Admin
     end
 
     def update
-      # puts params[:questions].inspect
       @form = TemplateForm.new(template_form_params)
 
       if @form.save(@template)
-        redirect_to admin_templates_path,
-                    notice: "Template atualizado com sucesso"
+        flash[:success] = "Template atualizado com sucesso!"
+        redirect_to admin_templates_path
       else
         render_with_errors(@form, :edit)
       end
@@ -55,12 +53,8 @@ module Admin
       if template
         nome = template.nome
         template.destroy!
-        redirect_to admin_templates_path,
-                    notice: "O #{nome} foi excluído!"
-      else
-        redirect_to admin_templates_path,
-                    alert: "Falha ao excluir: o template selecionado não existe."
-      end
+      flash[:warning] = "O template \"#{nome}\" foi excluído!"
+      redirect_to admin_templates_path
     end
 
     private
@@ -99,7 +93,7 @@ module Admin
       flash.now[:error] = "Erro(s) no template: " +
                           form.errors.map(&:message).join("; ") + "."
 
-      render action_name, layout: "templates_fill", status: :unprocessable_entity
+      render action_name, layout: "templates", status: :unprocessable_entity
     end
 
     def map_question_payload(question_data)
@@ -128,4 +122,3 @@ module Admin
     end
   end
 end
-
