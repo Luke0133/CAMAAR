@@ -1,5 +1,5 @@
 ##
-# Controladora responsável pela exibilçao e submissão de avaliações para usuários.
+# Controladora responsável pela exibição e submissão de avaliações para usuários.
 #
 # Usa o layout personalizado "avaliacoes".
 #
@@ -109,7 +109,8 @@ class User::AvaliacoesController < ApplicationController
   # Caso contrário, redireciona de volta com uma mensagem de erro.
   #
   # Não recebe argumentos.
-  # Não há retorno
+  #
+  # Não há retorno.
   # 
   # Efeitos colaterais:
   # - cria uma mensagem de sucesso ou fracasso no flash
@@ -182,7 +183,7 @@ class User::AvaliacoesController < ApplicationController
   # [ActionController::Parameters] respostas: hash contendo as respostas a cada pergunta
   #
   # Retorna:
-  # [TrueClass / FalseClass] true se todas as perguntas possuem resposta, false, caso o contrário
+  # [Boolean] true se todas as perguntas possuem resposta, false, caso o contrário
   #
   # Não há efeitos colaterais.
   #

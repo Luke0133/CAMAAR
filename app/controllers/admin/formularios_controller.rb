@@ -1,12 +1,29 @@
+##
+# Controladora responsável pela criação de formulários
+#
+# Usa o layout personalizado "criar_formulario".
+#
+# Funcionalidades principais:
+#
+# - 
+# - 
+# - 
+# - 
+#
 class Admin::FormulariosController < ApplicationController
   layout "criar_formulario"
 
   ##
   # Exibe a página de criação de formulário.
-  # Carrega os dados necessários (templates, matérias e turmas).
-  # Inicializa um novo objeto Formulario.
+  # que ainda não foram respondidos
   #
-  # @return [void]
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Carrega os dados necessários (templates, matérias e turmas)
+  # - Inicializa a variável de instância @formulario
   #
   def new
     carregar_dados_formulario
@@ -16,15 +33,19 @@ class Admin::FormulariosController < ApplicationController
   ##
   # Cria formulários com base no template selecionado e nas matérias escolhidas.
   #
-  # @return [void]
   # Redireciona para a página de gerenciamento com aviso de sucesso
-  # ou renderiza o formulário novamente com mensagem de erro.
+  # ou renderiza o formulário novamente com mensagem de erro
   #
-  # @note Efeitos colaterais:
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  # 
+  # Efeitos colaterais:
   # - Salva novos registros no banco de dados (Formularios).
-  # - Pode redirecionar ou renderizar `:new`.
+  # - Caso haja sucesso, redireciona para a página de gerenciamento,
+  #   lançando um +flash[:notice]+ de sucesso. 
+  # - Caso haja erro, renderiza novamente +:new+ com um +flash[:alert]+ de erro
   #
-
   def create
     carregar_dados_formulario
 
@@ -46,46 +67,68 @@ class Admin::FormulariosController < ApplicationController
   private
 
   ##
-  # Carrega os dados necessários para a criação do formulário:
-  # templates, matérias e suas respectivas turmas.
+  # Carrega os dados necessários para a criação do formulário
+  # (templates, matérias e suas respectivas turmas)
   #
-  # @return [void]
+  # Não recebe argumentos.
   #
-
-  def carregar_dados_formulario
+  # Não há retorno.
+  # 
+  # Efeitos colaterais:
+  # - Inicializa a variável de instância @templates
+  # - Atribui informações todas as matérias à variável de instância @materias
+  # - Atribui informações quanto à quantidade de turmas por matéria à variável de instância @turmas_por_materia
+  #
+  def carregar_dados_formulario #:doc:
     @templates = Template.all
     @materias = Materia.includes(:turmas).all
     @turmas_por_materia = @materias.index_with { |materia| materia.turmas.first }
   end
+
   ##
   # Verifica se o parâmetro de template está em branco.
   #
-  # @return [Boolean]
+  # Não recebe argumentos.
   #
-  def template_id_blank?
+  # Retorno:
+  # [Boolean] true, se os parâmetros estiverem em branco, false caso contrário
+  #
+  # Não possui efeitos colaterais
+  def template_id_blank?#:doc:
     formulario_params[:template_id].blank?
   end
+
   ##
   # Verifica se os IDs das matérias estão em branco.
   #
-  # @return [Boolean]
+  # Não recebe argumentos.
   #
-  def materia_ids_blank?
+  # Retorno:
+  # [Boolean] true, caso os ids das matérias estiverem em branco
+  #
+  # Não possui efeitos colaterais
+  def materia_ids_blank?#:doc:
     formulario_params[:materia_ids].blank?
   end
 
-##
-    # Renderiza a tela de novo formulário com mensagens de erro e os dados necessários.
-    #
-    # @param tipo [Symbol] tipo de erro (:template ou :materia)
-    # @param mensagem [String] mensagem de erro a ser exibida
-    #
-    # @return [void]
-    # Renderiza a view `new.html.erb` com os dados e mensagem de erro.
-    # Possui efeito colateral de exibição de mensagem e recarregamento da tela.
-    #
-
-  def render_erro(tipo, mensagem)
+  ##
+  # Renderiza a tela de novo formulário com mensagens de erro e os dados necessários.
+  # 
+  # Argumentos:
+  # [Symbol] tipo: tipo de erro (:template ou :materia)
+  # [String] mensagem: mensagem de erro a ser exibida
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Renderiza a view +:new+ com os dados e mensagem de erro.
+  # - Inicializa a variável de instância @formulario (caso ainda não tenha sido definida).
+  # - Carrega todos os templates e os atribui à variável de instância @templates.
+  # - Carrega todas as matérias e as atribui à variável de instância @materias.
+  # - Carrega todas as turmas por matéria e as atribui à variável de instância @turmas_por_materia.
+  # - Define uma variável de instância dinâmica (ex: @template_error ou @materia_error) com a mensagem de erro.
+  # - Define a mensagem de ero a ser exibida +flash.now[:alert]+.
+  def render_erro(tipo, mensagem)#:doc:
     @formulario = Formulario.new if @formulario.nil?
     @templates = Template.all
     @materias = Materia.all
@@ -99,15 +142,18 @@ class Admin::FormulariosController < ApplicationController
   ##
   # Cria formulários para cada matéria selecionada com base em um template.
   #
-  # @param template [Template] o template usado como base para os formulários
-  # @return [Array<Formulario>] lista de formulários criados com sucesso
+  # Argumentos:
+  # [Template] template: o template usado como base para os formulários
+  # [Array<Formulario>] return: lista de formulários criados com sucesso
   #
-  # @note Efeitos colaterais:
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
   # - Salva novos registros de Formulario no banco.
   # - Pode interromper o processo caso alguma matéria não possua turma.
   #
 
-  def criar_formularios_para_materias(template)
+  def criar_formularios_para_materias(template)#:doc:
     formulario_params[:materia_ids].filter_map do |materia_id|
       criar_formulario_para_materia(template, materia_id)
     end
@@ -116,17 +162,21 @@ class Admin::FormulariosController < ApplicationController
 ##
 # Cria um formulário para uma única matéria com base em um template.
 #
-# @param template [Template] template usado como base para o formulário
-# @param materia_id [String] ID da matéria para a qual será criado o formulário
-# @return [Formulario, nil] o formulário criado, ou nil se a matéria não tiver turma
+# Acessa o banco para buscar a matéria e sua turma
 #
-# @note Efeitos colaterais:
-# - Acessa o banco para buscar a matéria e sua turma.
+# Argumentos:
+# [Template] template: template usado como base para o formulário
+# [String] materia_id: ID da matéria para a qual será criado o formulário
+#
+# Retorna: 
+# [Formulario, nil] o formulário criado, ou nil se a matéria não tiver turma
+#
+# Efeitos colaterais:
 # - Exibe alerta caso a matéria não tenha turma.
 # - Salva o formulário no banco de dados.
 #
 
-  def criar_formulario_para_materia(template, materia_id)
+  def criar_formulario_para_materia(template, materia_id)#:doc:
     materia = Materia.find(materia_id)
     turma = materia.turmas.first
 
@@ -136,43 +186,52 @@ class Admin::FormulariosController < ApplicationController
     formulario.save ? formulario : nil
   end
 
-  ##
+##
 # Exibe alerta informando que a matéria não possui turma.
 #
-# @param materia [Materia] matéria sem turma
-# @return [nil]
+# Argumentos:
+# [Materia] materia: matéria sem turma
+# 
+# Retorna: 
+# [nil]
 #
-# @note Efeitos colaterais:
+# Efeitos colaterais:
 # - Define um flash de alerta com a mensagem de erro.
 #
 
-  def sem_turma_alerta(materia)
+  def sem_turma_alerta(materia)#:doc:
     flash.now[:alert] = "A matéria #{materia.nome} não possui turmas"
     nil
   end
 
-  ##
+##
 # Constrói um novo objeto Formulario a partir do template e da turma.
 #
-# @param template [Template] template usado como base
-# @param turma [Turma] turma associada ao formulário
-# @return [Formulario] instância do formulário (não salva)
+# Argumentos:
+# [Template] template: template usado como base
+# [Turma] turma: turma associada ao formulário
 #
-
-  def construir_formulario(template, turma)
+# Retorna: 
+# [Formulario] instância do formulário (não salva)
+#
+# Não possuui efeitos colaterais
+  def construir_formulario(template, turma)#:doc:
     Formulario.new(
       ligacao_pergunta_id: template.ligacao_pergunta_id,
       turma_id: turma.id,
       nome: template.nome
     )
   end
-
-  ##
-  # Define os parâmetros permitidos para criação de formulários.
-  #
-  # @return [ActionController::Parameters]
-  #
-  def formulario_params
+##
+# Define os parâmetros permitidos para criação de formulários.
+#
+# Não possui argumentos
+#
+# Retorna: 
+# [ActionController::Parameters] Objeto contendo apenas os parâmetros permitidos.
+#
+# Não possuui efeitos colaterais
+  def formulario_params#:doc:
     params.require(:formulario).permit(:template_id, materia_ids: [])
   end
 end
