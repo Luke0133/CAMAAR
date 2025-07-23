@@ -43,6 +43,31 @@ class Admin::GerenciamentoController < ApplicationController
     process_file(file)
   end
 
+  ##
+  # Redefine a senha do usuário atual.
+  #
+  # Se houver uma pessoa logada, envia o email de redefinição de senha
+  # e redireciona de volta com uma mensagem de sucesso.
+  # Caso contrário, redireciona de volta com uma mensagem de erro.
+  #
+  # Não recebe argumentos.
+  # Não há retorno
+  # 
+  # Efeitos colaterais:
+  # - cria uma mensagem de sucesso ou fracasso no flash
+  # 
+  # Exemplo de uso:
+  #   POST /admin/redefinir_senha
+  def redefinir_senha
+    pessoa = current_pessoa
+    if pessoa
+      enviar_email_redefinicao(pessoa)
+      redirect_back(fallback_location: admin_gerenciamento_path, notice: "Email de redefinição de senha enviado com sucesso!")
+    else
+      redirect_back(fallback_location: admin_gerenciamento_path, alert: "Erro ao enviar email de redefinição.")
+    end
+  end
+  
   private
 
   ##
@@ -97,33 +122,6 @@ class Admin::GerenciamentoController < ApplicationController
   def redirect_to_error(message)
     redirect_to admin_gerenciamento_path, alert: message
   end
-
-  ##
-  # Redefine a senha do usuário atual.
-  #
-  # Se houver uma pessoa logada, envia o email de redefinição de senha
-  # e redireciona de volta com uma mensagem de sucesso.
-  # Caso contrário, redireciona de volta com uma mensagem de erro.
-  #
-  # Não recebe argumentos.
-  # Não há retorno
-  # 
-  # Efeitos colaterais:
-  # - cria uma mensagem de sucesso ou fracasso no flash
-  # 
-  # Exemplo de uso:
-  #   POST /admin/redefinir_senha
-  def redefinir_senha
-    pessoa = current_pessoa
-    if pessoa
-      enviar_email_redefinicao(pessoa)
-      redirect_back(fallback_location: admin_gerenciamento_path, notice: "Email de redefinição de senha enviado com sucesso!")
-    else
-      redirect_back(fallback_location: admin_gerenciamento_path, alert: "Erro ao enviar email de redefinição.")
-    end
-  end
-
-  private
 
   ##
   # Envia um email de redefinição de senha (método auxiliar).

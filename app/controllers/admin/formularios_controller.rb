@@ -38,8 +38,8 @@ class Admin::FormulariosController < ApplicationController
       flash[:notice] = "Formulário enviado com sucesso"
       redirect_to admin_gerenciamento_path
     else
-      flash.now[:alert] = "Erro ao salvar os formulários"
-      render :new
+      mensagem = flash.now[:alert] || "Erro ao salvar os formulários"
+      render_erro(:formulario, mensagem)
     end
   end
 
@@ -86,14 +86,14 @@ class Admin::FormulariosController < ApplicationController
     #
 
   def render_erro(tipo, mensagem)
-  @formulario ||= Formulario.new
-  @templates = Template.all
-  @materias = Materia.all
-  @turmas_por_materia = Turma.includes(:materia).index_by(&:materia)
-  instance_variable_set("@#{tipo}_error", mensagem)
-  flash.now[:alert] = mensagem
-  render :new
-end
+    @formulario = Formulario.new if @formulario.nil?
+    @templates = Template.all
+    @materias = Materia.all
+    @turmas_por_materia = Turma.includes(:materia).index_by(&:materia)
+    instance_variable_set("@#{tipo}_error", mensagem)
+    flash.now[:alert] = mensagem
+    render :new
+  end
 
 
   ##

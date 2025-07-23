@@ -354,11 +354,21 @@ Quando('eu preencher o campo {string} com {string}') do |campo, valor|
 end
 
 # Senha
-Dado('que eu estou na página de registro do CAMAAR com um token válido') do
+Dado(/^que eu sou um (.+) com o email "myemail@email" na página de registro do CAMAAR com um token válido$/) do |tipo|
   include ActionMailer::TestHelper
   Devise.mappings[:pessoa] ||= Devise::Mapping.new(:pessoa, {})
   ActionMailer::Base.deliveries.clear
-  pessoa = FactoryBot.create(:pessoa, email: "myemail@email", password: nil)
+
+  email = "myemail@email"
+  case tipo
+    when 'admin'
+      pessoa = FactoryBot.create(:pessoa, :admin, email: email, password: nil)
+    when 'aluno'
+      pessoa = FactoryBot.create(:pessoa, :aluno, email: email, password: nil)
+    when 'professor'
+      pessoa = FactoryBot.create(:pessoa, :professor, email: email, password: nil)
+    end
+
   raw_token, enc_token = Devise.token_generator.generate(Pessoa, :reset_password_token)
   pessoa.update!(
     reset_password_token: enc_token,

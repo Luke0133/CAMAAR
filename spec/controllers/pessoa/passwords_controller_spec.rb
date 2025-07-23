@@ -50,7 +50,7 @@ RSpec.describe Pessoas::PasswordsController, type: :controller do
       expect(pessoa.valid_password?("nova_senha123")).to be true
       expect(flash[:notice]).to eq("Senha redefinida com sucesso!")
       expect(session[:email]).to eq(pessoa.email)
-      expect(response).to redirect_to(user_avaliacoes_path)
+      expect(response).to redirect_to(dashboard_path)
     end
 
     it "com token inválido, não reseta a senha e mostra alerta" do

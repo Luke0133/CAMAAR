@@ -98,13 +98,13 @@ class Pessoas::PasswordsController < Devise::PasswordsController
 ##
 # Define o caminho para redirecionamento após redefinição de senha (método auxiliar).
 #
-# Retorna o caminho para a página de avaliações do usuário.
+# Retorna o caminho para a página de dashboard.
 #
 # Argumento:
 # - resource: o recurso (usuário) que teve a senha redefinida
 # Retorno:
 # - Caminho para a página de avaliações do usuário
   def after_resetting_password_path_for(resource)
-    user_avaliacoes_path
+    dashboard_path
   end
 end

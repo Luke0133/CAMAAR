@@ -4,12 +4,28 @@ Funcionalidade: Sistema de definição de senha
   Quero definir uma senha para o meu usuário a partir do e-mail do sistema de solicitação de cadastro
   A fim de acessar o sistema
 
-  Cenário: Senha definida com sucesso (HAPPY)
-    Dado que eu estou na página de registro do CAMAAR com um token válido
+  Cenário: Senha definida com sucesso - aluno (HAPPY)
+    Dado que eu sou um aluno com o email "myemail@email" na página de registro do CAMAAR com um token válido
     Quando eu preencher o campo "Nova Senha" com "mypassword"
     E eu preencher o campo "Confirme a Senha" com "mypassword"
     E eu clicar no botão "Definir Senha"
     Então eu devo estar na página de avaliação do CAMAAR
+    E deve existir uma pessoa cadastrada com "myemail@email" e "mypassword"
+
+  Cenário: Senha definida com sucesso - professor (HAPPY)
+    Dado que eu sou um professor com o email "myemail@email" na página de registro do CAMAAR com um token válido
+    Quando eu preencher o campo "Nova Senha" com "mypassword"
+    E eu preencher o campo "Confirme a Senha" com "mypassword"
+    E eu clicar no botão "Definir Senha"
+    Então eu devo estar na página de avaliação do CAMAAR
+    E deve existir uma pessoa cadastrada com "myemail@email" e "mypassword"
+
+  Cenário: Senha definida com sucesso - admin (HAPPY)
+    Dado que eu sou um admin com o email "myemail@email" na página de registro do CAMAAR com um token válido
+    Quando eu preencher o campo "Nova Senha" com "mypassword"
+    E eu preencher o campo "Confirme a Senha" com "mypassword"
+    E eu clicar no botão "Definir Senha"
+    Então eu devo estar na página de gerenciamento do CAMAAR
     E deve existir uma pessoa cadastrada com "myemail@email" e "mypassword"
 
   Cenário: Falha na definição de senha (SAD)
