@@ -1,4 +1,3 @@
-
 # language: pt
 # Definição de páginas
 def paginas_camaaar

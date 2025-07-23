@@ -1,0 +1,122 @@
+/* Fonte base */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.25rem; /* espaçamento entre os grupos */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #d9d9d9;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container principal com formulário e banner lado a lado */
+.login-container {
+    display: flex;
+    width: 800px;
+    height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Formulário à esquerda */
+.login-form {
+    width: 50%;
+    background-color: white;
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.login-form h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.input {
+    padding: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    font-size: 1rem;
+}
+
+/* Botão */
+.btn {
+    padding: 0.75rem;
+    width: 100%;
+    background-color: #22c55e;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.btn:hover {
+    background-color: #1a9146;
+}
+
+a {
+    text-align: center;
+    display: block;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #555;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Banner roxo à direita */
+.login-banner {
+    width: 50%;
+    background-color: #651b5a;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 1.2;
+}
+
+
+.error {
+  position: fixed;             
+  top: 1rem;
+  right: 1rem;
+  left: auto;
+  background: #960f1f;
+  color: #ecdbdb;
+  padding: 1rem 2rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+}
