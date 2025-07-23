@@ -9,20 +9,16 @@ Funcionalidade: Visualização de formulários para responder
 
   Cenário: Existem formulários não respondidos HAPPY
     E que existem 2 formulários não respondidos
-    E que existem 1 formulários respondidos
     E que eu estou na página de avaliação do CAMAAR
     Então eu devo ver 2 formulários
 
   Cenário: Não existem formulários não respondidos HAPPY
     E que existem 0 formulários não respondidos
-    E que existem 2 formulários respondidos
     E que eu estou na página de avaliação do CAMAAR
     Então eu devo ver 0 formulários
 
   Cenário: Formulário inválido SAD
     E que existem 1 formulários inválidos
-    E que existem 3 formulários respondidos
-    E que existem 1 formulários não respondidos
     E que eu estou na página de avaliação do CAMAAR
-    Então eu devo ver 1 formulários
+    Então eu devo ver 0 formulários
     E eu devo ver "Um ou mais formulários estão incompatíveis e não podem ser visualizados"

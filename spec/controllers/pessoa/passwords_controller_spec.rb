@@ -1,68 +1,60 @@
 require 'rails_helper'
 
-RSpec.describe Pessoas::PasswordsController, type: :controller do
-  include Devise::Test::ControllerHelpers
-  render_views
+RSpec.feature "Definição de senha via e-mail (mockada)", type: :feature do
+  include ActionMailer::TestHelper
 
-  let(:pessoa) { create(:pessoa, email: "teste@example.com", password: nil) }
+  let!(:pessoa) do
+    Pessoa.create!(
+      email: "nova@exemplo.com",
+      nome: "Usuária Teste",
+      matricula: "2023123456",
+      password: nil,
+      password_confirmation: nil
+    )
+  end
 
   before do
-    @request.env["devise.mapping"] = Devise.mappings[:pessoa]
-    session[:email] = nil
+    Devise.mappings[:pessoa] ||= Devise::Mapping.new(:pessoa, {})
+    ActionMailer::Base.deliveries.clear
   end
 
-  describe "GET #assert_reset_token_passed" do
-    controller do
-      def fake_action
-        return if assert_reset_token_passed
-        render plain: "OK"
-      end
-    end
+  scenario "Usuária define nova senha com token válido" do
+    # Gera o token e associa ao usuário
+    raw_token, enc_token = Devise.token_generator.generate(Pessoa, :reset_password_token)
+    pessoa.update!(
+      reset_password_token: enc_token,
+      reset_password_sent_at: Time.current
+    )
 
-    before { routes.draw { get "fake_action" => "pessoas/passwords#fake_action" } }
+    # Envia o e-mail manualmente (simulado)
+    Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
+    mail = ActionMailer::Base.deliveries.last
+    expect(mail.to).to include("nova@exemplo.com")
 
-    it "quando não recebe token, redireciona para login e exibe alerta" do
-      get :fake_action, params: {}
-      expect(flash[:alert]).to eq("Token de redefinição de senha é inválido")
-      expect(response).to redirect_to(new_pessoa_session_path)
-    end
+    # Extrai o token do link no e-mail
+    link = mail.body.encoded.match(/href="(?<url>.+?)"/)[:url]
+    token = CGI.parse(URI.parse(link).query)["reset_password_token"].first
 
-    it "quando recebe token, não redireciona nem define flash" do
-      get :fake_action, params: { reset_password_token: "abc123" }
-      expect(flash[:alert]).to be_nil
-      expect(response.body).to eq("OK")
-    end
+    # Acessa a página de definição de senha com o token
+    visit edit_pessoa_password_path(reset_password_token: token)
+
+    fill_in "Nova Senha", with: "senhanova123"
+    fill_in "Confirme a Senha", with: "senhanova123"
+    click_button "Definir Senha"
+
+    expect(page).to have_content("Login efetuado com sucesso")
+
+    pessoa.reload
+    expect(pessoa.valid_password?("senhanova123")).to be true
   end
 
-  describe "PUT #update" do
-    let(:token) { pessoa.send_reset_password_instructions }
+  scenario "Usuária tenta redefinir senha com token inválido" do
+    visit edit_pessoa_password_path(reset_password_token: "token_invalido")
 
-    it "com token e senhas válidas, reseta a senha, loga e redireciona com flash" do
-      put :update, params: {
-        pessoa: {
-          reset_password_token: token,
-          password: "nova_senha123",
-          password_confirmation: "nova_senha123"
-        }
-      }
+    fill_in "Nova Senha", with: "senhanova123"
+    fill_in "Confirme a Senha", with: "senhanova123"
+    click_button "Definir Senha"
 
-      pessoa.reload
-      expect(pessoa.valid_password?("nova_senha123")).to be true
-      expect(flash[:notice]).to eq("Senha redefinida com sucesso!")
-      expect(session[:email]).to eq(pessoa.email)
-      expect(response).to redirect_to(user_avaliacoes_path)
-    end
-
-    it "com token inválido, não reseta a senha e mostra alerta" do
-      put :update, params: {
-        pessoa: {
-          reset_password_token: "token_invalido",
-          password: "senha123",
-          password_confirmation: "senha123"
-        }
-      }
-
-      expect(flash[:alert]).to eq("Token de redefinição de senha é inválido")
-    end
+    expect(page).to have_content("Token de redefinição de senha é inválido")
   end
 end

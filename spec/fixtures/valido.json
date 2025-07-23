@@ -5,22 +5,22 @@
         "name" : "OAC",
         "time" : "24T23",
         "semester" : "2025.1",
-        "discente" : [
+        "dicente" : [
         {
-            "nome" : "Aluno",
+            "nome" : "José",
             "matricula" : "123456789",
-            "usuario" : "aluno@email.com",
+            "usuario" : "jose@email.com",
             "formacao" : "Graduação",
             "ocupacao" : "Estudante",
-            "email" : "aluno@email.com"
+            "email" : "jose@email.com"
         }
         ],
         "docente" : {
-        "nome" : "Prof. Teste",
-        "usuario" : "prof@email.com",
+        "nome" : "Prof. Lamar",
+        "usuario" : "lamar@email.com",
         "formacao" : "Doutorado",
         "ocupacao" : "Docente",
-        "email" : "prof@email.com",
+        "email" : "lamar@email.com",
         "departamento" : "CIC"
         }
     }
