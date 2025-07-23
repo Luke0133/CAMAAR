@@ -65,7 +65,7 @@ RSpec.describe Admin::GerenciamentoController, type: :controller do
       post :importar, params: { file: temp_file }
 
       expect(response).to redirect_to(admin_gerenciamento_path)
-      expect(flash[:notice]).to eq("Dados importados com sucesso: alguns dados foram atualizados")
+      expect(flash[:notice]).to eq("Dados importados com sucesso")
     end
 
     context "arquivo com extensão incorreta" do
