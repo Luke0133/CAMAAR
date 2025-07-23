@@ -100,6 +100,16 @@ class User::AvaliacoesController < ApplicationController
       render "responder_formulario", status: :unprocessable_entity
     end
   end
+
+  def redefinir_senha
+    pessoa = current_pessoa
+    if pessoa
+      enviar_email_redefinicao(pessoa)
+      redirect_back(fallback_location: user_avaliacoes_path, notice: "Email de redefinição de senha enviado com sucesso!")
+    else
+      redirect_back(fallback_location: user_avaliacoes_path, alert: "Erro ao enviar email de redefinição.")
+    end
+  end
   
   private
 
@@ -165,5 +175,22 @@ class User::AvaliacoesController < ApplicationController
   #   respostas_completas?(@perguntas, respostas_params) # Como no código de enviar_respostas
   def respostas_completas?(perguntas, respostas_params) #:doc:
     perguntas.all? { |pergunta| respostas_params[pergunta.id.to_s].present? }
+  end
+
+  def enviar_email_redefinicao(pessoa)
+    time = Time.current
+
+    raw_token, enc_token = Devise.token_generator.generate(Pessoa, :reset_password_token)
+    pessoa.update!(reset_password_token: enc_token, reset_password_sent_at: time)
+    Devise::Mailer.reset_password_instructions(pessoa, raw_token).deliver_now
+
+    url = Rails.application.routes.url_helpers.edit_pessoa_password_url(
+      reset_password_token: raw_token,
+      host: request.host_with_port
+    )
+
+    File.open(Rails.root.join("log", "emails_enviados.log"), "a") do |arquivo_log|
+      arquivo_log.puts "[#{time}] Redefinição solicitada para #{pessoa.email} - Token: #{raw_token} - URL: #{url}"
+    end
   end
 end

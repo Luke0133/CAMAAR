@@ -157,4 +157,78 @@ RSpec.describe User::AvaliacoesController, type: :controller do
       end
     end
   end
+
+  # Testa método de redefinir senha
+  describe "POST #redefinir_senha" do
+    before do
+      ActionMailer::Base.deliveries.clear
+    end
+
+    it "redireciona corretamente com mensagem de sucesso" do
+      allow(controller).to receive(:redirect_back)
+      expect(controller).to receive(:redirect_back).with(
+        fallback_location: user_avaliacoes_path,
+        notice: "Email de redefinição de senha enviado com sucesso!"
+      )
+      
+      post :redefinir_senha
+    end
+
+    context "quando não há usuário logado" do
+      before do
+        session[:email] = nil
+      end
+
+      it "exige autenticação do usuário" do
+        post :redefinir_senha
+        expect(response).to redirect_to(login_path)
+        expect(flash[:alert]).to eq("Você precisa estar logado para acessar esta página.")
+      end
+    end
+  end
+
+  # Testa método privado enviar_email_redefinicao
+  describe "#enviar_email_redefinicao" do
+    before do
+      ActionMailer::Base.deliveries.clear
+    end
+
+    it "gera token de redefinição de senha" do
+      expect(Devise.token_generator).to receive(:generate).with(Pessoa, :reset_password_token).and_call_original
+      
+      controller.send(:enviar_email_redefinicao, aluno)
+    end
+
+    it "atualiza pessoa com token e timestamp" do
+      controller.send(:enviar_email_redefinicao, aluno)
+      
+      aluno.reload
+      expect(aluno.reset_password_token).not_to be_nil
+      expect(aluno.reset_password_sent_at).not_to be_nil
+      expect(aluno.reset_password_sent_at).to be_within(1.minute).of(Time.current)
+    end
+
+    it "manda email de redefinição de senha" do
+      expect {
+        controller.send(:enviar_email_redefinicao, aluno)
+      }.to change(ActionMailer::Base.deliveries, :count).by(1)
+      
+      mail = ActionMailer::Base.deliveries.last
+      expect(mail.to).to include(aluno.email)
+      expect(mail.subject).to match(/Definição de Senha - CAMAAR/i)
+    end
+
+    it "loga detalhes do email" do
+      log_file = instance_double("File")
+      expect(File).to receive(:open).with(
+        Rails.root.join("log", "emails_enviados.log"), "a"
+      ).and_yield(log_file)
+      
+      expect(log_file).to receive(:puts).with(
+        a_string_matching(/\[\d{4}-\d{2}-\d{2}.*\] Redefinição solicitada para #{aluno.email}/)
+      )
+      
+      controller.send(:enviar_email_redefinicao, aluno)
+    end
+  end
 end
