@@ -36,11 +36,11 @@ class Admin::GerenciamentoController < ApplicationController
   def importar
     file = params[:file]
 
-    if !arquivo_valido?(file)
+    if !valid_file?(file)
       return redirect_to admin_gerenciamento_path, alert:"Falha ao importar dados: arquivo com extensão incorreta"
     end
 
-    processar_arquivo(file)
+    process_file(file)
   end
 
   private
@@ -54,7 +54,7 @@ class Admin::GerenciamentoController < ApplicationController
   # Retorna:
   # - [Boolean] true se o arquivo é válido, false caso contrário.
   #
-  def arquivo_valido?(file)
+  def valid_file?(file)
     file.present? && File.extname(file.original_filename) == ".json"
   end
 
@@ -71,18 +71,30 @@ class Admin::GerenciamentoController < ApplicationController
   # Efeitos colaterais:
   # - Criação ou atualização de registros de pessoa, cargo, participantes, matéria e turma no 
   # banco de dados com os dados importados.
-  # - Redireciona para a página de gerenciamento com uma mensagem de sucesso ou erro.
+  # - Redireciona para a página de gerenciamento com uma mensagem de sucesso ou erro
   #
-  def processar_arquivo(file)
+  def process_file(file)
     json_data = JSON.parse(file.read)
-
-    ImportadorSigaa.new(json_data).processar
+    
+    ImportadorSigaa.new(json_data).processar      
 
     redirect_to admin_gerenciamento_path, notice: "Dados importados com sucesso"
   rescue JSON::ParserError, ActiveRecord::RecordInvalid, ActiveRecord::NotNullViolation, SQLite3::ConstraintException
     redirect_to admin_gerenciamento_path, alert:"Falha ao importar dados: dados do arquivo em formato inválido"
   rescue => exception
     Rails.logger.error "[IMPORT ERROR] #{exception.class}: #{exception.message}"
-    redirect_to admin_gerenciamento_path, alert:"Falha ao importar dados: erro inesperado"
+    redirect_to_error("Falha ao importar dados: erro inesperado")
+  end
+
+  ##
+  # Redireciona para a página de gerenciamento com uma mensagem de erro.
+  #
+  # Argumentos:
+  # - message: mensagem de erro a ser exibida.
+  # 
+  # Não há retorno.
+  #
+  def redirect_to_error(message)
+    redirect_to admin_gerenciamento_path, alert: message
   end
 end
