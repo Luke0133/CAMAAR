@@ -4,7 +4,8 @@ module Admin
   class TemplatesController < ApplicationController
     layout "templates"
 
-    before_action :set_template, only: %i[edit update]
+    before_action :set_template,             only: %i[edit update]
+    before_action -> { set_template(true) }, only: %i[destroy]
 
     def index
       @valid_templates   = Template
@@ -49,10 +50,8 @@ module Admin
     end
 
     def destroy
-      template = Template.find_by(id: params[:id])
-      if template
-        nome = template.nome
-        template.destroy!
+      nome = @template.nome
+      @template.destroy!
       flash[:warning] = "O template \"#{nome}\" foi excluído!"
       redirect_to admin_templates_path
     end
@@ -60,11 +59,13 @@ module Admin
     private
 
     def set_template
+    def set_template(is_delete = false)
       @template = Template.find_by(id: params[:id])
       return if @template
 
-      redirect_to admin_templates_path,
-                  alert: "Falha ao editar: o template selecionado não existe."
+      action = is_delete ? 'excluir' : 'editar'
+      flash[:error] = "Falha ao #{action}: o template selecionado não existe."
+      redirect_to admin_templates_path
     end
 
     def template_form_params
