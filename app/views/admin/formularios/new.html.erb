@@ -47,6 +47,17 @@
       </tbody>
     </table>
 
+    <!-- Seletor de Destino -->
+    <div class="destino-selector">
+      <%= hidden_field_tag 'formulario[destino]', 'todos', id: 'formulario_destino' %>
+
+      <div class="destino-buttons">
+        <button type="button" class="destino-btn active" data-value="todos">Todos</button>
+        <button type="button" class="destino-btn" data-value="aluno">Alunos</button>
+        <button type="button" class="destino-btn" data-value="professor">Professores</button>
+      </div>
+    </div>
+
     <!-- Botão Enviar -->
     <div class="submit-container">
       <%= form.submit "Enviar", class: "btn-enviar" %>
@@ -56,3 +67,22 @@
 
   </div>
 </section>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const buttons = document.querySelectorAll(".destino-btn");
+    const hiddenField = document.getElementById("formulario_destino");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", function () {
+        // Remove 'active' de todos
+        buttons.forEach(b => b.classList.remove("active"));
+        // Adiciona 'active' no atual
+        this.classList.add("active");
+        // Define o valor do campo hidden
+        hiddenField.value = this.dataset.value;
+      });
+    });
+  });
+</script>

@@ -3,6 +3,15 @@ FactoryBot.define do
     nome { "Formulário #{SecureRandom.hex(2)}" }
     association :turma
     association :ligacao_pergunta
+    destino { 3 }  
+
+    trait :para_alunos do
+      destino { 0 }
+    end
+
+    trait :para_professores do
+      destino { 1 }
+    end
 
     trait :com_perguntas do
       after(:create) do |formulario|

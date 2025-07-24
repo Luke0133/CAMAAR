@@ -4,14 +4,16 @@
 # Usa o layout personalizado "criar_formulario".
 #
 # Funcionalidades principais:
-#
-# - 
-# - 
-# - 
-# - 
+# - Criar formulários para docentes e/ou discentes
 #
 class Admin::FormulariosController < ApplicationController
   layout "criar_formulario"
+  
+  DESTINO_MAP = {
+    "aluno" => 1,
+    "professor" => 2,
+    "todos" => 3
+  }.freeze
 
   ##
   # Exibe a página de criação de formulário.
@@ -216,10 +218,14 @@ class Admin::FormulariosController < ApplicationController
 #
 # Não possuui efeitos colaterais
   def construir_formulario(template, turma)#:doc:
+    destino_param = formulario_params[:destino]
+    destino_int = DESTINO_MAP[destino_param] || 3
+
     Formulario.new(
       ligacao_pergunta_id: template.ligacao_pergunta_id,
       turma_id: turma.id,
-      nome: template.nome
+      nome: template.nome,
+      destino: destino_int
     )
   end
 ##
@@ -232,6 +238,6 @@ class Admin::FormulariosController < ApplicationController
 #
 # Não possuui efeitos colaterais
   def formulario_params#:doc:
-    params.require(:formulario).permit(:template_id, materia_ids: [])
+    params.require(:formulario).permit(:template_id, :destino, materia_ids: [])
   end
 end

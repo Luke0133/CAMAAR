@@ -139,7 +139,25 @@ Dado(/^que existem? (\d+) formulários?(?: não respondidos?)?$/) do |count|
       end
     end
   end
+end
 
+Dado(/^que existem (\d+) formulários não respondidos para (alunos|professores)$/) do |count, perfil|
+  email = @aluno&.email || @professor&.email || raise("Nenhum usuário válido no contexto")
+  pessoa = Pessoa.find_by!(email: email)
+
+  destino = perfil == "alunos" ? 1 : 2
+  turma = FactoryBot.create(:turma)
+  pessoa.turmas << turma
+
+  count.to_i.times do |i|
+    FactoryBot.create(
+      :formulario,
+      :com_perguntas,
+      nome: "Formulario #{perfil.capitalize} #{i + 1}",
+      turma: turma,
+      destino: destino
+    )
+  end
 end
 
 Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
