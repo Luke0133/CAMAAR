@@ -28,11 +28,21 @@
   <% end %>
 
   <% if @forms.any? %>
+
+    <% if @current_pessoa&.cargos&.any? { |c| c.funcao == 2 } %>
+      <div class="filter-button-wrapper">
+      <button id="toggle-filter" class="btn-filter">
+        Mostrar apenas minhas turmas
+      </button>
+      </div>
+    <% end %>
+
     <div class="formularios-list">
       <% @forms.each do |formulario| %>
         <% turma = formulario.turma %>
         <% materia = turma&.materia %>
-        <div class="formulario-card<%= ' nao-respondido' unless formulario.respostas.any? %>">
+        <div class="formulario-card<%= ' nao-respondido' unless formulario.respostas.any? %>"
+             data-professor="<%= formulario.turma.professor == @current_pessoa.nome %>">
           <strong><%= formulario.nome %></strong><br>
           <span><%= materia&.nome || '-' %></span><br>
           <span><%= turma&.semestre || '-' %></span><br>
@@ -91,6 +101,27 @@
                 alertBox.style.opacity = "0";
                 setTimeout(() => alertBox.remove(), 500);
             }, 2000);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("toggle-filter");
+        let filterOn = false;
+
+        if (toggleBtn) {
+            toggleBtn.addEventListener("click", () => {
+                filterOn = !filterOn;
+                document.querySelectorAll(".formulario-card").forEach(card => {
+                    const isProf = card.dataset.professor === "true";
+                    card.style.display = (filterOn && !isProf) ? "none" : "block";
+                });
+
+                toggleBtn.textContent = filterOn
+                    ? "Mostrar todos os formulários"
+                    : "Mostrar apenas minhas turmas";
+            });
         }
     });
 </script>
