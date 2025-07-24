@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Criar ou Editar Template - CAMAAR</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+
+  <%= stylesheet_link_tag "application", "visualizacao_formularios", "preencher_template", media: "all" %>
+</head>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const menuToggle = document.querySelector(".menu-toggle");
+    const sidebar = document.querySelector(".sidebar");
+    const mainContainer = document.querySelector(".main-container");
+
+    menuToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("hidden");
+      mainContainer.classList.toggle("sidebar-hidden");
+    });
+  });
+</script>
+
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <span class="menu-toggle">☰</span>
+    <span class="logo">Gerenciamento - Criar ou Editar Template</span>
+  </div>
+  <div class="topbar-right">
+    <!-- <input type="text" class="search-bar" placeholder="Buscar..."> -->
+    <div class="user-icon" id="userIcon">
+      <%= current_pessoa&.email&.first&.upcase || "?" %>
+    </div>
+    <div id="userPopup" class="user-popup hidden">
+      <p><strong>Email:</strong> <%= current_pessoa&.email %></p>
+      <p><strong>Nome:</strong> <%= current_pessoa&.nome %></p>
+      <%= form_with url: admin_redefinir_senha_path, method: :post, local: true do %>
+        <%= submit_tag "Redefinir Senha", class: "reset-password-button" %>
+      <% end %>
+      <%= form_with url: destroy_pessoa_session_path, method: :delete do %>
+        <%= submit_tag "Logout", class: "logout-button" %>
+      <% end %>
+    </div>
+  </div>
+</header>
+
+<div class="main-container">
+  <aside class="sidebar hidden">
+    <nav>
+      <ul>
+        <% if current_pessoa&.cargos&.any? { |cargo| cargo.funcao == 1 or cargo.funcao == 2} %>
+          <li class="menu-item <%= 'active' if controller_path.start_with?('user/') %>">
+            <%= link_to 'Avaliações', user_avaliacoes_path %>
+          </li>
+        <% end %>
+
+        <% if current_pessoa&.cargos&.any? { |cargo| cargo.funcao == 0 } %>
+          <li class="menu-item <%= 'active' if controller_path.start_with?('admin/') %>">
+            <%= link_to 'Gerenciamento', admin_gerenciamento_path %>
+          </li>
+        <% end %>
+      </ul>
+    </nav>
+  </aside>
+
+  <main class="content">
+      <div class="flash-container">
+        <% if flash[:notice] %>
+          <div class="flash flash-notice"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:success] %>
+          <div class="flash flash-success"><%= flash[:success] %></div>
+        <% end %>
+        <% if flash[:error] %>
+          <div class="flash flash-error"><%= flash[:error] %></div>
+        <% end %>
+      </div>
+
+      <% if flash[:warning] %>
+        <div class="flash flash-warning"><%= flash[:warning] %></div>
+      <% end %>
+
+      <%= yield %>
+    </main>
+</div>
+</body>
+</html>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const userIcon = document.getElementById("userIcon");
+    const userPopup = document.getElementById("userPopup");
+
+    userIcon.addEventListener("click", (e) => {
+      e.stopPropagation();
+      userPopup.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", () => {
+      if (!userPopup.classList.contains("hidden")) {
+        userPopup.classList.add("hidden");
+      }
+    });
+
+    userPopup.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alerts = [
+      { selector: ".flash-notice", delay: 2000 },
+      { selector: ".flash-success", delay: 2000 },
+      // { selector: ".flash-warning", delay: 2000 }, 
+      { selector: ".flash-error", delay: 5000 },
+    ];
+
+    alerts.forEach(({ selector, delay }) => {
+      const alertBox = document.querySelector(selector);
+      if (alertBox) {
+        setTimeout(() => {
+          alertBox.style.opacity = "0";
+          setTimeout(() => alertBox.remove(), 500);
+        }, delay);
+      }
+    });
+  });
+</script>

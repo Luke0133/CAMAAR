@@ -194,4 +194,44 @@ RSpec.describe Admin::FormulariosController, type: :controller do
       end
     end
   end
+
+  describe "#template_id_blank?" do
+    controller(Admin::FormulariosController) do
+      def dummy
+        render plain: template_id_blank?.to_s
+      end
+    end
+
+    before { routes.draw { post "dummy" => "admin/formularios#dummy" } }
+
+    it "retorna true quando template_id está em branco" do
+      post :dummy, params: { formulario: { template_id: "" } }
+      expect(response.body).to eq("true")
+    end
+
+    it "retorna false quando template_id está presente" do
+      post :dummy, params: { formulario: { template_id: "1" } }
+      expect(response.body).to eq("false")
+    end
+  end
+
+  describe "#materia_ids_blank?" do
+    controller(Admin::FormulariosController) do
+      def dummy
+        render plain: materia_ids_blank?.to_s
+      end
+    end
+
+    before { routes.draw { post "dummy" => "admin/formularios#dummy" } }
+
+    it "retorna true quando materia_ids está em branco" do
+      post :dummy, params: { formulario: { template_id: "1", materia_ids: [] } }
+      expect(response.body).to eq("true")
+    end
+
+    it "retorna false quando materia_ids está presente" do
+      post :dummy, params: { formulario: { materia_ids: [1, 2] } }
+      expect(response.body).to eq("false")
+    end
+  end
 end

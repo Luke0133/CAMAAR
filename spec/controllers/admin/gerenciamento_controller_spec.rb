@@ -132,6 +132,23 @@ RSpec.describe Admin::GerenciamentoController, type: :controller do
         expect(flash[:error]).to eq("Você precisa estar logado para acessar esta página.")
       end
     end
+
+    context "quando current_pessoa retorna nil mas existe uma session" do
+      before do
+        session[:email] = "inexistente@example.com"
+        allow(controller).to receive(:current_pessoa).and_return(nil)
+        allow(controller).to receive(:require_login) # Por ser um erro em um caso muito específico, força para autenticar a pessoa 
+        allow(controller).to receive(:authorize_admin!)  # (mesmo isso não acontecendo em um caso normal) -> teste apenas para coverage
+      end
+
+      it "redireciona com mensagem de alerta" do
+        allow(controller).to receive(:current_pessoa).and_return(nil)
+        post :redefinir_senha
+
+        expect(response).to redirect_to(admin_gerenciamento_path)
+        expect(flash[:alert]).to eq("Erro ao enviar email de redefinição.")
+      end
+    end
   end
 
   # Testa método privado enviar_email_redefinicao
