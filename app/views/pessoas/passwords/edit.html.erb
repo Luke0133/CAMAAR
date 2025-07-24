@@ -6,14 +6,35 @@
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <%= stylesheet_link_tag 'login', media: 'all' %>
+  <%= stylesheet_link_tag 'login', 'gerenciamento', media: 'all' %>
 </head>
 <body>
+
+<% if flash[:notice] %>
+<div class="flash flash-notice"><%= flash[:notice] %></div>
+<% end %>
+
+<% if flash[:success] %>
+<div class="flash flash-success"><%= flash[:success] %></div>
+<% end %>
+
+<% if flash[:warning] %>
+<div class="flash flash-warning"><%= flash[:warning] %></div>
+<% end %>
+
+<% if flash[:error] %>
+<div class="flash flash-error"><%= flash[:error] %></div>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="flash flash-alert"><%= flash[:alert] %></div>
+<% end %>
+
 <div class="login-container">
   <div class="login-form">
     <h2>DEFINA SUA SENHA</h2>
 
-    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }, builder: ActionView::Helpers::FormBuilder, error_notification: false) do |f| %>
       <%= f.hidden_field :reset_password_token, value: params[:reset_password_token] || resource.reset_password_token %>
 
       <div class="form-group">
@@ -29,14 +50,6 @@
       <div class="form-actions">
         <%= f.submit "Definir Senha", class: "btn" %>
       </div>
-
-      <% if flash[:alert] %>
-        <div class="alert-message"><%= flash[:alert] %></div>
-      <% end %>
-
-      <% if flash[:notice] %>
-        <div class="notice-message"><%= flash[:notice] %></div>
-      <% end %>
     <% end %>
   </div>
 
@@ -46,3 +59,26 @@
 </div>
 </body>
 </html>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alerts = [
+      { selector: ".flash-notice", delay: 2000 },
+      { selector: ".flash-success", delay: 2000 },
+      { selector: ".flash-warning", delay: 2000 },
+      { selector: ".flash-error", delay: 5000 },
+      { selector: ".flash-alert", delay: 5000 },
+    ];
+
+    alerts.forEach(({ selector, delay }) => {
+      const alertBox = document.querySelector(selector);
+      if (alertBox) {
+        setTimeout(() => {
+          alertBox.style.opacity = "0";
+          setTimeout(() => alertBox.remove(), 500);
+        }, delay);
+      }
+    });
+  });
+</script>

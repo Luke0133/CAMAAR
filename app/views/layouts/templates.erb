@@ -67,20 +67,20 @@
   </aside>
 
   <main class="content">
-      <% if flash[:notice] %>
-        <div class="flash flash-notice"><%= flash[:notice] %></div>
-      <% end %>
-
-      <% if flash[:success] %>
-        <div class="flash flash-success"><%= flash[:success] %></div>
-      <% end %>
+      <div class="flash-container">
+        <% if flash[:notice] %>
+          <div class="flash flash-notice"><%= flash[:notice] %></div>
+        <% end %>
+        <% if flash[:success] %>
+          <div class="flash flash-success"><%= flash[:success] %></div>
+        <% end %>
+        <% if flash[:error] %>
+          <div class="flash flash-error"><%= flash[:error] %></div>
+        <% end %>
+      </div>
 
       <% if flash[:warning] %>
         <div class="flash flash-warning"><%= flash[:warning] %></div>
-      <% end %>
-
-      <% if flash[:error] %>
-        <div class="flash flash-error"><%= flash[:error] %></div>
       <% end %>
 
       <%= yield %>
@@ -117,7 +117,7 @@
     const alerts = [
       { selector: ".flash-notice", delay: 2000 },
       { selector: ".flash-success", delay: 2000 },
-      { selector: ".flash-warning", delay: 2000 },
+      // { selector: ".flash-warning", delay: 2000 }, 
       { selector: ".flash-error", delay: 5000 },
     ];
 

@@ -37,7 +37,7 @@ RSpec.describe Admin::ResultadosController, type: :controller do
         get :index
 
         expect(assigns(:forms).count).to eq(2)  # um respondido + um válido
-        expect(flash[:error]).to eq('Um ou mais formulários estão incompatíveis e não podem ser visualizados.')
+        expect(flash[:warning]).to eq('Um ou mais formulários estão incompatíveis e não podem ser visualizados.')
       end
     end
   end
@@ -62,7 +62,7 @@ RSpec.describe Admin::ResultadosController, type: :controller do
         get :download, params: { id: formulario.id }
 
         expect(response).to redirect_to(admin_resultados_path)
-        expect(flash[:warning]).to eq('Este formulário ainda não contém respostas')
+        expect(flash[:error]).to eq('Este formulário ainda não contém respostas')
       end
     end
   end
@@ -87,7 +87,7 @@ RSpec.describe Admin::ResultadosController, type: :controller do
         get :preparar_download, params: { id: formulario.id }
 
         expect(response).to redirect_to(admin_resultados_path)
-        expect(flash[:warning]).to eq('Este formulário ainda não contém respostas')
+        expect(flash[:error]).to eq('Este formulário ainda não contém respostas')
       end
     end
   end

@@ -29,12 +29,27 @@
     background: #ffeeba;
     color: #5a4303;
     border-bottom-color: #d6b600;
+    margin-bottom: 1rem;
 }
 
 .flash-success {
     background: #d4edda;
     color: #0e3e23;
     border-bottom-color: #c3e6cb;
+}
+
+.flash-notice {
+    background: #d4edda;
+    color: #0e3e23;
+    border-bottom-color: #c3e6cb;
+}
+
+.flash-alert {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    background: #d4eaed;
+    color: #0e2d3e;
+    border-bottom-color: #c3d8e6;
 }
 
 .formularios-list,

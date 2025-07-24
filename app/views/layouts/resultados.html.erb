@@ -67,12 +67,20 @@
   </aside>
 
   <main class="content">
-    <% if flash[:notice] %>
-      <div class="flash flash-notice"><%= flash[:notice] %></div>
-    <% end %>
+    <div class="flash-container">
+      <% if flash[:notice] %>
+        <div class="flash flash-notice"><%= flash[:notice] %></div>
+      <% end %>
+      <% if flash[:success] %>
+        <div class="flash flash-success"><%= flash[:success] %></div>
+      <% end %>
+      <% if flash[:error] %>
+        <div class="flash flash-error"><%= flash[:error] %></div>
+      <% end %>
+    </div>
 
-    <% if flash[:alert] %>
-      <div class="flash flash-alert"><%= flash[:alert] %></div>
+    <% if flash[:warning] %>
+      <div class="flash flash-warning"><%= flash[:warning] %></div>
     <% end %>
 
     <%= yield %>
@@ -80,6 +88,22 @@
 </div>
 </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const autoDismissTypes = ["notice", "success", "error"];
+
+    autoDismissTypes.forEach((type) => {
+      const alerts = document.querySelectorAll(`.flash-${type}`);
+      alerts.forEach((alertBox) => {
+        setTimeout(() => {
+          alertBox.style.opacity = "0";
+          setTimeout(() => alertBox.remove(), 500);
+        }, 2000);
+      });
+    });
+  });
+</script>
 
 
 <script>
@@ -104,28 +128,5 @@
   });
 </script>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".flash-notice");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
-</script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".flash-alert");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
-</script>
 
 

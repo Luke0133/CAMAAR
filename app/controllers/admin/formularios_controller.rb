@@ -6,7 +6,7 @@
 # Funcionalidades principais:
 # - Criar formulários para docentes e/ou discentes
 #
-class Admin::FormulariosController < ApplicationController
+class Admin::FormulariosController < Admin::BaseAdminController
   layout "criar_formulario"
   
   DESTINO_MAP = {

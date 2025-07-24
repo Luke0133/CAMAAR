@@ -176,6 +176,13 @@ nav ul {
   color: #991b1b;
 }
 
+.flash-error {
+    background: #f8d7da;
+    color: #5f121b;
+    border-bottom-color: #f5c6cb;
+    order: 0;
+}
+
 .sidebar {
   transition: transform 0.3s ease;
 }

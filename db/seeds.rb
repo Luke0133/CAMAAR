@@ -40,6 +40,8 @@ Cargo.create!(
   funcao: 0
 )
 
+# Criação de professor e aluno, bom para testar funcionalidades de aluno e professor sem ter que importar dados
+=begin   
 prof = Pessoa.create!(
   email: "prof@teste.com",
   nome: "Prof",
@@ -78,6 +80,7 @@ Cargo.create!(
 
 Participante.create!(email: prof.email, id_turma: turma1.id)
 Participante.create!(email: aluno.email, id_turma: turma1.id)
+=end
 
 # Cria admin e usuario teste: DESCOMENTE SE QUISER JÁ TER POPULADO (ATIVA AUTOMATICAMENTE O BOTÃO EDITAR TEMPLATE)
 =begin

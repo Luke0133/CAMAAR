@@ -10,7 +10,7 @@
 # - Verificar existência de respostas antes de permitir downloads
 # - Gerar e enviar arquivos CSV com os resultados dos formulários
 #
-class Admin::ResultadosController < ApplicationController
+class Admin::ResultadosController < Admin::BaseAdminController
   layout "resultados"
 
   ##
@@ -25,7 +25,7 @@ class Admin::ResultadosController < ApplicationController
   #
   # Efeitos colaterais:
   # - Atribui formulários válidos à variável de instância @forms
-  # - Exibe uma mensagem flash de erro caso existam formulários inválidos
+  # - Exibe uma mensagem +flash[:warning]+ caso existam formulários inválidos
   #
   # Exemplo de uso:
   #   GET /admin/resultados
@@ -33,7 +33,7 @@ class Admin::ResultadosController < ApplicationController
     @forms = Formulario.validos
 
     if Formulario.invalidos.any?
-      flash.now[:error] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados."
+      flash[:warning] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados."
     end
   end
 
@@ -56,7 +56,7 @@ class Admin::ResultadosController < ApplicationController
   def verificar_respostas_existentes
     @formulario = Formulario.find(params[:id])
     if @formulario.respostas.empty?
-      flash[:warning] = "Este formulário ainda não contém respostas"
+      flash[:error] = "Este formulário ainda não contém respostas"
       redirect_to admin_resultados_path
     end
   end

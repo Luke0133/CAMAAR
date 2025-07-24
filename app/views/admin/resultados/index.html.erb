@@ -1,25 +1,4 @@
 <section class="main-area">
-
-  <div class="flash-container">
-    <% if flash[:error] %>
-      <div class="flash flash-error">
-        <%= flash[:error] %>
-      </div>
-    <% end %>
-
-    <% if flash[:success] %>
-      <div class="flash flash-success">
-        <%= flash[:success] %>
-      </div>
-    <% end %>
-
-    <% if flash[:warning] %>
-      <div class="flash flash-warning">
-        <%= flash[:warning] %>
-      </div>
-    <% end %>
-  </div>
-
   <% if flash[:download_form_id] %>
     <iframe
         src="<%= admin_download_resultado_path(flash[:download_form_id]) %>"
@@ -65,45 +44,12 @@
       <% end %>
     </div>
   <% else %>
-    <p>Nenhum formulário encontrado.</p>
+    <div class="flash flash-alert">
+      Nenhum formulário encontrado.
+    </div>
   <% end %>
 </section>
 
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.querySelector(".flash-error");
-        if (alertBox) {
-            setTimeout(() => {
-                alertBox.style.opacity = "0";
-                setTimeout(() => alertBox.remove(), 500);
-            }, 4000);
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.querySelector(".flash-warning");
-        if (alertBox) {
-            setTimeout(() => {
-                alertBox.style.opacity = "0";
-                setTimeout(() => alertBox.remove(), 500);
-            }, 2000);
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const alertBox = document.querySelector(".flash-success");
-        if (alertBox) {
-            setTimeout(() => {
-                alertBox.style.opacity = "0";
-                setTimeout(() => alertBox.remove(), 500);
-            }, 2000);
-        }
-    });
-</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {

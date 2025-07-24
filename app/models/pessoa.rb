@@ -18,22 +18,4 @@ class Pessoa < ApplicationRecord
   has_many :participantes, foreign_key: 'email', dependent: :destroy
   has_many :turmas, through: :participantes
   has_many :formulario_respondidos, foreign_key: 'email', dependent: :destroy
-
-=begin
-  def formularios_nao_respondidos
-    Formulario
-      .where(turma_id: turmas.select(:id)) 
-      .where.not(id: formularios_ja_respondidos.select(:id)) 
-      .includes(:ligacao_pergunta)
-      .select(&:valido?) 
-  end
-
-  def admin?
-    cargos.exists?(funcao: 0)
-  end
-
-  def usuario?
-    cargos.exists?(funcao: 1)
-  end
-=end
 end

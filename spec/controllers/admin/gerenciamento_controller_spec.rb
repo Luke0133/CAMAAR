@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Admin::GerenciamentoController, type: :controller do
   render_views
 
-  let(:admin) { create(:pessoa, email: "admin@camaar.com") }
+  let(:admin) { create(:pessoa, :admin, email: "admin@camaar.com") }
 
   before do
     session[:email] = admin.email
@@ -129,7 +129,7 @@ RSpec.describe Admin::GerenciamentoController, type: :controller do
       it "exige autenticação do admin" do
         post :redefinir_senha
         expect(response).to redirect_to(login_path)
-        expect(flash[:alert]).to eq("Você precisa estar logado para acessar esta página.")
+        expect(flash[:error]).to eq("Você precisa estar logado para acessar esta página.")
       end
     end
   end

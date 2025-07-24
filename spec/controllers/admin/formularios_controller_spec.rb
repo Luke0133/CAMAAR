@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Admin::FormulariosController, type: :controller do
   render_views
 
-  let(:admin) { create(:pessoa, email: "admin@camaar.com") }
+  let(:admin) { create(:pessoa, :admin, email: "admin@camaar.com") }
 
   before do
     session[:email] = admin.email

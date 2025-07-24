@@ -12,7 +12,7 @@
 # - Processar perguntas associadas a um template
 #
 module Admin
-  class TemplatesController < ApplicationController
+  class TemplatesController < Admin::BaseAdminController
     layout "templates"
 
     before_action :set_template,             only: %i[edit update]
@@ -38,6 +38,7 @@ module Admin
                              .joins(ligacao_pergunta: :perguntas)
                              .distinct
                              .includes(ligacao_pergunta: :perguntas)
+                             .where.not(nome: [nil, ""])
       @invalid_templates = Template.all - @valid_templates
       @show_incompatibility_message = @valid_templates.count != Template.count
     end
@@ -132,10 +133,11 @@ module Admin
     #
     # Efeitos colaterais:
     # - Remove o registro do banco de dados
+    # - Lança um +flash[:success]+ após exclusão
     def destroy
       nome = @template.nome
       @template.destroy!
-      flash[:warning] = "O template \"#{nome}\" foi excluído!"
+      flash[:success] = "O template \"#{nome}\" foi excluído!"
       redirect_to admin_templates_path
     end
 

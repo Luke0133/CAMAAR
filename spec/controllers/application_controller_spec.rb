@@ -12,7 +12,7 @@ RSpec.describe ApplicationController, type: :controller do
     it "redireciona para página de login" do
       get :index
       expect(response).to redirect_to(login_path)
-      expect(flash[:alert]).to eq("Você precisa estar logado para acessar esta página.")
+      expect(flash[:error]).to eq("Você precisa estar logado para acessar esta página.")
     end
   end
 

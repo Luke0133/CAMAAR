@@ -11,6 +11,8 @@
 # - Submissão de formulários respondidos
 #
 class User::AvaliacoesController < ApplicationController
+  before_action :authorize_usuario! # Não permite acesso se não for usuário
+
   layout "avaliacoes"
 
   ##
@@ -26,7 +28,7 @@ class User::AvaliacoesController < ApplicationController
   #
   # Efeitos colaterais:
   # - Atribui formulários válidos à variável de instância @formularios
-  # - Exibe uma mensagem flash alert caso existam formulários inválidos
+  # - Exibe uma mensagem +flash[:warning]+ caso existam formulários inválidos
   #
   # Exemplo de uso:
   #   GET /user/avaliacoes
@@ -38,10 +40,10 @@ class User::AvaliacoesController < ApplicationController
     respondidos_ids = aluno.formulario_respondidos.pluck(:formulario_id)
 
     @formularios = buscar_formularios_validos(turmas_ids, respondidos_ids)
-
+    
+   
     if Formulario.invalidos.any?
-      # puts "warning"
-      flash.now[:alert] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados"
+      flash[:warning] = "Um ou mais formulários estão incompatíveis e não podem ser visualizados"
     end 
   end
 

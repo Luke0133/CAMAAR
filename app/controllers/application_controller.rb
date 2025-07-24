@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   ##
-  # Redireciona para a página de login caso o usuário não esteja autenticado.
+  # Redireciona para a página de login caso a pessoa não esteja autenticada.
   # Impede pessoas não autenticadas de acessarem qualquer outra rota
   #
   # Não recebe argumentos.
@@ -58,12 +58,84 @@ class ApplicationController < ActionController::Base
   # Não há retorno.
   #
   # Efeitos colaterais:
-  # - Redireciona para a página de login caso usuário não esteja autenticado
-  # - Exibe uma mensagem +flash[:alert]+ caso usuário tenha sido redirecionado
+  # - Redireciona para a página de login caso pessoa não esteja autenticada
+  # - Exibe uma mensagem +flash[:error]+ caso pessoa tenha sido redirecionada
   #
   def require_login # :doc:
     unless current_pessoa
-      redirect_to login_path, alert: "Você precisa estar logado para acessar esta página."
+      flash[:error] = "Você precisa estar logado para acessar esta página."
+      redirect_to login_path
     end
+  end
+
+  ##
+  # Redireciona para a página de dashboard caso acesse área restrita.
+  #
+  # Usuários somente acessam páginas no domínio user, então se não possuirem
+  # cargo admin, não podem acessar páginas do domínio admin
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Redireciona para a página de dashboard caso usuário não tenha permissões
+  # - Exibe uma mensagem +flash[:error]+ caso usuário tenha sido redirecionado
+  #
+  def authorize_admin!
+    unless admin?
+      flash[:error] = "Você não tem permissão para acessar essa área administrativa."
+      redirect_to dashboard_path
+    end
+  end
+
+  ##
+  # Redireciona para a página de dashboard caso acesse área restrita.
+  #
+  # Admins somente acessam páginas no domínio admin, então se não possuirem
+  # cargo de aluno ou professor, não podem acessar páginas do domínio user
+  #
+  # Não recebe argumentos.
+  #
+  # Não há retorno.
+  #
+  # Efeitos colaterais:
+  # - Redireciona para a página de dashboard caso admin não tenha permissões
+  # - Exibe uma mensagem +flash[:error]+ caso admin tenha sido redirecionado
+  #
+  def authorize_usuario!
+    unless usuario?
+      flash[:error] = "Você não tem permissão para acessar essa área de usuário."
+      redirect_to dashboard_path
+    end
+  end
+
+
+  ##
+  # Verifica se pessoa possui cargo de administrador
+  #
+  # Não recebe argumentos.
+  #
+  # Retorna:
+  # [Bool] true se possuir cargo de admin
+  #
+  # Não possui efeitos colaterais.
+  #
+  def admin?
+    current_pessoa&.cargos&.any? { |cargo| cargo.funcao == 0 }
+  end
+
+  ##
+  # Verifica se pessoa possui cargo de usuário (aluno ou professor)
+  #
+  # Não recebe argumentos.
+  #
+  # Retorna:
+  # [Bool] true se possuir cargo de usuário 
+  #
+  # Não possui efeitos colaterais.
+  #
+  def usuario?
+    current_pessoa&.cargos&.any? { |cargo| [1, 2].include?(cargo.funcao) }
   end
 end

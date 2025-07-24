@@ -1,14 +1,4 @@
 <section class="main-area">
-  <% if flash[:alert] %>
-    <div class="alert alert-warning">
-        <%= flash[:alert] %>
-    </div>
-  <% end %>
-  <% if flash[:notice] %>
-    <div class="success"><%= flash[:notice] %></div>
-  <% end %>
-
-
   <% if @formularios.any? %>
     <div class="formularios-list">
       <% @formularios.each do |formulario| %>
@@ -25,34 +15,10 @@
       <% end %>
     </div>
   <% else %>
-    <p>Nenhum formulário disponível.</p>
+    <div class="flash flash-alert">
+      Nenhum formulário para ser respondido.
+    </div>
   <% end %>
 
   
 </section>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".success");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
-</script>
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const alertBox = document.querySelector(".error");
-    if (alertBox) {
-      setTimeout(() => {
-        alertBox.style.opacity = "0";
-        setTimeout(() => alertBox.remove(), 500);
-      }, 2000);
-    }
-  });
-</script>

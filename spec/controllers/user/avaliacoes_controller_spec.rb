@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User::AvaliacoesController, type: :controller do
-  let(:aluno) { create(:pessoa, email: "aluno@example.com") }
+  let(:aluno) { create(:pessoa, :aluno, email: "aluno@example.com") }
   let(:turmas) { create_list(:turma, 2) }
   before do
     aluno.turmas << turmas
@@ -49,7 +49,7 @@ RSpec.describe User::AvaliacoesController, type: :controller do
     # e acusando os formulários inválidos
     it "sets flash alert if there are invalid formularios" do
       get :index
-      expect(flash.now[:alert]).to eq("Um ou mais formulários estão incompatíveis e não podem ser visualizados")
+      expect(flash.now[:warning]).to eq("Um ou mais formulários estão incompatíveis e não podem ser visualizados")
     end
 
     # Checa se não acusa inválidos caso não existam
@@ -226,7 +226,7 @@ RSpec.describe User::AvaliacoesController, type: :controller do
       it "exige autenticação do usuário" do
         post :redefinir_senha
         expect(response).to redirect_to(login_path)
-        expect(flash[:alert]).to eq("Você precisa estar logado para acessar esta página.")
+        expect(flash[:error]).to eq("Você precisa estar logado para acessar esta página.")
       end
     end
   end

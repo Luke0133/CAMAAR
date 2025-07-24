@@ -67,6 +67,22 @@
   </aside>
 
   <main class="content">
+    <div class="flash-container">
+      <% if flash[:notice] %>
+        <div class="flash flash-notice"><%= flash[:notice] %></div>
+      <% end %>
+      <% if flash[:success] %>
+        <div class="flash flash-success"><%= flash[:success] %></div>
+      <% end %>
+      <% if flash[:error] %>
+        <div class="flash flash-error"><%= flash[:error] %></div>
+      <% end %>
+    </div>
+
+    <% if flash[:warning] %>
+      <div class="flash flash-warning"><%= flash[:warning] %></div>
+    <% end %>
+
     <%= yield %>
   </main>
 </div>
@@ -92,6 +108,28 @@
 
     userPopup.addEventListener("click", (e) => {
       e.stopPropagation();
+    });
+  });
+</script>
+
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const alerts = [
+      { selector: ".flash-notice", delay: 2000 },
+      { selector: ".flash-success", delay: 2000 },
+      // { selector: ".flash-warning", delay: 2000 }, 
+      { selector: ".flash-error", delay: 5000 },
+    ];
+
+    alerts.forEach(({ selector, delay }) => {
+      const alertBox = document.querySelector(selector);
+      if (alertBox) {
+        setTimeout(() => {
+          alertBox.style.opacity = "0";
+          setTimeout(() => alertBox.remove(), 500);
+        }, delay);
+      }
     });
   });
 </script>

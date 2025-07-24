@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::TemplatesController, type: :controller do
-  let(:admin) { create(:pessoa, email: "admin@camaar.com",) }
+  let(:admin) { create(:pessoa, :admin, email: "admin@camaar.com") }
 
   let(:valid_attributes) do
     {
@@ -223,7 +223,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
       it 'redireciona para a index com uma mensagem de sucesso' do
         delete :destroy, params: { id: template.id }
         expect(response).to redirect_to(admin_templates_path)
-        expect(flash[:warning]).to match(/O template ".*" foi excluído!/i)
+        expect(flash[:success]).to match(/O template ".*" foi excluído!/i)
       end
     end
 
