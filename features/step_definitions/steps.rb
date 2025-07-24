@@ -27,7 +27,7 @@ def paginas_camaaar
       title: /Login - CAMAAR/
     },
     # > Não é necessário, pois seu step é mais complexo que somente estar na página de registro
-    #"registro" => {                                   
+    #"registro" => {
     #  path: -> { edit_pessoa_password_path },
     #  title: /Defina sua Senha - CAMAAR/
     #},
@@ -40,15 +40,14 @@ Dado(/^que eu estou logado como (.+)$/) do |pessoa|
   senha = 'password'
 
   case pessoa
-  when 'admin'
-    @admin = FactoryBot.create(:pessoa, :admin, email: email, password: senha)
-  # > Por enquanto, não foi necessário usar em nenhum caso
-  #when 'admin usuário'
-  #  @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)   
-  when 'aluno'
-    @aluno = FactoryBot.create(:pessoa, :aluno, email: email, password: senha)
-  when 'professor'
-    @professor = FactoryBot.create(:pessoa, :professor, email: email, password: senha)
+    when 'admin'
+      @admin = FactoryBot.create(:pessoa, :admin, email: email, password: senha)
+    when 'admin professor'
+      @admin_professor = FactoryBot.create(:pessoa, :admin_professor, email: email, password: senha)
+    when 'aluno'
+      @aluno = FactoryBot.create(:pessoa, :aluno, email: email, password: senha)
+    when 'professor'
+      @professor = FactoryBot.create(:pessoa, :professor, email: email, password: senha)
   end
 
   visit new_pessoa_session_path
@@ -74,6 +73,36 @@ Dado('que foram importados dados do SIGAA') do
   caminho = Rails.root.join("spec/fixtures/valido.json")
   json = JSON.parse(File.read(caminho))
   ImportadorSigaa.new(json).processar
+end
+
+Dado(/^que existem? (\d+) formulários? enviados? às? minhas? turmas?/) do |n|
+  email = @professor&.email || @admin_professor&.email || raise("Usuário professor ou admin_professor não logado")
+  pessoa = Pessoa.find_by!(email: email)
+  materia = FactoryBot.create(:materia)
+  turma = FactoryBot.create(:turma, professor: pessoa.nome, id_materia: materia.id)
+  pessoa.turmas << turma
+
+  n.times do |i|
+    FactoryBot.create(:formulario, :com_perguntas, nome: "Formulário da Minha Turma #{i + 1}", turma: turma)
+  end
+end
+
+Dado(/^que existem? (\d+) formulários? enviados? a outras? turmas?/) do |n|
+  materia = FactoryBot.create(:materia)
+  outra_turma = FactoryBot.create(:turma, professor: "Outro Professor", id_materia: materia.id)
+
+  n.times do |i|
+    FactoryBot.create(:formulario, :com_perguntas, nome: "Formulário de Outra Turma #{i + 1}", turma: outra_turma)
+  end
+end
+
+Então(/^eu devo ver apenas os? formulários? das? minhas? turmas?/)  do
+  nome_professor = @admin_professor&.nome || raise("Professor não definido no contexto")
+  visible_forms = all('.formulario-card', visible: true)
+  expect(visible_forms).not_to be_empty
+  visible_forms.each do |form_card|
+    expect(form_card).to have_text(nome_professor), "Esperava encontrar o nome do professor '#{nome_professor}' no card, mas não era esse que estava presente."
+  end
 end
 
 # Visão de mensagens
@@ -174,7 +203,7 @@ Dado(/^que existem? (\d+) formulários? respondidos?$/) do |count|
       formulario.ligacao_pergunta.perguntas.each do |pergunta|                                           # <----
         conteudo = pergunta.tipo == 0 ? "a" : "Alguma resposta"                                          # <----
         FactoryBot.create(:resposta, formulario: formulario, pergunta: pergunta, conteudo: conteudo)     # <----
-      end 
+      end
       FormularioRespondido.create!(formulario: formulario, email: pessoa.email)                          # <----
     end
   else
