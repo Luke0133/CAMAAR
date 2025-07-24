@@ -156,14 +156,15 @@ class User::AvaliacoesController < ApplicationController
   end
   
   ##
-  # Retorna formulários válidos de um aluno, que ainda não foram respondidos
+  # Retorna formulários válidos de um aluno ou professor, que ainda não foram respondidos,
+  # verificando se o destino do formulário é para aquele usuário
   #
   # Argumentos:
   # [int] turmas_ids: lista das chaves referentes às turmas (do usuário)
   # [int] respondidos_ids: listas das chaves referentes aos formulários respondidos pelo usuário
   #
   # Retorna:
-  # [Formulario] lista de formulários ainda não respondidos
+  # [Formulario] lista de formulários ainda não respondidos destinados àquela pessoa
   #
   # Não há efeitos colaterais.
   #

@@ -202,6 +202,7 @@ class ImportadorMateria < ImportadorBase
   #
   # Efeitos colaterais:
   # - Criação ou atualização de registros de matérias no banco de dados.
+  # - Criação ou atualização de registros de pessoa e cargo no banco de dados (professor).
   #
   def importar
     code = turma_info.code
@@ -287,7 +288,7 @@ end
 # Importador específico para os alunos.
 #
 class ImportadorAlunos < ImportadorBase
-    ##
+  ##
   # Importa ou atualiza os alunos com base nas informações de turma definidas na inicialização do objeto.
   #
   # Verifica se o aluno já existe pelo e-mail e atualiza os dados se necessário,

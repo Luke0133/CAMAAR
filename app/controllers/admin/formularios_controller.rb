@@ -9,6 +9,15 @@
 class Admin::FormulariosController < Admin::BaseAdminController
   layout "criar_formulario"
   
+  ##
+  # Constante para mapear informação recebida no form de criação de formulários
+  # ao inteiro correspondente do campo +:destino+ da classe Formulario
+  #
+  # Possíveis destinos:
+  # - "aluno" => 1,
+  # - "professor" => 2
+  # - "todos" => 3 (tanto aluno, quanto professor)
+  #
   DESTINO_MAP = {
     "aluno" => 1,
     "professor" => 2,
@@ -207,7 +216,8 @@ class Admin::FormulariosController < Admin::BaseAdminController
   end
 
 ##
-# Constrói um novo objeto Formulario a partir do template e da turma.
+# Constrói um novo objeto Formulario a partir do template e da turma,
+# verificando o destino do formulário
 #
 # Argumentos:
 # [Template] template: template usado como base

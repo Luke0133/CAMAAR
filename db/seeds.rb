@@ -41,6 +41,7 @@ Cargo.create!(
 )
 
 # Criação de professor e aluno, bom para testar funcionalidades de aluno e professor sem ter que importar dados
+# DADOS PARA DEBUG (SE NAO QUISER IMPORTAR DADOS, É POSSÍVEL TESTAR ALGUMAS COISAS COM ISSO) -- INCLUI TEMPLATE E FORMULÁRIO INVÁLIDOS
 =begin   
 prof = Pessoa.create!(
   email: "prof@teste.com",
@@ -78,43 +79,6 @@ Cargo.create!(
   funcao: 1
 )
 
-Participante.create!(email: prof.email, id_turma: turma1.id)
-Participante.create!(email: aluno.email, id_turma: turma1.id)
-=end
-
-# Cria admin e usuario teste: DESCOMENTE SE QUISER JÁ TER POPULADO (ATIVA AUTOMATICAMENTE O BOTÃO EDITAR TEMPLATE)
-=begin
-both = Pessoa.create!(
-  email: "both@teste.com",
-  nome: "Both",
-  matricula: "1234",
-  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
-)
-Cargo.create!(
-  email: both.email,
-  funcao: 0
-)
-Cargo.create!(
-  email: both.email,
-  funcao: 1
-)
-=end
-
-# DADOS PARA DEBUG (SE NAO QUISER IMPORTAR DADOS, É POSSÍVEL TESTAR ALGUMAS COISAS COM ISSO)
-=begin 
-# Cria matéria
-materia = Materia.create!(
-  id: "MAT123",
-  nome: "Matemática"
-)
-
-# Cria turmas
-turma1 = Turma.create!(
-  semestre: "2024.1",
-  numero_turma: 1,
-  professor: "Prof. João",
-  id_materia: materia.id
-)
 
 turma2 = Turma.create!(
   semestre: "2024.1",
@@ -123,149 +87,186 @@ turma2 = Turma.create!(
   id_materia: materia.id
 )
 
-# Associa aluno às turmas
+Participante.create!(email: prof.email, id_turma: turma1.id)
 Participante.create!(email: aluno.email, id_turma: turma1.id)
 Participante.create!(email: aluno.email, id_turma: turma2.id)
+
+
 
 # Cria ligação de perguntas (dummy)
 lig = LigacaoPergunta.create!
 lig1 = LigacaoPergunta.create!
+lig2 = LigacaoPergunta.create!
 
-form1 = Template.create!(
+template1 = Template.create!(
   nome: "Template",
   ligacao_pergunta: lig
+)
+
+templateINVALIDO = Template.create!(
+  nome: "",
+  ligacao_pergunta: lig2
+)
+
+formINVALIDO = Formulario.create!(
+  nome: "",
+  ligacao_pergunta: lig2,
+  turma: turma1,
+  destino: 3
 )
 
 # Cria formulários
 form1 = Formulario.create!(
   nome: "Formulario 1",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 form2 = Formulario.create!(
   nome: "Formulário 2",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 
 form3 = Formulario.create!(
   nome: "Formulário 3",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 
 form4 = Formulario.create!(
   nome: "Formulário 4",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 
 form5 = Formulario.create!(
   nome: "Formulário 5",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 form6 = Formulario.create!(
   nome: "Formulário 6",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 form7 = Formulario.create!(
   nome: "Formulário 7",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 form8 = Formulario.create!(
   nome: "Formulário 8",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 form9 = Formulario.create!(
   nome: "Formulário 9",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 formd10 = Formulario.create!(
   nome: "Formulário 10",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 fordm11 = Formulario.create!(
   nome: "",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 fordm12 = Formulario.create!(
   nome: "a",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 fordm14 = Formulario.create!(
   nome: "b",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 fqorm13 = Formulario.create!(
   nome: "c",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 formq16 = Formulario.create!(
   nome: "d",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 forqm15 = Formulario.create!(
   nome: "e",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 forqm12 = Formulario.create!(
   nome: "f",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 form14 = Formulario.create!(
   nome: "g",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 formq13 = Formulario.create!(
   nome: "h",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 formq16 = Formulario.create!(
   nome: "i",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 formq15 = Formulario.create!(
   nome: "j",
   ligacao_pergunta: lig,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 
 
 formq1e5 = Formulario.create!(
   nome: "Diferente",
   ligacao_pergunta: lig1,
-  turma: turma1
+  turma: turma1,
+  destino: 3
 )
 # Marca form1 como respondido
 FormularioRespondido.create!(

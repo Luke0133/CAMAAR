@@ -34,7 +34,7 @@ class Template < ApplicationRecord
   # Efeitos colaterais:
   # - Pode excluir a LigacaoPergunta do banco de dados.
   #
-  def cleanup_ligacao_if_orphaned
+  def cleanup_ligacao_if_orphaned #:doc:
     return unless ligacao_pergunta.templates.empty? && ligacao_pergunta.formularios.empty?
 
     ligacao_pergunta.destroy!

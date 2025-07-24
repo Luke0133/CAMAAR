@@ -17,7 +17,7 @@
           <% resposta_valor = respostas_params[pergunta.id.to_s] %>
 
           <% if pergunta.tipo == 0 %> 
-            <!-- Multiple choice with radio buttons -->
+            <!-- Multipla escolha com botões de radio -->
             <% pergunta.opcoes.order(:item).each do |opcao| %>
               <label class="radio-option">
                 <input type="radio" 

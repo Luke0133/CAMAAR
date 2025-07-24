@@ -12,6 +12,11 @@
 # - +validos+: retorna formulários com nome preenchido
 # - +invalidos+: retorna formulários com nome em branco
 #
+# Possíveis destinos:
+# - 1: aluno
+# - 2: professor
+# - 3: todos (tanto aluno, quanto professor)
+#
 class Formulario < ApplicationRecord
 
   belongs_to :ligacao_pergunta
