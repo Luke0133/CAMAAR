@@ -241,7 +241,12 @@ class ImportadorProfessor < ImportadorBase
     set_dados_pessoa(pessoa, docente)
 
     Cargo.find_or_create_by!(email: pessoa.email) do |cargo|
-      cargo.funcao = 1
+      cargo.funcao = 2
+    end
+
+    # Todo professor importado será um admin
+    Cargo.find_or_create_by!(email: pessoa.email) do |cargo|
+      cargo.funcao = 0
     end
 
     enviar_email_inicial(pessoa, email) if novo
@@ -264,6 +269,7 @@ class ImportadorTurma < ImportadorBase
   #
   # Efeitos colaterais:
   # - Criação ou atualização de registros de turma no banco de dados.
+  # - Criação ou atualização de registros de participação (no caso do docente) no banco de dados.
   #
   def importar
     Turma.find_or_create_by(id: turma_info.id).tap do |turma|
@@ -275,6 +281,9 @@ class ImportadorTurma < ImportadorBase
       )
       turma_info.instance_variable_get(:@data)["id"] ||= turma.id
     end
+
+    docente_email = turma_info.docente["email"]
+    Participante.find_or_create_by!(email: docente_email, id_turma: turma_info.id)
   end
 end
 
@@ -301,7 +310,7 @@ class ImportadorAlunos < ImportadorBase
 
       set_dados_pessoa(pessoa, aluno)
 
-      Cargo.find_or_create_by!(email: email) { |cargo| cargo.funcao = 2 }
+      Cargo.find_or_create_by!(email: email) { |cargo| cargo.funcao = 1 }
 
       Participante.find_or_create_by!(email: email, id_turma: turma_info.id)
 
