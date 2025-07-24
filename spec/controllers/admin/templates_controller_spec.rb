@@ -141,7 +141,7 @@ RSpec.describe Admin::TemplatesController, type: :controller do
       before do
         get :edit, params: { id: template.id }
       end
-      
+
       it 'renderiza os campos de um template' do
         get :edit, params: { id: template.id }
 
@@ -235,6 +235,36 @@ RSpec.describe Admin::TemplatesController, type: :controller do
         }.not_to change(Template, :count)
         expect(response).to redirect_to(admin_templates_path)
         expect(flash[:error]).to match(/Falha ao excluir: o template selecionado não existe/i)
+      end
+
+      context 'quando as perguntas associadas não estão associadas a formulários' do
+        it 'remove LigacaoPergunta e perguntas associadas' do
+          ligacao = create(:ligacao_pergunta)
+          pergunta = create(:pergunta, ligacao_pergunta: ligacao)
+          create(:opcao, pergunta: pergunta)
+          template = create(:template, ligacao_pergunta: ligacao)
+
+          expect {
+            delete :destroy, params: { id: template.id }
+          }.to change(Template, :count).by(-1)
+           .and change(LigacaoPergunta, :count).by(-1)
+           .and change(Pergunta, :count).by(-1)
+           .and change(Opcao, :count).by(-1)
+        end
+      end
+
+      context 'quando as perguntas associadas estão associadas a formulários' do
+        it 'não remove a LigacaoPergunta' do
+          ligacao = create(:ligacao_pergunta)
+          template = create(:template, ligacao_pergunta: ligacao)
+          create(:formulario, ligacao_pergunta: ligacao)
+
+          expect {
+            delete :destroy, params: { id: template.id }
+          }.to change(Template, :count).by(-1)
+
+          expect(LigacaoPergunta.exists?(ligacao.id)).to be true
+        end
       end
     end
   end
