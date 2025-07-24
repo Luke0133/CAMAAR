@@ -51,8 +51,8 @@ RSpec.describe ImportadorSigaa, type: :service do
           .to change(Materia, :count).by(1)
           .and change(Turma, :count).by(1)
           .and change(Pessoa, :count).by(2)
-          .and change(Cargo, :count).by(2)
-          .and change(Participante, :count).by(1)
+          .and change(Cargo, :count).by(3)
+          .and change(Participante, :count).by(2)
 
         expect(Materia.find("CIC0001").nome).to eq("OAC")
         expect(Pessoa.find_by(email: "prof@email.com").nome).to eq("Prof. Teste")

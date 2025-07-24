@@ -52,12 +52,13 @@ RSpec.describe ImportadorProfessor do
     expect {
       described_class.new(turma_info).importar
     }.to change(Pessoa, :count).by(1)
-     .and change(Cargo, :count).by(1)
+     .and change(Cargo, :count).by(2)
 
     pessoa = Pessoa.find_by(email: docente["email"])
     expect(pessoa.nome).to eq("Prof Teste")
     expect(pessoa.matricula).to eq("987654321")
-    expect(Cargo.find_by(email: pessoa.email).funcao).to eq(1)
+    cargos = Cargo.where(email: pessoa.email).pluck(:funcao)
+    expect(cargos).to include(0, 2)
   end
 end
 
@@ -69,13 +70,15 @@ RSpec.describe ImportadorTurma do
         "code" => "CIC0001",
         "classCode" => "1",
         "semester" => "2025.1",
-        "docente" => { "nome" => "Prof Teste" },
+        "docente" => { "nome" => "Prof Teste",
+                       "email" => "professor@email.com" },
       }
     )
   end
 
   before do
     Materia.create!(id: "CIC0001")
+    Pessoa.create!(email: "professor@email.com", nome: "Prof Teste", senha: "senha123")
   end
 
   it 'cria ou atualiza a turma' do

@@ -240,14 +240,10 @@ class ImportadorProfessor < ImportadorBase
 
     set_dados_pessoa(pessoa, docente)
 
-    Cargo.find_or_create_by!(email: pessoa.email) do |cargo|
-      cargo.funcao = 2
-    end
+    Cargo.find_or_create_by!(email: pessoa.email, funcao: 2)
 
     # Todo professor importado será um admin
-    Cargo.find_or_create_by!(email: pessoa.email) do |cargo|
-      cargo.funcao = 0
-    end
+    Cargo.find_or_create_by!(email: pessoa.email, funcao: 0)
 
     enviar_email_inicial(pessoa, email) if novo
   end
