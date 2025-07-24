@@ -70,6 +70,50 @@ RSpec.describe User::AvaliacoesController, type: :controller do
       get :index
       expect(response).to render_template(:index)
     end
+
+
+    # Feature bônus, para formulários de docente e discente
+    context "when current user is aluno" do
+      let(:aluno) { create(:pessoa, email: "aluno@example.com") }
+      let(:turma) { create(:turma) }
+
+      before do
+        create(:cargo, email: aluno.email, funcao: 1) # funcao 1 = aluno
+        aluno.turmas << turma
+        session[:email] = aluno.email
+      end
+
+      it "returns only formularios with destino 1 or 3" do
+        form_destino_aluno = create(:formulario, turma: turma, destino: 1)
+        form_destino_geral = create(:formulario, turma: turma, destino: 3)
+        form_destino_professor = create(:formulario, turma: turma, destino: 2)
+
+        get :index
+        expect(assigns(:formularios)).to include(form_destino_aluno, form_destino_geral)
+        expect(assigns(:formularios)).not_to include(form_destino_professor)
+      end
+    end
+    
+    context "when current user is professor" do
+      let(:professor) { create(:pessoa, email: "professor@example.com") }
+      let(:turma) { create(:turma) }
+
+      before do
+        create(:cargo, email: professor.email, funcao: 2) # funcao 2 = professor
+        professor.turmas << turma
+        session[:email] = professor.email
+      end
+
+      it "returns only formularios with destino 2 or 3" do
+        form_destino_professor = create(:formulario, turma: turma, destino: 2)
+        form_destino_geral = create(:formulario, turma: turma, destino: 3)
+        form_destino_aluno = create(:formulario, turma: turma, destino: 1)
+
+        get :index
+        expect(assigns(:formularios)).to include(form_destino_professor, form_destino_geral)
+        expect(assigns(:formularios)).not_to include(form_destino_aluno)
+      end
+    end
   end
 
   # Testa página de resposta do formulário

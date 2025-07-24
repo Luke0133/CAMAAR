@@ -40,6 +40,45 @@ Cargo.create!(
   funcao: 0
 )
 
+prof = Pessoa.create!(
+  email: "prof@teste.com",
+  nome: "Prof",
+  matricula: "1234",
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
+)
+Cargo.create!(
+  email: prof.email,
+  funcao: 2
+)
+
+# Cria matéria
+materia = Materia.create!(
+  id: "MAT123",
+  nome: "Matemática"
+)
+
+# Cria turmas
+turma1 = Turma.create!(
+  semestre: "2024.1",
+  numero_turma: 1,
+  professor: "Prof. João",
+  id_materia: materia.id
+)
+
+aluno = Pessoa.create!(
+  email: "aluno@teste.com",
+  nome: "Aluno",
+  matricula: "1234",
+  encrypted_password: Devise::Encryptor.digest(Pessoa, "1234")
+)
+Cargo.create!(
+  email: aluno.email,
+  funcao: 1
+)
+
+Participante.create!(email: prof.email, id_turma: turma1.id)
+Participante.create!(email: aluno.email, id_turma: turma1.id)
+
 # Cria admin e usuario teste: DESCOMENTE SE QUISER JÁ TER POPULADO (ATIVA AUTOMATICAMENTE O BOTÃO EDITAR TEMPLATE)
 =begin
 both = Pessoa.create!(

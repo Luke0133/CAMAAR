@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_20_225901) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_23_213058) do
   create_table "cargos", id: false, force: :cascade do |t|
     t.string "email", null: false
     t.integer "funcao", null: false
@@ -33,6 +33,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_20_225901) do
     t.string "nome"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "destino"
     t.index ["ligacao_pergunta_id"], name: "index_formularios_on_ligacao_pergunta_id"
     t.index ["turma_id"], name: "index_formularios_on_turma_id"
   end

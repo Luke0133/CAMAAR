@@ -127,5 +127,71 @@ RSpec.describe Admin::FormulariosController, type: :controller do
         expect(flash.now[:alert]).to eq("Erro ao salvar os formulários")
       end
     end
+
+    context "com destino definido como 'aluno'" do
+      it "cria formulário com destino 1" do
+        materia = create(:materia)
+        turma = create(:turma, materia: materia)
+
+        ligacao = create(:ligacao_pergunta)
+        create(:pergunta, ligacao_pergunta: ligacao)
+        template = create(:template, ligacao_pergunta: ligacao)
+
+        post :create, params: {
+          formulario: {
+            template_id: template.id,
+            materia_ids: [materia.id],
+            destino: "aluno"
+          }
+        }
+
+        formulario = Formulario.last
+        expect(formulario.destino).to eq(1)
+      end
+    end
+
+    context "com destino definido como 'professor'" do
+      it "cria formulário com destino 2" do
+        materia = create(:materia)
+        turma = create(:turma, materia: materia)
+
+        ligacao = create(:ligacao_pergunta)
+        create(:pergunta, ligacao_pergunta: ligacao)
+        template = create(:template, ligacao_pergunta: ligacao)
+
+        post :create, params: {
+          formulario: {
+            template_id: template.id,
+            materia_ids: [materia.id],
+            destino: "professor"
+          }
+        }
+
+        formulario = Formulario.last
+        expect(formulario.destino).to eq(2)
+      end
+    end
+
+    context "com destino inválido ou ausente" do
+      it "usa destino padrão 3 (todos)" do
+        materia = create(:materia)
+        turma = create(:turma, materia: materia)
+
+        ligacao = create(:ligacao_pergunta)
+        create(:pergunta, ligacao_pergunta: ligacao)
+        template = create(:template, ligacao_pergunta: ligacao)
+
+        post :create, params: {
+          formulario: {
+            template_id: template.id,
+            materia_ids: [materia.id],
+            destino: "todos"
+          }
+        }
+
+        formulario = Formulario.last
+        expect(formulario.destino).to eq(3)
+      end
+    end
   end
 end

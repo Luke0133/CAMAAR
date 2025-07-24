@@ -168,11 +168,16 @@ class User::AvaliacoesController < ApplicationController
   # Exemplo de uso:
   #   buscar_formularios_validos(turmas_ids, respondidos_ids) # Como no código de index
   def buscar_formularios_validos(turmas_ids, respondidos_ids) #:doc:
+    cargos_ids = Cargo.where(email: current_pessoa.email).pluck(:funcao)
+
+    destino_permitido = cargos_ids + [3]
+    
     Formulario
       .includes(turma: :materia)
       .validos
       .where(turma_id: turmas_ids)
       .where.not(id: respondidos_ids)
+      .where(destino: destino_permitido)
   end
 
   ##

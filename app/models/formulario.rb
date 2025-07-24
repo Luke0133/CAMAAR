@@ -13,6 +13,7 @@
 # - +invalidos+: retorna formulários com nome em branco
 #
 class Formulario < ApplicationRecord
+
   belongs_to :ligacao_pergunta
   belongs_to :turma
 
@@ -20,9 +21,10 @@ class Formulario < ApplicationRecord
   has_many :formulario_respondidos, dependent: :destroy
 
   scope :respondidos, -> { joins(:respostas).distinct }
-  scope :validos, -> { where.not(id: invalidos.select(:id)) }
   scope :invalidos, -> { where(nome: "") }
-
+  scope :validos, -> { where.not(id: invalidos.select(:id)) }
+  # destino: 1 = aluno, 2 = professor, 3 = ambos
+  
   ##
   # Gera o conteúdo CSV das respostas do formulário.
   #
